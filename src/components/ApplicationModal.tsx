@@ -38,6 +38,89 @@ const SECTORS = [
   }
 ];
 
+const InputField = ({ label, section, field, type = "text", required = false, options = [], formData, updateForm }: any) => {
+  const val = formData[section][field];
+  return (
+    <div className="mb-4">
+      <label className="block text-[13px] font-bold text-gray-700 mb-1.5 ml-1">
+        {label} {required && <span className="text-red-500">*</span>}
+      </label>
+      {options.length > 0 ? (
+        <select
+          required={required}
+          value={val}
+          onChange={(e) => updateForm(section, field, e.target.value)}
+          className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all appearance-none"
+        >
+          <option value="">Select an option</option>
+          {options.map((opt: string) => <option key={opt} value={opt}>{opt}</option>)}
+        </select>
+      ) : type === "textarea" ? (
+         <textarea
+          required={required}
+          value={val}
+          onChange={(e) => updateForm(section, field, e.target.value)}
+          rows={3}
+          className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+        />
+      ) : (
+        <input
+          type={type}
+          required={required}
+          value={val}
+          onChange={(e) => updateForm(section, field, e.target.value)}
+          className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+        />
+      )}
+    </div>
+  );
+};
+
+const FileUploadCard = ({ id, label, required = false, accept = ".pdf,.doc,.docx,image/*", files, handleFileChange }: any) => {
+  const file = files[id];
+  return (
+    <div className="mb-4">
+       <label className="block text-[13px] font-bold text-gray-700 mb-1.5 ml-1">
+        {label} {required && <span className="text-red-500">*</span>}
+      </label>
+      <label className={`flex items-center gap-4 p-4 rounded-2xl border-2 border-dashed cursor-pointer transition-all ${
+        file ? 'border-green-400 bg-green-50/50' : 'border-gray-200 bg-gray-50 hover:bg-blue-50 hover:border-blue-300'
+      }`}>
+        <input
+          type="file" accept={accept}
+          onChange={(e) => e.target.files && handleFileChange(id, e.target.files[0])}
+          className="hidden"
+        />
+        <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${file ? 'bg-green-100 text-green-600' : 'bg-white shadow-sm text-gray-400 border border-gray-100'}`}>
+          {file ? <CheckCircle2 className="w-6 h-6" /> : <Upload className="w-5 h-5" />}
+        </div>
+        <div className="flex-1 min-w-0">
+          {file ? (
+            <>
+              <p className="text-[14px] font-bold text-gray-900 truncate">{file.name}</p>
+              <p className="text-[12px] font-medium text-green-600">Ready to upload</p>
+            </>
+          ) : (
+            <>
+               <p className="text-[14px] font-bold text-gray-700">Tap to upload</p>
+               <p className="text-[12px] text-gray-400">PDF, DOC, JPG, PNG</p>
+            </>
+          )}
+        </div>
+        {file && (
+          <button 
+            type="button" 
+            onClick={(e) => { e.preventDefault(); handleFileChange(id, null); }}
+            className="p-2 text-gray-400 hover:text-red-500 rounded-lg hover:bg-white transition-colors"
+          >
+            <Trash2 className="w-5 h-5" />
+          </button>
+        )}
+      </label>
+    </div>
+  );
+}
+
 export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onClose, lang }) => {
   const { user } = useAuth();
   
@@ -149,89 +232,6 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
       setLoading(false);
     }
   };
-
-  const InputField = ({ label, section, field, type = "text", required = false, options = [] }: any) => {
-    const val = formData[section][field];
-    return (
-      <div className="mb-4">
-        <label className="block text-[13px] font-bold text-gray-700 mb-1.5 ml-1">
-          {label} {required && <span className="text-red-500">*</span>}
-        </label>
-        {options.length > 0 ? (
-          <select
-            required={required}
-            value={val}
-            onChange={(e) => updateForm(section, field, e.target.value)}
-            className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all appearance-none"
-          >
-            <option value="">Select an option</option>
-            {options.map((opt: string) => <option key={opt} value={opt}>{opt}</option>)}
-          </select>
-        ) : type === "textarea" ? (
-           <textarea
-            required={required}
-            value={val}
-            onChange={(e) => updateForm(section, field, e.target.value)}
-            rows={3}
-            className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-          />
-        ) : (
-          <input
-            type={type}
-            required={required}
-            value={val}
-            onChange={(e) => updateForm(section, field, e.target.value)}
-            className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-          />
-        )}
-      </div>
-    );
-  };
-
-  const FileUploadCard = ({ id, label, required = false, accept = ".pdf,.doc,.docx,image/*" }: any) => {
-    const file = files[id];
-    return (
-      <div className="mb-4">
-         <label className="block text-[13px] font-bold text-gray-700 mb-1.5 ml-1">
-          {label} {required && <span className="text-red-500">*</span>}
-        </label>
-        <label className={`flex items-center gap-4 p-4 rounded-2xl border-2 border-dashed cursor-pointer transition-all ${
-          file ? 'border-green-400 bg-green-50/50' : 'border-gray-200 bg-gray-50 hover:bg-blue-50 hover:border-blue-300'
-        }`}>
-          <input
-            type="file" accept={accept}
-            onChange={(e) => e.target.files && handleFileChange(id, e.target.files[0])}
-            className="hidden"
-          />
-          <div className={`w-12 h-12 rounded-xl flex items-center justify-center shrink-0 ${file ? 'bg-green-100 text-green-600' : 'bg-white shadow-sm text-gray-400 border border-gray-100'}`}>
-            {file ? <CheckCircle2 className="w-6 h-6" /> : <Upload className="w-5 h-5" />}
-          </div>
-          <div className="flex-1 min-w-0">
-            {file ? (
-              <>
-                <p className="text-[14px] font-bold text-gray-900 truncate">{file.name}</p>
-                <p className="text-[12px] font-medium text-green-600">Ready to upload</p>
-              </>
-            ) : (
-              <>
-                 <p className="text-[14px] font-bold text-gray-700">Tap to upload</p>
-                 <p className="text-[12px] text-gray-400">PDF, DOC, JPG, PNG</p>
-              </>
-            )}
-          </div>
-          {file && (
-            <button 
-              type="button" 
-              onClick={(e) => { e.preventDefault(); handleFileChange(id, null); }}
-              className="p-2 text-gray-400 hover:text-red-500 rounded-lg hover:bg-white transition-colors"
-            >
-              <Trash2 className="w-5 h-5" />
-            </button>
-          )}
-        </label>
-      </div>
-    );
-  }
 
   // Determine what steps can proceed
   let canProceed = false;
@@ -388,20 +388,20 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                     <p className="text-[15px] text-gray-500">Tell us a bit about yourself.</p>
                   </div>
                   
-                  <InputField label="Full Name" section="personal" field="fullName" required />
+                  <InputField label="Full Name" section="personal" field="fullName" required formData={formData} updateForm={updateForm} />
                   <div className="grid grid-cols-2 gap-4">
-                    <InputField label="Gender" section="personal" field="gender" options={["Male", "Female"]} required />
-                    <InputField label="Date of Birth" section="personal" field="dob" type="date" required />
+                    <InputField label="Gender" section="personal" field="gender" options={["Male", "Female"]} required formData={formData} updateForm={updateForm} />
+                    <InputField label="Date of Birth" section="personal" field="dob" type="date" required formData={formData} updateForm={updateForm} />
                   </div>
-                  <InputField label="Phone Number" section="personal" field="phone" type="tel" required />
-                  <InputField label="Email Address" section="personal" field="email" type="email" required />
+                  <InputField label="Phone Number" section="personal" field="phone" type="tel" required formData={formData} updateForm={updateForm} />
+                  <InputField label="Email Address" section="personal" field="email" type="email" required formData={formData} updateForm={updateForm} />
                   <div className="grid grid-cols-2 gap-4">
-                     <InputField label="Region" section="personal" field="region" />
-                     <InputField label="City" section="personal" field="city" />
+                     <InputField label="Region" section="personal" field="region" formData={formData} updateForm={updateForm} />
+                     <InputField label="City" section="personal" field="city" formData={formData} updateForm={updateForm} />
                   </div>
-                  <InputField label="Current Address" section="personal" field="currentAddress" type="textarea" />
-                  <InputField label="Nationality" section="personal" field="nationality" />
-                  <InputField label="Ethiopian National ID (Optional)" section="personal" field="nationalId" />
+                  <InputField label="Current Address" section="personal" field="currentAddress" type="textarea" formData={formData} updateForm={updateForm} />
+                  <InputField label="Nationality" section="personal" field="nationality" formData={formData} updateForm={updateForm} />
+                  <InputField label="Ethiopian National ID (Optional)" section="personal" field="nationalId" formData={formData} updateForm={updateForm} />
                 </div>
               )}
 
@@ -411,12 +411,12 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                   <div>
                     <h1 className="text-2xl font-black text-gray-900 mb-2">Education</h1>
                     <p className="text-[15px] text-gray-500 mb-6">Your academic background.</p>
-                    <InputField label="Highest Education" section="education" field="highestLevel" options={["High School", "Diploma", "Bachelor's Degree", "Master's Degree", "PhD"]} required />
-                    <InputField label="University / College" section="education" field="university" required />
-                    <InputField label="Field of Study" section="education" field="field" required />
+                    <InputField label="Highest Education" section="education" field="highestLevel" options={["High School", "Diploma", "Bachelor's Degree", "Master's Degree", "PhD"]} required formData={formData} updateForm={updateForm} />
+                    <InputField label="University / College" section="education" field="university" required formData={formData} updateForm={updateForm} />
+                    <InputField label="Field of Study" section="education" field="field" required formData={formData} updateForm={updateForm} />
                     <div className="grid grid-cols-2 gap-4">
-                      <InputField label="Graduation Year" section="education" field="gradYear" type="number" required />
-                      <InputField label="CGPA" section="education" field="cgpa" type="number" />
+                      <InputField label="Graduation Year" section="education" field="gradYear" type="number" required formData={formData} updateForm={updateForm} />
+                      <InputField label="CGPA" section="education" field="cgpa" type="number" formData={formData} updateForm={updateForm} />
                     </div>
                   </div>
 
@@ -426,26 +426,26 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                      <div>
                        <h1 className="text-2xl font-black text-gray-900 mb-2">Experience</h1>
                        <p className="text-[15px] text-gray-500 mb-6">Even without full-time jobs, tell us what you've done.</p>
-                       <InputField label="Internship Experience (Optional)" section="experience" field="internship" type="textarea" />
-                       <InputField label="Volunteer Experience" section="experience" field="volunteer" type="textarea" />
-                       <InputField label="Projects" section="experience" field="projects" type="textarea" />
-                       <InputField label="Skills" section="experience" field="skills" type="textarea" />
-                       <InputField label="Languages" section="experience" field="languages" type="textarea" />
-                       <InputField label="Computer Skills" section="experience" field="computerSkills" type="textarea" />
+                       <InputField label="Internship Experience (Optional)" section="experience" field="internship" type="textarea" formData={formData} updateForm={updateForm} />
+                       <InputField label="Volunteer Experience" section="experience" field="volunteer" type="textarea" formData={formData} updateForm={updateForm} />
+                       <InputField label="Projects" section="experience" field="projects" type="textarea" formData={formData} updateForm={updateForm} />
+                       <InputField label="Skills" section="experience" field="skills" type="textarea" formData={formData} updateForm={updateForm} />
+                       <InputField label="Languages" section="experience" field="languages" type="textarea" formData={formData} updateForm={updateForm} />
+                       <InputField label="Computer Skills" section="experience" field="computerSkills" type="textarea" formData={formData} updateForm={updateForm} />
                      </div>
                   ) : (
                      <div>
                        <h1 className="text-2xl font-black text-gray-900 mb-2">Professional Experience</h1>
                        <p className="text-[15px] text-gray-500 mb-6">Your work history.</p>
-                       <InputField label="Years of Experience" section="experience" field="yearsOfExperience" type="number" />
-                       <InputField label="Current/Latest Employer" section="experience" field="currentEmployer" />
-                       <InputField label="Current Position" section="experience" field="currentPosition" />
-                       <InputField label="Previous Employer" section="experience" field="previousEmployer" />
-                       <InputField label="Employment Type" section="experience" field="employmentType" options={["Full-time", "Part-time", "Contract", "Freelance"]} />
-                       <InputField label="Current Salary (Optional)" section="experience" field="currentSalary" />
-                       <InputField label="Professional Skills" section="experience" field="professionalSkills" type="textarea" />
-                       <InputField label="Leadership Experience" section="experience" field="leadershipExperience" type="textarea" />
-                       <InputField label="References" section="experience" field="references" type="textarea" />
+                       <InputField label="Years of Experience" section="experience" field="yearsOfExperience" type="number" formData={formData} updateForm={updateForm} />
+                       <InputField label="Current/Latest Employer" section="experience" field="currentEmployer" formData={formData} updateForm={updateForm} />
+                       <InputField label="Current Position" section="experience" field="currentPosition" formData={formData} updateForm={updateForm} />
+                       <InputField label="Previous Employer" section="experience" field="previousEmployer" formData={formData} updateForm={updateForm} />
+                       <InputField label="Employment Type" section="experience" field="employmentType" options={["Full-time", "Part-time", "Contract", "Freelance"]} formData={formData} updateForm={updateForm} />
+                       <InputField label="Current Salary (Optional)" section="experience" field="currentSalary" formData={formData} updateForm={updateForm} />
+                       <InputField label="Professional Skills" section="experience" field="professionalSkills" type="textarea" formData={formData} updateForm={updateForm} />
+                       <InputField label="Leadership Experience" section="experience" field="leadershipExperience" type="textarea" formData={formData} updateForm={updateForm} />
+                       <InputField label="References" section="experience" field="references" type="textarea" formData={formData} updateForm={updateForm} />
                      </div>
                   )}
                 </div>
@@ -461,46 +461,46 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
 
                   {formData.sector === 'embassy' && (
                     <>
-                      <InputField label="English Level" section="sectorSpecific" field="englishLevel" options={["Basic", "Intermediate", "Fluent", "Native"]} />
-                      <InputField label="Other Languages" section="sectorSpecific" field="otherLanguages" />
-                      <InputField label="Computer Skills" section="sectorSpecific" field="embassyComputerSkills" type="textarea" />
-                      <InputField label="Security Clearance" section="sectorSpecific" field="securityClearance" options={["Yes", "No"]} />
-                      <InputField label="Typing Skills (WPM)" section="sectorSpecific" field="typingSkills" />
-                      <InputField label="Motivation Letter / Statement" section="sectorSpecific" field="motivationLetter" type="textarea" />
+                      <InputField label="English Level" section="sectorSpecific" field="englishLevel" options={["Basic", "Intermediate", "Fluent", "Native"]} formData={formData} updateForm={updateForm} />
+                      <InputField label="Other Languages" section="sectorSpecific" field="otherLanguages" formData={formData} updateForm={updateForm} />
+                      <InputField label="Computer Skills" section="sectorSpecific" field="embassyComputerSkills" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label="Security Clearance" section="sectorSpecific" field="securityClearance" options={["Yes", "No"]} formData={formData} updateForm={updateForm} />
+                      <InputField label="Typing Skills (WPM)" section="sectorSpecific" field="typingSkills" formData={formData} updateForm={updateForm} />
+                      <InputField label="Motivation Letter / Statement" section="sectorSpecific" field="motivationLetter" type="textarea" formData={formData} updateForm={updateForm} />
                     </>
                   )}
 
                   {formData.sector === 'ngo' && (
                     <>
-                      <InputField label="NGO Experience (Years)" section="sectorSpecific" field="ngoExperience" />
-                      <InputField label="Project Management Skills" section="sectorSpecific" field="projectManagement" type="textarea" />
-                      <InputField label="Community Development Exp." section="sectorSpecific" field="communityDevelopment" type="textarea" />
-                      <InputField label="Proposal Writing" section="sectorSpecific" field="proposalWriting" options={["Yes", "No", "Basic"]} />
-                      <InputField label="Report Writing" section="sectorSpecific" field="reportWriting" options={["Yes", "No", "Basic"]} />
-                      <InputField label="Donor Experience (USAID, UN, etc)" section="sectorSpecific" field="donorExperience" type="textarea" />
+                      <InputField label="NGO Experience (Years)" section="sectorSpecific" field="ngoExperience" formData={formData} updateForm={updateForm} />
+                      <InputField label="Project Management Skills" section="sectorSpecific" field="projectManagement" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label="Community Development Exp." section="sectorSpecific" field="communityDevelopment" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label="Proposal Writing" section="sectorSpecific" field="proposalWriting" options={["Yes", "No", "Basic"]} formData={formData} updateForm={updateForm} />
+                      <InputField label="Report Writing" section="sectorSpecific" field="reportWriting" options={["Yes", "No", "Basic"]} formData={formData} updateForm={updateForm} />
+                      <InputField label="Donor Experience (USAID, UN, etc)" section="sectorSpecific" field="donorExperience" type="textarea" formData={formData} updateForm={updateForm} />
                     </>
                   )}
 
                   {formData.sector === 'airport' && (
                     <>
-                      <InputField label="Customer Service Experience" section="sectorSpecific" field="customerService" type="textarea" />
-                      <InputField label="Ground Handling Experience" section="sectorSpecific" field="groundHandling" type="textarea" />
-                      <InputField label="Cargo Experience" section="sectorSpecific" field="cargoExperience" type="textarea" />
-                      <InputField label="Shift Availability" section="sectorSpecific" field="shiftAvailability" options={["Day Shift", "Night Shift", "Any Shift"]} />
-                      <InputField label="Physical Fitness Status" section="sectorSpecific" field="physicalFitness" options={["Excellent", "Good", "Average"]} />
-                      <InputField label="Travel Availability" section="sectorSpecific" field="travelAvailability" options={["Yes", "No"]} />
+                      <InputField label="Customer Service Experience" section="sectorSpecific" field="customerService" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label="Ground Handling Experience" section="sectorSpecific" field="groundHandling" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label="Cargo Experience" section="sectorSpecific" field="cargoExperience" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label="Shift Availability" section="sectorSpecific" field="shiftAvailability" options={["Day Shift", "Night Shift", "Any Shift"]} formData={formData} updateForm={updateForm} />
+                      <InputField label="Physical Fitness Status" section="sectorSpecific" field="physicalFitness" options={["Excellent", "Good", "Average"]} formData={formData} updateForm={updateForm} />
+                      <InputField label="Travel Availability" section="sectorSpecific" field="travelAvailability" options={["Yes", "No"]} formData={formData} updateForm={updateForm} />
                     </>
                   )}
 
                   {formData.sector === 'foreign' && (
                     <>
-                      <InputField label="Preferred Country" section="sectorSpecific" field="preferredCountry" />
-                      <InputField label="Passport Available" section="sectorSpecific" field="passportAvailable" options={["Yes", "No"]} />
-                      <InputField label="Passport Number" section="sectorSpecific" field="passportNumber" />
-                      <InputField label="Passport Expiry Date" section="sectorSpecific" field="passportExpiry" type="date" />
-                      <InputField label="Ready to Relocate" section="sectorSpecific" field="readyToRelocate" options={["Immediately", "Within 1 Month", "Within 3 Months"]} />
-                      <InputField label="Medical Certificate" section="sectorSpecific" field="medicalCertificate" options={["Yes", "No"]} />
-                      <InputField label="Police Clearance" section="sectorSpecific" field="policeClearance" options={["Yes", "No"]} />
+                      <InputField label="Preferred Country" section="sectorSpecific" field="preferredCountry" formData={formData} updateForm={updateForm} />
+                      <InputField label="Passport Available" section="sectorSpecific" field="passportAvailable" options={["Yes", "No"]} formData={formData} updateForm={updateForm} />
+                      <InputField label="Passport Number" section="sectorSpecific" field="passportNumber" formData={formData} updateForm={updateForm} />
+                      <InputField label="Passport Expiry Date" section="sectorSpecific" field="passportExpiry" type="date" formData={formData} updateForm={updateForm} />
+                      <InputField label="Ready to Relocate" section="sectorSpecific" field="readyToRelocate" options={["Immediately", "Within 1 Month", "Within 3 Months"]} formData={formData} updateForm={updateForm} />
+                      <InputField label="Medical Certificate" section="sectorSpecific" field="medicalCertificate" options={["Yes", "No"]} formData={formData} updateForm={updateForm} />
+                      <InputField label="Police Clearance" section="sectorSpecific" field="policeClearance" options={["Yes", "No"]} formData={formData} updateForm={updateForm} />
                     </>
                   )}
                 </div>
@@ -514,11 +514,11 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                     <p className="text-[15px] text-gray-500">Provide your files (PDF, DOC, JPG, PNG)</p>
                   </div>
                   
-                  <FileUploadCard id="cv" label="CV / Resume" required />
-                  <FileUploadCard id="educationalCert" label="Highest Educational Certificate" required />
-                  <FileUploadCard id="experienceCert" label="Experience Certificate (If any)" />
-                  <FileUploadCard id="passportPhoto" label="Passport Size Photo" accept="image/*" required />
-                  <FileUploadCard id="passport" label="Passport / ID Copy (Optional)" />
+                  <FileUploadCard id="cv" label="CV / Resume" required files={files} handleFileChange={handleFileChange} />
+                  <FileUploadCard id="educationalCert" label="Highest Educational Certificate" required files={files} handleFileChange={handleFileChange} />
+                  <FileUploadCard id="experienceCert" label="Experience Certificate (If any)" files={files} handleFileChange={handleFileChange} />
+                  <FileUploadCard id="passportPhoto" label="Passport Size Photo" accept="image/*" required files={files} handleFileChange={handleFileChange} />
+                  <FileUploadCard id="passport" label="Passport / ID Copy (Optional)" files={files} handleFileChange={handleFileChange} />
                 </div>
               )}
 
