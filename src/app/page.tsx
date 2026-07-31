@@ -60,6 +60,7 @@ export default function Home() {
         {/* We pass handleApplyClick to sections that need to trigger the modal */}
         <HeroSection onApplyClick={handleApplyClick} onBrowseJobs={handleBrowseJobs} />
         <ImageBannerSection />
+        <TrustedCompaniesSection />
         <CategoriesSection onSelectCategory={handleCategorySelect} />
         <GallerySection />
         <LatestJobsSection 
@@ -72,7 +73,6 @@ export default function Home() {
         <ResourcesSection />
         <ProcessTimelineSection />
         <FeaturesSection />
-        <TrustedCompaniesSection />
         <FAQSection />
         <NewsletterSection />
       </main>
