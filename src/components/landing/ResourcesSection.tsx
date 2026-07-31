@@ -14,7 +14,7 @@ const RESOURCES = [
   {
     title: "Interview Preparation",
     desc: "Aces your next Embassy or NGO interview.",
-    image: "https://images.unsplash.com/photo-1573497491208-6f16bfc752e0?auto=format&fit=crop&w=600&q=80",
+    image: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=600&q=80",
     color: "from-blue-500/80 to-indigo-600/80"
   },
   {

@@ -21,18 +21,6 @@ export const HeroSection = ({ onApplyClick }: { onApplyClick: () => void }) => {
       />
 
       <div className="relative z-10 w-full">
-        {/* Badge */}
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/60 backdrop-blur-md border border-white/80 shadow-sm mb-6"
-        >
-          <span className="w-2 h-2 rounded-full bg-blue-500 animate-pulse" />
-          <span className="text-[12px] font-bold text-gray-800 tracking-wide uppercase">
-            #1 Recruitment Platform in Ethiopia
-          </span>
-        </motion.div>
-
         {/* Heading */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}

@@ -11,7 +11,7 @@ const STORIES = [
     before: "Fresh Graduate",
     after: "Hired at UN Agency",
     salary: "+150% Increase",
-    image: "https://images.unsplash.com/photo-1531123897727-8f129e1bfd8c?auto=format&fit=crop&w=400&q=80"
+    image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=400&q=80"
   },
   {
     name: "Dawit M.",
