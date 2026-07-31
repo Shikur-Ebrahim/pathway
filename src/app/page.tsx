@@ -26,6 +26,7 @@ export default function Home() {
   const [isAppModalOpen, setIsAppModalOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
+  const [showAllJobs, setShowAllJobs] = useState(false);
   const { user } = useAuth();
 
   const handleApplyClick = () => {
@@ -35,7 +36,15 @@ export default function Home() {
 
   const handleCategorySelect = (cat: string) => {
     setActiveCategory(cat);
-    // Add small delay to ensure DOM updates if needed
+    setShowAllJobs(true);
+    setTimeout(() => {
+      document.getElementById("latest-jobs")?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
+  };
+
+  const handleBrowseJobs = () => {
+    setShowAllJobs(true);
+    setActiveCategory(null);
     setTimeout(() => {
       document.getElementById("latest-jobs")?.scrollIntoView({ behavior: "smooth" });
     }, 100);
@@ -49,14 +58,16 @@ export default function Home() {
 
       <main className="flex-1 w-full flex flex-col overflow-x-hidden">
         {/* We pass handleApplyClick to sections that need to trigger the modal */}
-        <HeroSection onApplyClick={handleApplyClick} />
+        <HeroSection onApplyClick={handleApplyClick} onBrowseJobs={handleBrowseJobs} />
         <ImageBannerSection />
         <CategoriesSection onSelectCategory={handleCategorySelect} />
         <FeaturesSection />
         <LatestJobsSection 
           onApplyClick={handleApplyClick} 
           filterCategory={activeCategory} 
-          onClearFilter={() => setActiveCategory(null)} 
+          onClearFilter={() => setActiveCategory(null)}
+          showAll={showAllJobs}
+          onToggleShowAll={() => setShowAllJobs(prev => !prev)}
         />
         <ResourcesSection />
         <ProcessTimelineSection />

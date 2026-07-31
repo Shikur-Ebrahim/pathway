@@ -70,21 +70,22 @@ const ALL_JOBS = generateJobs();
 export const LatestJobsSection = ({ 
   onApplyClick, 
   filterCategory, 
-  onClearFilter 
+  onClearFilter,
+  showAll,
+  onToggleShowAll
 }: { 
   onApplyClick: () => void; 
   filterCategory?: string | null;
   onClearFilter?: () => void;
+  showAll: boolean;
+  onToggleShowAll: () => void;
 }) => {
-  const [showAll, setShowAll] = useState(false);
-
   const filteredJobs = useMemo(() => {
     if (!filterCategory) return ALL_JOBS;
     const logoMap: Record<string, string> = { "NGO": "🌍", "Embassy": "🏛️", "Aviation": "✈️", "International": "🌐" };
     return ALL_JOBS.filter(job => job.logo === logoMap[filterCategory]);
   }, [filterCategory]);
 
-  // We only display the first 10 items in the carousel initially
   const displayJobs = showAll ? filteredJobs : filteredJobs.slice(0, 10);
   const remainingCount = filteredJobs.length - displayJobs.length;
 
@@ -103,7 +104,7 @@ export const LatestJobsSection = ({
           )}
         </div>
         <button 
-          onClick={() => setShowAll(!showAll)}
+          onClick={onToggleShowAll}
           className="text-[14px] font-bold text-blue-600 hover:text-blue-700 shrink-0"
         >
           {showAll ? "Show Less" : "View All"}
@@ -161,7 +162,7 @@ export const LatestJobsSection = ({
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
             className="w-[280px] shrink-0 rounded-[24px] p-5 border-2 border-dashed border-gray-200 bg-gray-50/50 hover:bg-gray-50 transition-colors relative group snap-center flex flex-col items-center justify-center text-center cursor-pointer"
-            onClick={() => setShowAll(true)}
+            onClick={() => onToggleShowAll()}
           >
             <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4 text-blue-600 group-hover:scale-110 transition-transform">
               <ArrowRight className="w-8 h-8" />

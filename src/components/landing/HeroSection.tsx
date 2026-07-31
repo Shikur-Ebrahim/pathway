@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import CountUp from "react-countup";
 import { ArrowRight, Search } from "lucide-react";
 
-export const HeroSection = ({ onApplyClick }: { onApplyClick: () => void }) => {
+export const HeroSection = ({ onApplyClick, onBrowseJobs }: { onApplyClick: () => void; onBrowseJobs: () => void }) => {
   return (
     <section className="relative w-full max-w-[430px] mx-auto min-h-[90vh] flex flex-col justify-center items-center overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 px-5 pt-24 pb-16">
       {/* Animated Background Shapes */}
@@ -53,7 +53,10 @@ export const HeroSection = ({ onApplyClick }: { onApplyClick: () => void }) => {
             Create Free Account
             <ArrowRight className="w-5 h-5" />
           </button>
-          <button className="w-full py-4 rounded-2xl bg-white border-2 border-gray-100 text-gray-800 font-bold text-[16px] hover:border-gray-200 hover:bg-gray-50 flex items-center justify-center gap-2 active:scale-[0.98] transition-all">
+          <button 
+            onClick={onBrowseJobs}
+            className="w-full py-4 rounded-2xl bg-white border-2 border-gray-100 text-gray-800 font-bold text-[16px] hover:border-gray-200 hover:bg-gray-50 flex items-center justify-center gap-2 active:scale-[0.98] transition-all"
+          >
             <Search className="w-5 h-5 text-gray-400" />
             Browse Jobs
           </button>
