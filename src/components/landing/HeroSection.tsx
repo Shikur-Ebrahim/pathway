@@ -68,8 +68,8 @@ export const HeroSection = ({ onApplyClick }: { onApplyClick: () => void }) => {
         >
           {[
             { num: 10000, suffix: "+", label: "2019 Job Slots" },
-            { num: 5000, suffix: "+", label: "Active Jobs" },
-            { num: 300, suffix: "+", label: "Organizations" },
+            { num: 200, suffix: "+", label: "Active Jobs" },
+            { num: 4, suffix: "", label: "Organizations" },
             { num: 98, suffix: "%", label: "Success Rate" }
           ].map((stat, idx) => (
             <div key={idx} className="bg-white/60 backdrop-blur-xl border border-white p-4 rounded-2xl shadow-sm">
