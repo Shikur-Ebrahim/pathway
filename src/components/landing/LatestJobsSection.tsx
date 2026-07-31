@@ -67,19 +67,40 @@ const generateJobs = () => {
 // Generate once in module scope
 const ALL_JOBS = generateJobs();
 
-export const LatestJobsSection = ({ onApplyClick }: { onApplyClick: () => void }) => {
+export const LatestJobsSection = ({ 
+  onApplyClick, 
+  filterCategory, 
+  onClearFilter 
+}: { 
+  onApplyClick: () => void; 
+  filterCategory?: string | null;
+  onClearFilter?: () => void;
+}) => {
   const [showAll, setShowAll] = useState(false);
 
+  const filteredJobs = useMemo(() => {
+    if (!filterCategory) return ALL_JOBS;
+    const logoMap: Record<string, string> = { "NGO": "🌍", "Embassy": "🏛️", "Aviation": "✈️", "International": "🌐" };
+    return ALL_JOBS.filter(job => job.logo === logoMap[filterCategory]);
+  }, [filterCategory]);
+
   // We only display the first 10 items in the carousel initially
-  const displayJobs = showAll ? ALL_JOBS : ALL_JOBS.slice(0, 10);
-  const remainingCount = ALL_JOBS.length - displayJobs.length;
+  const displayJobs = showAll ? filteredJobs : filteredJobs.slice(0, 10);
+  const remainingCount = filteredJobs.length - displayJobs.length;
 
   return (
-    <section className="w-full max-w-[430px] mx-auto py-16 bg-gray-50/50 overflow-hidden">
+    <section id="latest-jobs" className="w-full max-w-[430px] mx-auto py-16 bg-gray-50/50 overflow-hidden">
       <div className="flex justify-between items-end mb-8 px-5">
         <div>
-          <h2 className="text-[28px] font-black text-gray-900 tracking-tight leading-tight">Trending in 2019</h2>
-          <p className="text-[14px] text-gray-500 mt-1">{ALL_JOBS.length} Verified Job Opportunities.</p>
+          <h2 className="text-[28px] font-black text-gray-900 tracking-tight leading-tight">
+            {filterCategory ? `${filterCategory} Jobs` : "Trending in 2019"}
+          </h2>
+          <p className="text-[14px] text-gray-500 mt-1">{filteredJobs.length} Verified Job Opportunities.</p>
+          {filterCategory && (
+            <button onClick={onClearFilter} className="text-[12px] font-bold text-red-500 mt-2 hover:underline">
+              Clear Filter ✕
+            </button>
+          )}
         </div>
         <button 
           onClick={() => setShowAll(!showAll)}
@@ -133,8 +154,8 @@ export const LatestJobsSection = ({ onApplyClick }: { onApplyClick: () => void }
           </motion.div>
         ))}
 
-        {/* View Other Options Card (only show if not showing all) */}
-        {!showAll && (
+        {/* View Other Options Card (only show if not showing all and there are remaining items) */}
+        {!showAll && remainingCount > 0 && (
           <motion.div
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}

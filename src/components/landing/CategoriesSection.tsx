@@ -39,12 +39,12 @@ const CATEGORIES = [
   }
 ];
 
-export const CategoriesSection = ({ onApplyClick }: { onApplyClick: () => void }) => {
+export const CategoriesSection = ({ onSelectCategory }: { onSelectCategory: (cat: string) => void }) => {
   return (
     <section className="w-full max-w-[430px] mx-auto py-12 px-5 bg-white">
       <div className="mb-8">
-        <h2 className="text-[28px] font-black text-gray-900 tracking-tight leading-tight">
-          Explore Top <br /> Industries
+        <h2 className="text-[28px] sm:text-[32px] font-black text-gray-900 tracking-tight leading-tight">
+          Explore Top Industries
         </h2>
       </div>
 
@@ -75,7 +75,10 @@ export const CategoriesSection = ({ onApplyClick }: { onApplyClick: () => void }
               </p>
 
               <button 
-                onClick={onApplyClick}
+                onClick={() => {
+                  const filterMap: Record<string, string> = { embassy: "Embassy", ngo: "NGO", aviation: "Aviation", international: "International" };
+                  onSelectCategory(filterMap[cat.id]);
+                }}
                 className="mt-auto self-start flex items-center gap-2 text-[14px] font-bold text-gray-900 hover:text-blue-600 transition-colors group"
               >
                 Browse Jobs 

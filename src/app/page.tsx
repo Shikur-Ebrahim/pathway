@@ -26,11 +26,20 @@ export default function Home() {
   const [lang, setLang] = useState<Language>("am");
   const [isAppModalOpen, setIsAppModalOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const { user } = useAuth();
 
   const handleApplyClick = () => {
     if (user) setIsAppModalOpen(true);
     else setIsAuthOpen(true);
+  };
+
+  const handleCategorySelect = (cat: string) => {
+    setActiveCategory(cat);
+    // Add small delay to ensure DOM updates if needed
+    setTimeout(() => {
+      document.getElementById("latest-jobs")?.scrollIntoView({ behavior: "smooth" });
+    }, 100);
   };
 
   const handleAuthSuccess = () => setIsAppModalOpen(true);
@@ -43,10 +52,14 @@ export default function Home() {
         {/* We pass handleApplyClick to sections that need to trigger the modal */}
         <HeroSection onApplyClick={handleApplyClick} />
         <ImageBannerSection />
-        <CategoriesSection onApplyClick={handleApplyClick} />
+        <CategoriesSection onSelectCategory={handleCategorySelect} />
         <FeaturesSection />
         <SuccessStoriesSection />
-        <LatestJobsSection onApplyClick={handleApplyClick} />
+        <LatestJobsSection 
+          onApplyClick={handleApplyClick} 
+          filterCategory={activeCategory} 
+          onClearFilter={() => setActiveCategory(null)} 
+        />
         <ResourcesSection />
         <ProcessTimelineSection />
         <GallerySection />
