@@ -1,9 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 import { addPathwayPost } from "@/lib/db";
-import { X, Send, Upload, CheckCircle2, AlertCircle, FileText, UserCheck, ShieldCheck } from "lucide-react";
+import { X, Upload, CheckCircle2, AlertCircle, FileText, UserCheck, ChevronDown } from "lucide-react";
 import { Language, content } from "@/lib/translations";
 
 interface ApplicationModalProps {
@@ -12,289 +13,260 @@ interface ApplicationModalProps {
   lang: Language;
 }
 
+const sectors = [
+  { value: "Embassies & Diplomatic Missions", label: "🏛️ ኤምባሲዎች — Embassies & Diplomatic Missions" },
+  { value: "NGOs & UN Agencies", label: "🌍 ዓለም አቀፍ ድርጅቶች — NGOs & UN Agencies" },
+  { value: "Airport & Aviation Operations", label: "✈️ አቪዬሽን — Airport & Aviation Operations" },
+  { value: "Foreign & International Jobs", label: "🌐 የውጭ ሀገር ስራዎች — Foreign & International Jobs" },
+];
+
 export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onClose, lang }) => {
-  const t = content[lang];
+  const { user } = useAuth();
 
   const [category, setCategory] = useState<"fresh" | "experienced">("fresh");
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
-  const [gradYear, setGradYear] = useState("2016");
+  const [email, setEmail] = useState(user?.email || "");
+  const [gradYear, setGradYear] = useState("2018");
   const [gpa, setGpa] = useState("");
-  const [targetSector, setTargetSector] = useState("Embassies & Diplomatic Missions");
+  const [targetSector, setTargetSector] = useState(sectors[0].value);
   const [cvFile, setCvFile] = useState<File | null>(null);
   const [photoFile, setPhotoFile] = useState<File | null>(null);
-  
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   if (!isOpen) return null;
 
+  const am = lang === "am";
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError(null);
     setLoading(true);
-
     try {
       let cvUrl = "";
       let photoUrl = "";
+      if (cvFile) { const r = await uploadToCloudinary(cvFile); cvUrl = r.url; }
+      if (photoFile) { const r = await uploadToCloudinary(photoFile); photoUrl = r.url; }
 
-      if (cvFile) {
-        const res = await uploadToCloudinary(cvFile);
-        cvUrl = res.url;
-      }
-
-      if (photoFile) {
-        const res = await uploadToCloudinary(photoFile);
-        photoUrl = res.url;
-      }
-
-      // Save application record into Firestore / Local storage
       await addPathwayPost({
-        title: `[App] ${fullName} - ${category.toUpperCase()} (${targetSector})`,
-        description: `Phone: ${phone} | Email: ${email} | Grad Year: ${gradYear} E.C. | GPA: ${gpa || "N/A"} | Category: ${category}`,
-        imageUrl: photoUrl || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+        title: `[Application] ${fullName} — ${targetSector}`,
+        description: `Phone: ${phone} | Category: ${category} | Grad Year: ${gradYear} E.C. | GPA: ${gpa || "N/A"} | Email: ${email}`,
+        imageUrl: photoUrl || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
         authorName: fullName,
         authorEmail: email || phone,
       });
-
       setSubmitted(true);
     } catch (err: any) {
-      setError(err.message || "Failed to submit application. Please try via Telegram.");
+      setError(err.message || "Submission failed. Please try via Telegram.");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-slate-950/85 backdrop-blur-md animate-fadeIn">
-      <div className="relative w-full max-w-xl bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl p-5 sm:p-8 overflow-hidden max-h-[92vh] overflow-y-auto">
-        <div className="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-sky-500 via-indigo-500 to-purple-500" />
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4 bg-gray-900/50 backdrop-blur-sm animate-fadeIn">
+      <div className="relative w-full max-w-xl bg-white rounded-3xl shadow-2xl border border-gray-100 max-h-[92vh] overflow-y-auto">
+        <div className="h-1.5 bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 sticky top-0" />
 
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-        >
+        <button onClick={onClose} className="absolute top-4 right-4 p-2 rounded-xl text-gray-400 hover:text-gray-700 hover:bg-gray-100 transition-colors z-10">
           <X className="w-5 h-5" />
         </button>
 
-        {submitted ? (
-          <div className="text-center py-8 space-y-4">
-            <div className="w-16 h-16 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 flex items-center justify-center mx-auto">
-              <CheckCircle2 className="w-10 h-10" />
-            </div>
-            <h3 className="text-2xl font-bold text-white">
-              {lang === "am" ? "ማመልከቻዎ በፍጥነት ተመዝግቧል!" : "Application Submitted Successfully!"}
-            </h3>
-            <p className="text-xs sm:text-sm text-slate-300 max-w-md mx-auto leading-relaxed">
-              {lang === "am"
-                ? "ሰነዶችዎ በ Pathway Agency ቡድን እየተገመገሙ ነው። ለፈጣን ምልመላ ሂደቱ በቴሌግራም አድራሻችን ያነጋግሩን።"
-                : "Your documents are under evaluation by Pathway Agency. Contact us on Telegram for fast-track processing."}
-            </p>
-            <div className="pt-4">
+        <div className="p-6 sm:p-8">
+          {submitted ? (
+            /* ── Success State ── */
+            <div className="text-center py-8 space-y-5">
+              <div className="w-20 h-20 rounded-full bg-green-100 flex items-center justify-center mx-auto border-4 border-green-200">
+                <CheckCircle2 className="w-10 h-10 text-green-500" />
+              </div>
+              <div>
+                <h3 className="text-2xl font-bold text-gray-900">
+                  {am ? "ማመልከቻዎ ተቀብሏል!" : "Application Submitted!"}
+                </h3>
+                <p className="text-sm text-gray-500 mt-2 max-w-sm mx-auto">
+                  {am
+                    ? "ቡድናችን ሰነዶችዎን በ 24-48 ሰዓታት ውስጥ ይገመግማል። ቴሌግራም ላይ ያለን ቀጥሉ።"
+                    : "Our team will review your documents within 24-48 hours. Follow us on Telegram for updates."}
+                </p>
+              </div>
               <a
                 href="https://t.me/pathway_agency"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-sky-500 text-white font-bold text-sm shadow-lg shadow-sky-500/30 hover:bg-sky-400 transition-all"
+                className="inline-flex items-center gap-2 px-8 py-3.5 rounded-xl bg-blue-600 text-white font-bold text-sm shadow-lg hover:bg-blue-700 transition-all"
               >
-                <Send className="w-4 h-4" />
-                <span>Open @pathway_agency on Telegram</span>
+                Open @pathway_agency
               </a>
             </div>
-          </div>
-        ) : (
-          <>
-            <div className="mb-6">
-              <span className="px-3 py-1 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/20 text-[11px] font-bold uppercase tracking-wider">
-                Official Placement Registration
-              </span>
-              <h2 className="text-xl sm:text-2xl font-bold text-white mt-2">
-                {lang === "am" ? "የስራ ማመልከቻ ፎርም" : "Pathway Agency Career Application"}
-              </h2>
-              <p className="text-xs text-slate-400 mt-1">
-                {t.quotaNotice}
-              </p>
-            </div>
-
-            {error && (
-              <div className="mb-4 p-3 rounded-xl bg-rose-500/10 border border-rose-500/20 text-xs text-rose-300 flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 shrink-0 text-rose-400" />
-                <span>{error}</span>
-              </div>
-            )}
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              {/* Category Selector Tabs */}
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-2">
-                  {lang === "am" ? "የአመልካች አይነት ይምረጡ" : "Select Applicant Category"}
-                </label>
-                <div className="grid grid-cols-2 gap-2">
-                  <button
-                    type="button"
-                    onClick={() => setCategory("fresh")}
-                    className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition-all text-left flex flex-col gap-0.5 ${
-                      category === "fresh"
-                        ? "bg-sky-600/20 border-sky-500 text-sky-300"
-                        : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
-                    }`}
-                  >
-                    <span className="font-extrabold text-white">🎓 0-Year Fresh Graduate</span>
-                    <span className="text-[10px] opacity-80">2015 – 2018 E.C.</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => setCategory("experienced")}
-                    className={`py-2.5 px-3 rounded-xl text-xs font-bold border transition-all text-left flex flex-col gap-0.5 ${
-                      category === "experienced"
-                        ? "bg-indigo-600/20 border-indigo-500 text-indigo-300"
-                        : "bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700"
-                    }`}
-                  >
-                    <span className="font-extrabold text-white">💼 Experienced / Pre-2015</span>
-                    <span className="text-[10px] opacity-80">Employed or Experienced</span>
-                  </button>
+          ) : (
+            <>
+              {/* Header */}
+              <div className="mb-6 pr-8">
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-50 text-blue-700 border border-blue-100 text-xs font-semibold mb-2">
+                  <UserCheck className="w-3.5 h-3.5" />
+                  {am ? "ኦፊሴላዊ ምዝገባ" : "Official Job Application"}
                 </div>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  {am ? "የስራ ማመልከቻ ቅጽ" : "Submit Your Application"}
+                </h2>
+                <p className="text-sm text-gray-500 mt-1">
+                  {am ? "ሁሉም መረጃ ሚስጥራዊ ሆኖ ይጠበቃል" : "All information is kept strictly confidential"}
+                </p>
               </div>
 
-              {/* Full Name & Phone */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">
-                    {lang === "am" ? "ሙሉ ስም (Full Name)" : "Full Name"} *
-                  </label>
-                  <input
-                    type="text"
-                    required
-                    placeholder="Abebe Kebede"
-                    value={fullName}
-                    onChange={(e) => setFullName(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-500 text-xs focus:outline-none focus:border-sky-500 transition-all"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-semibold text-slate-300 mb-1">
-                    {lang === "am" ? "ስልክ ቁጥር (Phone Number)" : "Phone Number"} *
-                  </label>
-                  <input
-                    type="tel"
-                    required
-                    placeholder="0911223344"
-                    value={phone}
-                    onChange={(e) => setPhone(e.target.value)}
-                    className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 placeholder-slate-500 text-xs focus:outline-none focus:border-sky-500 transition-all"
-                  />
-                </div>
-              </div>
-
-              {/* Target Sector */}
-              <div>
-                <label className="block text-xs font-semibold text-slate-300 mb-1">
-                  {lang === "am" ? "የሚፈልጉት የስራ ዘርፍ (Target Sector)" : "Target Career Sector"}
-                </label>
-                <select
-                  value={targetSector}
-                  onChange={(e) => setTargetSector(e.target.value)}
-                  className="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-800 rounded-xl text-slate-100 text-xs focus:outline-none focus:border-sky-500 transition-all"
-                >
-                  <option value="Embassies & Diplomatic Missions">🏛️ ኤምባሲዎች (Embassies & Diplomatic Missions)</option>
-                  <option value="NGOs & UN Agencies">🌍 ዓለም አቀፍ ድርጅቶች (NGOs & UN Agencies)</option>
-                  <option value="Airport & Aviation Operations">✈️ አቪዬሽን እና ኤርፖርት (Airport & Aviation)</option>
-                  <option value="Foreign & International Jobs">🌐 የውጭ ሀገር ስራዎች (Foreign & International Jobs)</option>
-                </select>
-              </div>
-
-              {/* GPA & Graduation Year for Fresh Graduates */}
-              {category === "fresh" && (
-                <div className="grid grid-cols-2 gap-4 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
-                  <div>
-                    <label className="block text-[11px] font-semibold text-slate-300 mb-1">
-                      የተመረቁበት ዓ.ም (Grad Year)
-                    </label>
-                    <select
-                      value={gradYear}
-                      onChange={(e) => setGradYear(e.target.value)}
-                      className="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 text-xs focus:outline-none focus:border-sky-500"
-                    >
-                      <option value="2018">2018 ዓ.ም</option>
-                      <option value="2017">2017 ዓ.ም</option>
-                      <option value="2016">2016 ዓ.ም</option>
-                      <option value="2015">2015 ዓ.ም</option>
-                    </select>
-                  </div>
-
-                  <div>
-                    <label className="block text-[11px] font-semibold text-slate-300 mb-1">
-                      GPA (&gt;= 2.1)
-                    </label>
-                    <input
-                      type="number"
-                      step="0.01"
-                      placeholder="e.g. 3.2"
-                      value={gpa}
-                      onChange={(e) => setGpa(e.target.value)}
-                      className="w-full px-3 py-2 bg-slate-900 border border-slate-800 rounded-lg text-slate-100 text-xs focus:outline-none focus:border-sky-500"
-                    />
-                  </div>
+              {error && (
+                <div className="mb-5 p-3.5 rounded-xl bg-red-50 border border-red-200 text-sm text-red-600 flex items-center gap-2">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
+                  <span>{error}</span>
                 </div>
               )}
 
-              {/* File Uploads (CV & Passport Photo) */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 pt-1">
-                <div className="border border-dashed border-slate-800 rounded-xl p-3 text-center bg-slate-950">
-                  <FileText className="w-5 h-5 text-sky-400 mx-auto mb-1" />
-                  <span className="text-[11px] font-semibold text-slate-300 block">
-                    Upload Resume / CV (PDF/DOC)
-                  </span>
-                  <input
-                    type="file"
-                    accept=".pdf,.doc,.docx,image/*"
-                    onChange={(e) => e.target.files && setCvFile(e.target.files[0])}
-                    className="mt-1.5 text-[10px] text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:bg-sky-500/20 file:text-sky-300 hover:file:bg-sky-500/30"
-                  />
+              <form onSubmit={handleSubmit} className="space-y-5">
+                {/* Category Tabs */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-600 mb-2 uppercase tracking-wide">
+                    {am ? "የአመልካች ዓይነት" : "Applicant Category"}
+                  </label>
+                  <div className="grid grid-cols-2 gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setCategory("fresh")}
+                      className={`py-3 px-3 rounded-xl text-xs font-semibold border-2 transition-all text-left ${
+                        category === "fresh"
+                          ? "border-blue-500 bg-blue-50 text-blue-700"
+                          : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                      }`}
+                    >
+                      <span className="block font-bold text-sm">🎓 Fresh Graduate</span>
+                      <span className="block text-[11px] opacity-70 mt-0.5">2015 – 2018 E.C.</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCategory("experienced")}
+                      className={`py-3 px-3 rounded-xl text-xs font-semibold border-2 transition-all text-left ${
+                        category === "experienced"
+                          ? "border-purple-500 bg-purple-50 text-purple-700"
+                          : "border-gray-200 bg-white text-gray-600 hover:border-gray-300"
+                      }`}
+                    >
+                      <span className="block font-bold text-sm">💼 Experienced</span>
+                      <span className="block text-[11px] opacity-70 mt-0.5">Employed / Pre-2015</span>
+                    </button>
+                  </div>
                 </div>
 
-                <div className="border border-dashed border-slate-800 rounded-xl p-3 text-center bg-slate-950">
-                  <Upload className="w-5 h-5 text-indigo-400 mx-auto mb-1" />
-                  <span className="text-[11px] font-semibold text-slate-300 block">
-                    Passport Size Photo (ጉርድ ፎቶ)
-                  </span>
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={(e) => e.target.files && setPhotoFile(e.target.files[0])}
-                    className="mt-1.5 text-[10px] text-slate-400 file:mr-2 file:py-1 file:px-2 file:rounded-md file:border-0 file:text-[10px] file:bg-indigo-500/20 file:text-indigo-300 hover:file:bg-indigo-500/30"
-                  />
+                {/* Name & Phone */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1.5">{am ? "ሙሉ ስም" : "Full Name"} *</label>
+                    <input
+                      type="text" required placeholder="Abebe Kebede" value={fullName}
+                      onChange={(e) => setFullName(e.target.value)}
+                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 bg-gray-50 focus:bg-white transition-all"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-xs font-semibold text-gray-600 mb-1.5">{am ? "ስልክ ቁጥር" : "Phone Number"} *</label>
+                    <input
+                      type="tel" required placeholder="0911 22 33 44" value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 placeholder-gray-400 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 bg-gray-50 focus:bg-white transition-all"
+                    />
+                  </div>
                 </div>
-              </div>
 
-              {/* Submit Button */}
-              <button
-                type="submit"
-                disabled={loading}
-                className="w-full py-3.5 px-4 rounded-xl bg-gradient-to-r from-sky-500 via-indigo-600 to-purple-600 text-white font-bold text-sm hover:brightness-110 transition-all shadow-lg shadow-sky-500/25 active:scale-98 disabled:opacity-50 flex items-center justify-center gap-2"
-              >
-                {loading ? (
-                  <span>Uploading to Cloudinary & Registering...</span>
-                ) : (
-                  <>
-                    <UserCheck className="w-4 h-4" />
-                    <span>{lang === "am" ? "ማመልከቻውን ያስገቡ (Submit Application)" : "Submit Application Now"}</span>
-                  </>
+                {/* Target Sector */}
+                <div>
+                  <label className="block text-xs font-semibold text-gray-600 mb-1.5">{am ? "የሚፈልጉት የስራ ዘርፍ" : "Target Job Sector"}</label>
+                  <div className="relative">
+                    <select
+                      value={targetSector}
+                      onChange={(e) => setTargetSector(e.target.value)}
+                      className="w-full px-4 py-2.5 border border-gray-200 rounded-xl text-sm text-gray-900 focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 bg-gray-50 focus:bg-white transition-all appearance-none pr-10"
+                    >
+                      {sectors.map(s => <option key={s.value} value={s.value}>{s.label}</option>)}
+                    </select>
+                    <ChevronDown className="absolute right-3 top-3 w-4 h-4 text-gray-400 pointer-events-none" />
+                  </div>
+                </div>
+
+                {/* Fresh Graduate Extra Fields */}
+                {category === "fresh" && (
+                  <div className="grid grid-cols-2 gap-4 p-4 rounded-xl bg-blue-50 border border-blue-100">
+                    <div>
+                      <label className="block text-[11px] font-semibold text-blue-700 mb-1">{am ? "የተመረቁበት ዓ.ም" : "Graduation Year"}</label>
+                      <select
+                        value={gradYear} onChange={(e) => setGradYear(e.target.value)}
+                        className="w-full px-3 py-2 border border-blue-200 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-500"
+                      >
+                        <option value="2018">2018 ዓ.ም (2025/26)</option>
+                        <option value="2017">2017 ዓ.ም (2024/25)</option>
+                        <option value="2016">2016 ዓ.ም (2023/24)</option>
+                        <option value="2015">2015 ዓ.ም (2022/23)</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-[11px] font-semibold text-blue-700 mb-1">GPA (&gt;= 2.1)</label>
+                      <input
+                        type="number" step="0.01" min="2.1" max="4.0" placeholder="e.g. 3.25"
+                        value={gpa} onChange={(e) => setGpa(e.target.value)}
+                        className="w-full px-3 py-2 border border-blue-200 rounded-lg text-sm bg-white focus:outline-none focus:border-blue-500"
+                      />
+                    </div>
+                  </div>
                 )}
-              </button>
 
-              <div className="text-center text-[11px] text-slate-400 flex items-center justify-center gap-1">
-                <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-                <span>100% Legal & Verified Ethiopian Placement Agency</span>
-              </div>
-            </form>
-          </>
-        )}
+                {/* File Uploads */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                  <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 text-center hover:border-blue-300 hover:bg-blue-50/50 transition-all">
+                    <FileText className="w-6 h-6 text-blue-400 mx-auto mb-1.5" />
+                    <span className="block text-xs font-semibold text-gray-700 mb-1">
+                      {am ? "CV / ማስረጃ (PDF/DOC)" : "Resume / CV (PDF/DOC)"}
+                    </span>
+                    {cvFile
+                      ? <span className="text-[11px] text-green-600 font-medium">✓ {cvFile.name}</span>
+                      : <label className="cursor-pointer text-[11px] text-blue-600 font-semibold hover:underline">
+                          {am ? "ፋይል ይምረጡ" : "Choose File"}
+                          <input type="file" accept=".pdf,.doc,.docx,image/*" onChange={(e) => e.target.files && setCvFile(e.target.files[0])} className="hidden" />
+                        </label>
+                    }
+                  </div>
+
+                  <div className="border-2 border-dashed border-gray-200 rounded-xl p-4 text-center hover:border-purple-300 hover:bg-purple-50/50 transition-all">
+                    <Upload className="w-6 h-6 text-purple-400 mx-auto mb-1.5" />
+                    <span className="block text-xs font-semibold text-gray-700 mb-1">
+                      {am ? "ጉርድ ፎቶ (Passport Photo)" : "Passport Size Photo"}
+                    </span>
+                    {photoFile
+                      ? <span className="text-[11px] text-green-600 font-medium">✓ {photoFile.name}</span>
+                      : <label className="cursor-pointer text-[11px] text-purple-600 font-semibold hover:underline">
+                          {am ? "ፎቶ ይምረጡ" : "Choose Photo"}
+                          <input type="file" accept="image/*" onChange={(e) => e.target.files && setPhotoFile(e.target.files[0])} className="hidden" />
+                        </label>
+                    }
+                  </div>
+                </div>
+
+                {/* Submit */}
+                <button
+                  type="submit"
+                  disabled={loading}
+                  className="w-full py-4 px-6 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm transition-all shadow-lg hover:shadow-xl active:scale-98 disabled:opacity-60 flex items-center justify-center gap-2"
+                >
+                  {loading
+                    ? (am ? "በሂደት ላይ..." : "Uploading & Submitting...")
+                    : <><UserCheck className="w-5 h-5" />{am ? "ማመልከቻ ያስገቡ" : "Submit Application"}</>}
+                </button>
+
+                <p className="text-center text-xs text-gray-400">
+                  🔒 {am ? "መረጃዎ ሙሉ ለሙሉ ሚስጥራዊ ነው" : "Your information is 100% confidential & secure"}
+                </p>
+              </form>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

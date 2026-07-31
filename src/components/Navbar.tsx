@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Language, content } from "@/lib/translations";
 import { useAuth } from "@/context/AuthContext";
 import { AuthModal } from "@/components/AuthModal";
-import { Send, Menu, X, Globe, Sparkles, UserCheck, LogOut, User as UserIcon } from "lucide-react";
+import { Send, Menu, X, Globe, LogOut, User as UserIcon, ChevronDown, Briefcase } from "lucide-react";
 
 interface NavbarProps {
   lang: Language;
@@ -18,205 +18,181 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
   const { user, logout } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
+  const [userMenuOpen, setUserMenuOpen] = useState(false);
 
   return (
     <>
-      <header className="sticky top-0 z-50 w-full bg-slate-950/90 backdrop-blur-xl border-b border-slate-800/80 shadow-2xl">
-        {/* Top Urgency Banner */}
-        <div className="bg-gradient-to-r from-sky-600 via-indigo-600 to-purple-600 text-white text-xs py-2 px-4 text-center font-medium flex items-center justify-center gap-2">
-          <Sparkles className="w-3.5 h-3.5 animate-bounce" />
-          <span>{t.heroBadge}</span>
-          <a
-            href="https://t.me/pathway_agency"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="underline font-bold hover:text-sky-200 ml-1"
-          >
-            @pathway_agency
+      <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-100 shadow-sm">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 h-16 flex items-center justify-between">
+
+          {/* Brand */}
+          <a href="/" className="flex items-center gap-2.5 group">
+            <div className="relative w-10 h-10 rounded-xl overflow-hidden border border-blue-100 bg-white shadow-sm group-hover:shadow-md transition-shadow">
+              <Image src="/logo.png" alt="Pathway Agency" width={40} height={40} className="object-contain p-0.5" priority />
+            </div>
+            <div className="leading-tight">
+              <span className="block text-lg font-800 font-extrabold text-blue-700 tracking-tight">Pathway</span>
+              <span className="block text-[10px] font-semibold text-gray-400 uppercase tracking-widest -mt-0.5">Agency Ethiopia</span>
+            </div>
           </a>
-        </div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
-          {/* Brand Logo */}
-          <div className="flex items-center gap-3">
-            <div className="relative w-12 h-12 rounded-xl bg-white p-1 shadow-lg shadow-sky-500/20 flex items-center justify-center overflow-hidden border border-sky-400/40">
-              <Image src="/logo.png" alt="Pathway Agency Logo" width={48} height={48} className="object-contain" priority />
-            </div>
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-xl sm:text-2xl font-black bg-gradient-to-r from-white via-slate-100 to-sky-300 bg-clip-text text-transparent tracking-tight">
-                  Pathway
-                </span>
-                <span className="text-[10px] uppercase font-bold tracking-widest px-2 py-0.5 rounded-full bg-sky-500/10 text-sky-400 border border-sky-500/30">
-                  Agency
-                </span>
-              </div>
-              <p className="text-[11px] text-slate-400 font-semibold tracking-wider uppercase">
-                Ethiopia • Graduate Careers
-              </p>
-            </div>
-          </div>
+          {/* Desktop Nav Links */}
+          <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
+            <a href="#sectors" className="hover:text-blue-600 transition-colors">Job Categories</a>
+            <a href="#requirements" className="hover:text-blue-600 transition-colors">Requirements</a>
+            <a href="https://t.me/pathway_agency" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors flex items-center gap-1">
+              <Send className="w-3.5 h-3.5" />
+              Telegram
+            </a>
+          </nav>
 
-          {/* Desktop Controls */}
+          {/* Desktop Right Actions */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Language Switcher */}
-            <div className="flex items-center gap-1 bg-slate-900 border border-slate-800 p-1 rounded-xl">
+            {/* Language Toggle */}
+            <div className="flex items-center bg-gray-100 rounded-lg p-0.5">
               <button
                 onClick={() => setLang("am")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  lang === "am" ? "bg-sky-600 text-white shadow-md" : "text-slate-400 hover:text-slate-200"
-                }`}
+                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${lang === "am" ? "bg-white text-blue-700 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
               >
                 አማርኛ
               </button>
               <button
                 onClick={() => setLang("en")}
-                className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
-                  lang === "en" ? "bg-sky-600 text-white shadow-md" : "text-slate-400 hover:text-slate-200"
-                }`}
+                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${lang === "en" ? "bg-white text-blue-700 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
               >
-                English
+                EN
               </button>
             </div>
 
-            {/* Telegram link */}
-            <a
-              href="https://t.me/pathway_agency"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-sky-500/10 hover:bg-sky-500/20 text-sky-400 font-bold text-xs border border-sky-500/30 transition-all"
-            >
-              <Send className="w-4 h-4" />
-              <span>@pathway_agency</span>
-            </a>
-
-            {/* Auth-aware CTA */}
             {user ? (
-              <div className="flex items-center gap-2 pl-2 border-l border-slate-800">
-                {/* Apply button */}
+              <div className="relative">
                 <button
-                  onClick={onApplyClick}
-                  className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 via-indigo-600 to-purple-600 text-white font-bold text-xs shadow-lg shadow-sky-500/25 hover:brightness-110 active:scale-95 transition-all"
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-xl border border-gray-200 hover:border-blue-300 bg-white hover:bg-blue-50 transition-all"
                 >
-                  <UserCheck className="w-4 h-4" />
-                  <span>{t.applyOnlineBtn}</span>
-                </button>
-
-                {/* User avatar + logout */}
-                <div className="flex items-center gap-2">
-                  <div className="w-9 h-9 rounded-full bg-indigo-900/60 border border-indigo-500/40 flex items-center justify-center text-indigo-300 font-bold text-sm overflow-hidden">
-                    {user.photoURL ? (
-                      <img src={user.photoURL} alt="avatar" className="w-full h-full object-cover" />
-                    ) : (
-                      <UserIcon className="w-4 h-4" />
-                    )}
+                  <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden">
+                    {user.photoURL
+                      ? <img src={user.photoURL} alt="avatar" className="w-full h-full object-cover" />
+                      : <UserIcon className="w-4 h-4 text-blue-600" />}
                   </div>
-                  <span className="text-xs text-slate-300 font-medium max-w-[100px] truncate">
+                  <span className="text-sm font-semibold text-gray-700 max-w-[100px] truncate">
                     {user.displayName || user.email?.split("@")[0]}
                   </span>
-                  <button
-                    onClick={() => logout()}
-                    title="Sign Out"
-                    className="p-2 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-rose-500/10 transition-colors"
-                  >
-                    <LogOut className="w-4 h-4" />
-                  </button>
-                </div>
+                  <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
+                </button>
+
+                {userMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-48 bg-white border border-gray-100 rounded-2xl shadow-xl py-2 animate-fadeIn">
+                    <div className="px-4 py-2 border-b border-gray-50">
+                      <p className="text-xs text-gray-500">Signed in as</p>
+                      <p className="text-sm font-semibold text-gray-800 truncate">{user.email}</p>
+                    </div>
+                    <button
+                      onClick={() => { setUserMenuOpen(false); onApplyClick(); }}
+                      className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-2 transition-colors"
+                    >
+                      <Briefcase className="w-4 h-4" />
+                      Apply for Job
+                    </button>
+                    <button
+                      onClick={() => { setUserMenuOpen(false); logout(); }}
+                      className="w-full text-left px-4 py-2.5 text-sm text-red-500 hover:bg-red-50 flex items-center gap-2 transition-colors"
+                    >
+                      <LogOut className="w-4 h-4" />
+                      Sign Out
+                    </button>
+                  </div>
+                )}
               </div>
             ) : (
-              <button
-                onClick={() => setIsAuthOpen(true)}
-                className="flex items-center gap-2 px-5 py-2.5 rounded-xl bg-gradient-to-r from-sky-500 via-indigo-600 to-purple-600 text-white font-bold text-xs shadow-lg shadow-sky-500/25 hover:brightness-110 active:scale-95 transition-all"
-              >
-                <UserCheck className="w-4 h-4" />
-                <span>{lang === "am" ? "ይግቡ / ይመዝገቡ" : "Sign In / Register"}</span>
-              </button>
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={() => setIsAuthOpen(true)}
+                  className="px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50 rounded-xl transition-colors border border-transparent hover:border-blue-200"
+                >
+                  Sign In
+                </button>
+                <button
+                  onClick={() => setIsAuthOpen(true)}
+                  className="px-4 py-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-700 rounded-xl transition-all shadow-sm hover:shadow-md active:scale-95"
+                >
+                  Register Free
+                </button>
+              </div>
             )}
           </div>
 
           {/* Mobile Controls */}
-          <div className="flex items-center gap-2 md:hidden">
+          <div className="flex md:hidden items-center gap-2">
             <button
               onClick={() => setLang(lang === "am" ? "en" : "am")}
-              className="p-2 rounded-xl bg-slate-900 border border-slate-800 text-sky-400 text-xs font-bold flex items-center gap-1"
+              className="p-2 rounded-lg bg-gray-100 text-gray-600 text-xs font-bold flex items-center gap-1"
             >
-              <Globe className="w-4 h-4" />
-              <span>{lang === "am" ? "EN" : "አማ"}</span>
+              <Globe className="w-3.5 h-3.5" />
+              {lang === "am" ? "EN" : "አማ"}
             </button>
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2.5 rounded-xl bg-slate-900 border border-slate-800 text-slate-300 hover:text-white"
+              className="p-2.5 rounded-xl border border-gray-200 text-gray-600"
             >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
             </button>
           </div>
         </div>
 
         {/* Mobile Drawer */}
         {mobileMenuOpen && (
-          <div className="md:hidden bg-slate-900/95 border-b border-slate-800 p-4 space-y-3 animate-fadeIn">
+          <div className="md:hidden bg-white border-t border-gray-100 p-4 space-y-3 animate-fadeIn shadow-lg">
             {user ? (
               <>
-                {/* Signed-in state */}
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-slate-950 border border-slate-800">
-                  <div className="w-9 h-9 rounded-full bg-indigo-900/60 border border-indigo-500/40 flex items-center justify-center overflow-hidden">
-                    {user.photoURL ? (
-                      <img src={user.photoURL} alt="avatar" className="w-full h-full object-cover" />
-                    ) : (
-                      <UserIcon className="w-4 h-4 text-indigo-300" />
-                    )}
+                <div className="flex items-center gap-3 p-3 rounded-xl bg-blue-50 border border-blue-100">
+                  <div className="w-9 h-9 rounded-full bg-blue-200 flex items-center justify-center overflow-hidden">
+                    {user.photoURL ? <img src={user.photoURL} alt="avatar" className="w-full h-full object-cover" /> : <UserIcon className="w-5 h-5 text-blue-600" />}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="text-xs font-bold text-slate-200 truncate">
-                      {user.displayName || user.email?.split("@")[0]}
-                    </p>
-                    <p className="text-[10px] text-slate-500 truncate">{user.email}</p>
+                    <p className="text-sm font-bold text-gray-800 truncate">{user.displayName || user.email?.split("@")[0]}</p>
+                    <p className="text-xs text-gray-500 truncate">{user.email}</p>
                   </div>
-                  <button onClick={() => logout()} className="p-2 rounded-lg text-rose-400 hover:bg-rose-500/10 transition-colors">
+                  <button onClick={() => { setMobileMenuOpen(false); logout(); }} className="p-1.5 rounded-lg text-red-400 hover:bg-red-50">
                     <LogOut className="w-4 h-4" />
                   </button>
                 </div>
-
                 <button
                   onClick={() => { setMobileMenuOpen(false); onApplyClick(); }}
-                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-bold text-sm shadow-lg shadow-sky-500/20"
+                  className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md"
                 >
-                  <UserCheck className="w-4 h-4" />
-                  <span>{t.applyOnlineBtn}</span>
+                  <Briefcase className="w-4 h-4" />
+                  Apply for Job
                 </button>
               </>
             ) : (
-              <>
+              <div className="grid grid-cols-2 gap-2">
                 <button
                   onClick={() => { setMobileMenuOpen(false); setIsAuthOpen(true); }}
-                  className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-sky-500 to-indigo-600 text-white font-bold text-sm shadow-lg shadow-sky-500/20"
+                  className="py-3 rounded-xl border border-blue-200 text-blue-700 font-bold text-sm"
                 >
-                  <UserCheck className="w-4 h-4" />
-                  <span>{lang === "am" ? "ይግቡ / አካውንት ይፍጠሩ" : "Sign In / Create Account"}</span>
+                  Sign In
                 </button>
-              </>
+                <button
+                  onClick={() => { setMobileMenuOpen(false); setIsAuthOpen(true); }}
+                  className="py-3 rounded-xl bg-blue-600 text-white font-bold text-sm shadow-md"
+                >
+                  Register Free
+                </button>
+              </div>
             )}
-
-            <a
-              href="https://t.me/pathway_agency"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-slate-950 text-sky-400 font-bold text-sm border border-sky-500/30"
-            >
-              <Send className="w-4 h-4" />
-              <span>{t.applyTelegramBtn}</span>
-            </a>
+            <div className="flex flex-col gap-1 pt-2 border-t border-gray-100">
+              <a href="#sectors" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-2 text-sm text-gray-600 font-medium">Job Categories</a>
+              <a href="#requirements" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-2 text-sm text-gray-600 font-medium">Requirements</a>
+              <a href="https://t.me/pathway_agency" target="_blank" rel="noopener noreferrer" className="py-2.5 px-2 text-sm text-blue-600 font-medium flex items-center gap-1.5">
+                <Send className="w-3.5 h-3.5" /> @pathway_agency
+              </a>
+            </div>
           </div>
         )}
       </header>
 
-      {/* Standalone Auth Modal */}
-      <AuthModal
-        isOpen={isAuthOpen}
-        onClose={() => setIsAuthOpen(false)}
-        lang={lang}
-        defaultMode="signup"
-      />
+      <AuthModal isOpen={isAuthOpen} onClose={() => setIsAuthOpen(false)} lang={lang} defaultMode="signup" />
     </>
   );
 };
