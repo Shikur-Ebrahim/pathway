@@ -24,8 +24,8 @@ export default function CategoryPage() {
           alt={cat.title}
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className={`absolute inset-0 bg-gradient-to-b ${cat.gradient} opacity-70`} />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent" />
+        <div className={`absolute inset-0 bg-gradient-to-b ${cat.gradient} opacity-25`} />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/65 via-black/10 to-transparent" />
 
         {/* Back Button */}
         <Link 
