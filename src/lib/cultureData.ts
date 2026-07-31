@@ -18,7 +18,7 @@ export const CULTURE_DATA: Record<string, {
     icon: "🏢",
     heroImage: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=800&q=80",
     gradient: "from-blue-600 to-indigo-800",
-    description: "The companies we partner with offer some of the most modern and comfortable working environments in Ethiopia. Located in prime areas of Addis Ababa, these offices are designed to boost productivity, creativity, and employee well-being.",
+    description: "The companies we partner with offer some of the most modern and comfortable working environments in Ethiopia. Located in prime areas of Addis Ababa, these offices are designed to boost productivity, creativity, and employee well-being. We believe that where you work fundamentally shapes how you work. That's why we meticulously verify that our partner organizations maintain premium facilities that meet international standards.\n\nFrom ergonomic workstations designed to support your physical health during long hours, to collaborative breakout zones that spark spontaneous innovation, every square foot is optimized for professional success. Many of our partner offices feature breathtaking views of the city skyline, state-of-the-art climate control systems, and biophilic design elements that bring nature indoors to reduce stress and improve cognitive function.\n\nFurthermore, these environments go beyond just desks and chairs. You'll find fully stocked premium cafeterias offering healthy meals and artisanal coffee, wellness rooms for mental recharge, and dedicated fitness centers in some of the larger corporate headquarters. When you secure a role through Pathway, you aren't just getting a job—you're getting a second home that empowers you to thrive.",
     highlights: [
       { title: "Ergonomic Workspaces", desc: "Standing desks, comfortable chairs, and well-lit spaces." },
       { title: "High-Speed Connectivity", desc: "Reliable, high-speed fiber internet for uninterrupted work." },
@@ -29,7 +29,15 @@ export const CULTURE_DATA: Record<string, {
     author: "Pathway Facilities Team",
     images: [
       "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=600&q=80"
+      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1556761175-4b46a572b786?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1542744094-24638ea0b3b5?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80"
     ]
   },
   "teamwork": {
@@ -39,7 +47,7 @@ export const CULTURE_DATA: Record<string, {
     icon: "🤝",
     heroImage: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80",
     gradient: "from-emerald-600 to-teal-800",
-    description: "Success in the modern workplace is driven by collaboration. When you secure a job through Pathway, you'll be joining diverse, inclusive, and highly professional teams where your ideas are valued and your contributions matter.",
+    description: "Success in the modern workplace is heavily driven by collaboration. When you secure a job through Pathway, you'll be joining diverse, inclusive, and highly professional teams where your ideas are valued and your contributions truly matter. The organizations in our network actively cultivate environments of psychological safety, ensuring that every team member feels confident sharing innovative ideas without fear of judgment.\n\nYou will have the unparalleled opportunity to work alongside some of the brightest minds in your respective industry. Our partner companies employ rigorous hiring standards, meaning your colleagues will be driven, intelligent, and deeply committed to collective excellence. This creates a natural mentorship ecosystem where knowledge transfer happens daily, allowing you to learn new skills organically just by being part of the team.\n\nCross-functional collaboration is also a cornerstone of these corporate cultures. You won't be siloed in a single department; instead, you'll frequently partner with experts from engineering, marketing, finance, and operations to tackle complex, high-impact projects. This exposure not only broadens your professional perspective but rapidly accelerates your leadership capabilities.",
     highlights: [
       { title: "Diverse Teams", desc: "Work with professionals from various backgrounds and cultures." },
       { title: "Mentorship", desc: "Learn directly from experienced senior leaders in your field." },
@@ -50,7 +58,15 @@ export const CULTURE_DATA: Record<string, {
     author: "Pathway HR Network",
     images: [
       "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=600&q=80"
+      "https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1531496730074-83b638c0a7ac?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1556761175-5973dc0f32b7?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1507537297725-24a1c029d3ca?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1606857521015-7f9fcf423740?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80"
     ]
   },
   "career-growth": {
@@ -60,7 +76,7 @@ export const CULTURE_DATA: Record<string, {
     icon: "📈",
     heroImage: "https://images.unsplash.com/photo-1573164574572-cb89e39749b4?auto=format&fit=crop&w=800&q=80",
     gradient: "from-purple-600 to-violet-800",
-    description: "A job is just the beginning. The organizations we feature are committed to employee development, offering clear pathways for promotion, continuous learning opportunities, and the chance to take on leadership roles.",
+    description: "A job is just the beginning. The organizations we feature are deeply committed to employee development, offering clear, structured pathways for promotion and continuous learning opportunities. They understand that their most valuable asset is their human capital, which is why they invest heavily in making sure you are constantly evolving and reaching your maximum potential.\n\nWhen you join these top-tier organizations, you gain access to world-class learning and development programs. This includes comprehensive onboarding, ongoing technical skills workshops, leadership academies, and in many cases, full tuition reimbursement for advanced degrees and specialized certifications. You will never feel stagnant; there is always a new challenge to conquer and a new skill to master.\n\nFurthermore, career progression is transparent and merit-based. You will have regular performance reviews with actionable feedback, helping you map out exactly what you need to achieve to reach the next level. Many of our candidates find themselves promoted to managerial or specialized leadership roles within their first two years, setting them on a trajectory for long-term executive success.",
     highlights: [
       { title: "Training Programs", desc: "Access to internal and external workshops and certifications." },
       { title: "Clear Promotions", desc: "Transparent criteria for moving up the corporate ladder." },
@@ -71,7 +87,15 @@ export const CULTURE_DATA: Record<string, {
     author: "Pathway Career Coaches",
     images: [
       "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80"
+      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1497215728101-856f4ea42174?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80"
     ]
   },
   "interviews": {
@@ -81,7 +105,7 @@ export const CULTURE_DATA: Record<string, {
     icon: "🎯",
     heroImage: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80",
     gradient: "from-orange-500 to-red-700",
-    description: "Nailing the interview is the most critical step in securing your dream job. Pathway not only connects you with top employers but also provides the resources and support you need to present your best self during interviews.",
+    description: "Nailing the interview is the most critical step in securing your dream job. Pathway not only connects you with top employers but also provides the comprehensive resources and hands-on support you need to present your absolute best self during these high-stakes conversations. We understand that interviewing is a skill, and like any skill, it can be mastered with the right guidance.\n\nOur dedicated recruitment specialists work with you one-on-one before your big day. We conduct rigorous mock interviews tailored specifically to the company and role you are applying for. By simulating the pressure of the real environment, we help you refine your answers, perfect your body language, and learn how to eloquently articulate your past achievements using proven frameworks like the STAR method.\n\nBeyond just answering questions, we teach you how to ask the right ones. An interview is a two-way street, and demonstrating deep curiosity about the company's strategic goals sets you apart from the competition. We also provide exclusive employer insights—revealing exactly what the hiring managers are looking for, their corporate culture, and the soft skills they value most highly. With Pathway, you never walk into an interview blind.",
     highlights: [
       { title: "Mock Interviews", desc: "Practice with experts before the real day." },
       { title: "CV Optimization", desc: "Ensure your resume stands out to recruiters." },
@@ -92,7 +116,15 @@ export const CULTURE_DATA: Record<string, {
     author: "Pathway Recruitment Team",
     images: [
       "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80"
+      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1504384308090-c894fdcc538d?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1531496730074-83b638c0a7ac?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1556761175-5973dc0f32b7?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80"
     ]
   }
 };

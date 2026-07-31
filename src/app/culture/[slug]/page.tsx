@@ -47,9 +47,13 @@ export default function CulturePage() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="px-5 py-8 border-b border-gray-100"
+        className="px-5 py-8 border-b border-gray-100 flex flex-col gap-4"
       >
-        <p className="text-[16px] text-gray-700 leading-relaxed font-medium">{data.description}</p>
+        {data.description.split('\n\n').map((paragraph, i) => (
+          <p key={i} className="text-[16px] text-gray-700 leading-relaxed font-medium">
+            {paragraph}
+          </p>
+        ))}
       </motion.div>
 
       {/* Highlights */}
