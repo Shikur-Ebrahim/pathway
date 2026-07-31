@@ -10,27 +10,27 @@ const generateJobs = () => {
   const categories = [
     {
       type: "NGO", logo: "🌍", bg: "bg-emerald-50", color: "text-emerald-600",
-      titles: ["Project Officer", "M&E Specialist", "Field Coordinator", "Grant Manager", "Social Worker", "Health Officer", "Logistics Assistant", "WASH Expert", "Child Protection Officer", "Nutritionist"],
-      companies: ["UNICEF Ethiopia", "World Vision", "Save the Children", "USAID", "WHO Ethiopia", "Red Cross", "Oxfam", "Care International", "Mercy Corps", "Plan International"],
-      locations: ["Addis Ababa, Ethiopia", "Hawassa, Ethiopia", "Mekelle, Ethiopia", "Dire Dawa, Ethiopia", "Jijiga, Ethiopia", "Gambella, Ethiopia", "Assosa, Ethiopia"]
+      titles: ["Project Officer", "M&E Specialist", "Field Coordinator", "Grant Manager", "Social Worker", "Health Officer", "Logistics Assistant", "WASH Specialist", "Child Protection Officer", "Nutrition Officer", "Program Manager", "Finance Officer", "HR Specialist", "Communications Officer", "Driver"],
+      companies: ["UNICEF Ethiopia", "UNDP Ethiopia", "WHO Ethiopia", "WFP Ethiopia", "UNHCR Ethiopia", "ILO Ethiopia", "UNESCO Ethiopia", "FAO Ethiopia", "UNECA", "Save the Children Ethiopia", "World Vision Ethiopia", "CARE Ethiopia", "Oxfam Ethiopia", "ICRC Red Cross", "Mercy Corps Ethiopia", "Plan International Ethiopia", "Action Against Hunger", "IRC Ethiopia", "MSF Doctors Without Borders", "Catholic Relief Services"],
+      locations: ["Addis Ababa, Ethiopia"]
     },
     {
       type: "Embassy", logo: "🏛️", bg: "bg-blue-50", color: "text-blue-600",
-      titles: ["Visa Processing Clerk", "Consular Assistant", "Translator", "Administrative Assistant", "Protocol Officer", "Security Supervisor", "Cultural Attaché Assistant", "Public Affairs Officer", "Political Analyst", "Driver"],
-      companies: ["Canadian Embassy", "US Embassy", "British Embassy", "German Embassy", "Swedish Embassy", "French Embassy", "Australian Embassy", "Japanese Embassy", "Italian Embassy", "Norwegian Embassy"],
+      titles: ["Visa Processing Clerk", "Consular Assistant", "Interpreter", "Administrative Assistant", "Protocol Officer", "Security Supervisor", "Cultural Affairs Assistant", "Public Affairs Officer", "Political Analyst", "Procurement Officer", "IT Officer", "Driver", "Receptionist", "Facility Manager", "Finance Assistant"],
+      companies: ["US Embassy Addis Ababa", "British Embassy Addis Ababa", "Canadian Embassy Addis Ababa", "German Embassy Addis Ababa", "French Embassy Addis Ababa", "Italian Embassy Addis Ababa", "Norwegian Embassy Addis Ababa", "Swedish Embassy Addis Ababa", "Danish Embassy Addis Ababa", "Dutch Embassy Addis Ababa", "Swiss Embassy Addis Ababa", "Japanese Embassy Addis Ababa", "Chinese Embassy Addis Ababa", "South Korean Embassy Addis Ababa", "Turkish Embassy Addis Ababa", "Indian Embassy Addis Ababa", "Australian Embassy Addis Ababa", "EU Delegation Ethiopia", "Belgian Embassy Addis Ababa", "Finnish Embassy Addis Ababa"],
       locations: ["Addis Ababa, Ethiopia"]
     },
     {
       type: "Aviation", logo: "✈️", bg: "bg-sky-50", color: "text-sky-600",
-      titles: ["Customer Service Agent", "Ground Handling", "Flight Attendant", "Cargo Specialist", "Ticketing Agent", "Aviation Mechanic", "Aircraft Dispatcher", "Ramp Agent", "Lounge Host", "Security Agent"],
-      companies: ["Ethiopian Airlines", "Bole Airport Enterprise", "Emirates", "Qatar Airways", "DHL Aviation", "Turkish Airlines", "Kenya Airways", "Lufthansa", "FlyDubai", "RwandAir"],
-      locations: ["Bole Airport, Ethiopia", "Dubai, UAE", "Doha, Qatar", "Frankfurt, Germany", "Istanbul, Turkey"]
+      titles: ["Customer Service Agent", "Ground Handling Agent", "Flight Attendant", "Cargo Specialist", "Ticketing Agent", "Aviation Mechanic", "Aircraft Dispatcher", "Ramp Agent", "Lounge Host", "Security Agent", "Cabin Crew", "Reservations Agent", "Baggage Handler", "Airport Operations Staff", "Check-in Agent"],
+      companies: ["Ethiopian Airlines", "Ethiopian Airports Enterprise", "Bole International Airport", "DHL Aviation Ethiopia", "FedEx Ethiopia", "Turkish Airlines Addis Office", "Emirates Addis Office", "Qatar Airways Addis Office", "Kenya Airways Addis Office", "RwandAir Addis Office", "Flydubai Addis Office", "Lufthansa Addis Office", "KLM Addis Office", "Air France Addis Office", "Egyptair Addis Office"],
+      locations: ["Bole International Airport, Addis Ababa"]
     },
     {
       type: "International", logo: "🌐", bg: "bg-purple-50", color: "text-purple-600",
-      titles: ["Operations Manager", "Expat Coordinator", "Regional Director", "International Sales", "Business Developer", "Foreign Liaison", "Country Director", "Trade Consultant", "Supply Chain Mgr", "Overseas Representative"],
-      companies: ["Safaricom Ethiopia", "Coca-Cola Beverages", "Heineken", "Unilever", "Hilton Addis", "Sheraton Addis", "BGI Ethiopia", "Dangote Cement", "Midroc Ethiopia", "Marriott International"],
-      locations: ["Addis Ababa, Ethiopia", "Nairobi, Kenya", "Dubai, UAE", "London, UK"]
+      titles: ["Operations Manager", "Country Representative", "Regional Sales Manager", "Business Development Officer", "Finance Manager", "HR Manager", "Procurement Manager", "Supply Chain Officer", "Marketing Manager", "IT Manager", "Customer Relations Officer", "General Manager", "Branch Manager", "Administrative Manager", "Communications Manager"],
+      companies: ["Safaricom Ethiopia", "Heineken Meta Brewery Ethiopia", "Coca-Cola Beverages Ethiopia", "BGI Ethiopia St. George", "Diageo Meta Abo Brewery", "Hilton Addis Ababa", "Sheraton Addis Ababa", "Radisson Blu Addis Ababa", "Hyatt Regency Addis Ababa", "Marriott Executive Apartments Addis", "DHL Express Ethiopia", "Toyota Ethiopia", "TotalEnergies Ethiopia", "Unilever Ethiopia", "PwC Ethiopia"],
+      locations: ["Addis Ababa, Ethiopia"]
     }
   ];
 
