@@ -5,7 +5,7 @@ import { useAuth } from "@/context/AuthContext";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 import { addPathwayPost } from "@/lib/db";
 import {
-  X, CheckCircle2, ChevronLeft, Building2, Globe2, Plane, AlertCircle, FileText, Upload, Trash2
+  X, CheckCircle2, ChevronLeft, ChevronDown, Building2, Globe2, Plane, AlertCircle, FileText, Upload, Trash2
 } from "lucide-react";
 import { Language } from "@/lib/translations";
 
@@ -40,21 +40,52 @@ const SECTORS = [
 
 const InputField = ({ label, section, field, type = "text", required = false, options = [], formData, updateForm }: any) => {
   const val = formData[section][field];
+  const [isOpen, setIsOpen] = useState(false);
+  
   return (
     <div className="mb-4">
       <label className="block text-[13px] font-bold text-gray-700 mb-1.5 ml-1">
         {label} {required && <span className="text-red-500">*</span>}
       </label>
       {options.length > 0 ? (
-        <select
-          required={required}
-          value={val}
-          onChange={(e) => updateForm(section, field, e.target.value)}
-          className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all appearance-none"
-        >
-          <option value="">Select an option</option>
-          {options.map((opt: string) => <option key={opt} value={opt}>{opt}</option>)}
-        </select>
+        <div className="relative">
+          <button
+            type="button"
+            onClick={() => setIsOpen(!isOpen)}
+            className="w-full flex items-center justify-between px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all text-left"
+          >
+            <span className={val ? "text-gray-900 font-medium" : "text-gray-400"}>{val || "Select an option"}</span>
+            <ChevronDown className={`w-5 h-5 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+          </button>
+          
+          {isOpen && (
+            <>
+              {/* Invisible backdrop for mobile to dismiss */}
+              <div 
+                className="fixed inset-0 z-40 bg-transparent" 
+                onClick={() => setIsOpen(false)} 
+              />
+              <div className="absolute z-50 left-0 right-0 mt-2 bg-white border border-gray-100 rounded-2xl shadow-[0_10px_40px_-10px_rgba(0,0,0,0.1)] overflow-hidden animate-fadeIn max-h-[250px] overflow-y-auto">
+                {options.map((opt: string) => (
+                  <button
+                    key={opt}
+                    type="button"
+                    onClick={() => {
+                      updateForm(section, field, opt);
+                      setIsOpen(false);
+                    }}
+                    className={`w-full text-left px-5 py-3.5 text-[15px] transition-colors border-b border-gray-50 last:border-0 flex items-center justify-between ${
+                      val === opt ? 'bg-blue-50 text-blue-700 font-bold' : 'text-gray-700 hover:bg-gray-50 font-medium'
+                    }`}
+                  >
+                    {opt}
+                    {val === opt && <CheckCircle2 className="w-5 h-5 text-blue-500" />}
+                  </button>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
       ) : type === "textarea" ? (
          <textarea
           required={required}
@@ -572,20 +603,30 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
         {/* Sticky Bottom Actions */}
         {!submitted && (
           <div className="shrink-0 bg-white border-t border-gray-100 p-4 sm:p-5 z-10 sticky bottom-0">
-             <button
-                onClick={step === 7 ? handleSubmit : handleNext}
-                disabled={!canProceed || loading}
-                className="w-full py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-[0.98] text-white font-bold text-[16px] transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-2"
-              >
-                {loading ? (
-                  <span className="flex items-center gap-2">
-                    <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Processing...
-                  </span>
-                ) : (
-                  step === 7 ? "Submit Application" : "Continue"
-                )}
-              </button>
+             <div className="flex items-center gap-3">
+               {step > 1 && (
+                 <button
+                   onClick={handleBack}
+                   className="py-4 px-6 rounded-2xl bg-gray-100 hover:bg-gray-200 active:scale-[0.98] text-gray-700 font-bold text-[16px] transition-all flex items-center justify-center"
+                 >
+                   Back
+                 </button>
+               )}
+               <button
+                  onClick={step === 7 ? handleSubmit : handleNext}
+                  disabled={!canProceed || loading}
+                  className="flex-1 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 active:scale-[0.98] text-white font-bold text-[16px] transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50 disabled:active:scale-100 flex items-center justify-center gap-2"
+                >
+                  {loading ? (
+                    <span className="flex items-center gap-2">
+                      <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      Processing...
+                    </span>
+                  ) : (
+                    step === 7 ? "Submit Application" : "Continue"
+                  )}
+                </button>
+             </div>
           </div>
         )}
       </div>
