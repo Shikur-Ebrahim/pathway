@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
@@ -37,6 +37,8 @@ const GALLERY_CARDS = [
 ];
 
 export const GallerySection = () => {
+  const router = useRouter();
+
   return (
     <section className="w-full max-w-[430px] mx-auto py-16 bg-white overflow-hidden">
       <div className="px-5 mb-8">
@@ -54,8 +56,9 @@ export const GallerySection = () => {
               viewport={{ once: true }}
               transition={{ delay: idx * 0.08 }}
               className={`${card.span} ${card.height} rounded-[24px] overflow-hidden relative group cursor-pointer`}
+              onClick={() => router.push(`/category/${card.slug}`)}
             >
-              <Link href={`/category/${card.slug}`} className="block w-full h-full">
+              <div className="block w-full h-full">
                 <img
                   src={card.image}
                   alt={card.label}
@@ -71,7 +74,7 @@ export const GallerySection = () => {
                     <ArrowRight className="w-4 h-4 text-white" />
                   </div>
                 </div>
-              </Link>
+              </div>
             </motion.div>
           ))}
         </div>
