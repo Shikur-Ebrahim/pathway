@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 import { UserPlus, FileEdit, UploadCloud, Send, Users, Award } from "lucide-react";
 
 const STEPS = [
-  { icon: UserPlus, title: "Register Account", desc: "Pay a small one-time registration fee to access 10,000 verified jobs." },
+  { icon: UserPlus, title: "Register Account", desc: "Pay a small one-time registration fee to access 250 verified jobs." },
   { icon: FileEdit, title: "Complete Profile", desc: "Add your education and experience." },
   { icon: UploadCloud, title: "Upload Documents", desc: "Securely upload your CV and ID." },
   { icon: Send, title: "Apply to Jobs", desc: "One-click apply to verified jobs." },

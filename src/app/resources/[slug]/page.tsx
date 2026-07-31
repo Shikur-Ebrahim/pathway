@@ -51,15 +51,6 @@ export default function ResourceArticlePage() {
         </div>
       </div>
 
-      {/* Author Info */}
-      <div className="px-5 py-6 border-b border-gray-100 flex items-center gap-4">
-        <img src={article.author.avatar} alt={article.author.name} className="w-12 h-12 rounded-full object-cover border-2 border-gray-100 shadow-sm" />
-        <div>
-          <p className="text-[15px] font-bold text-gray-900">{article.author.name}</p>
-          <p className="text-[13px] text-gray-500">{article.author.role}</p>
-        </div>
-      </div>
-
       {/* Article Body */}
       <div className="px-5 py-8 space-y-8">
         <p className="text-[16px] text-gray-700 leading-relaxed font-medium">
