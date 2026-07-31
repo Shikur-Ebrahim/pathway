@@ -18,7 +18,6 @@ import { ResourcesSection } from "@/components/landing/ResourcesSection";
 import { ProcessTimelineSection } from "@/components/landing/ProcessTimelineSection";
 import { GallerySection } from "@/components/landing/GallerySection";
 import { TrustedCompaniesSection } from "@/components/landing/TrustedCompaniesSection";
-import { TestimonialsSection } from "@/components/landing/TestimonialsSection";
 import { FAQSection } from "@/components/landing/FAQSection";
 import { NewsletterSection } from "@/components/landing/NewsletterSection";
 import { Footer } from "@/components/landing/Footer";
@@ -52,7 +51,6 @@ export default function Home() {
         <ProcessTimelineSection />
         <GallerySection />
         <TrustedCompaniesSection />
-        <TestimonialsSection />
         <FAQSection />
         <NewsletterSection />
       </main>
