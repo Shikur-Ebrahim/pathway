@@ -8,7 +8,7 @@ const FEATURES = [
   { icon: ShieldCheck, title: "Verified Employers", color: "text-blue-500", bg: "bg-blue-50" },
   { icon: Zap, title: "Fast Applications", color: "text-purple-500", bg: "bg-purple-50" },
   { icon: HeartHandshake, title: "Career Support", color: "text-rose-500", bg: "bg-rose-50" },
-  { icon: Gift, title: "Free Registration", color: "text-emerald-500", bg: "bg-emerald-50" },
+  { icon: Gift, title: "100% Guaranteed", color: "text-emerald-500", bg: "bg-emerald-50" },
   { icon: Lock, title: "Secure Documents", color: "text-indigo-500", bg: "bg-indigo-50" },
   { icon: Smartphone, title: "Mobile Friendly", color: "text-orange-500", bg: "bg-orange-50" },
 ];

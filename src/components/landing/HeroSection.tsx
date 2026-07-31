@@ -28,23 +28,16 @@ export const HeroSection = ({ onApplyClick }: { onApplyClick: () => void }) => {
           transition={{ delay: 0.1 }}
           className="mb-5"
         >
-          <h1 className="text-[48px] font-black text-gray-900 leading-[1.05] tracking-tight">
-            Find Your <br />
+          <h1 className="text-[44px] font-black text-gray-900 tracking-tighter leading-[1.05]">
+            Secure Your <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-              Dream Career.
+              Dream Job
             </span>
           </h1>
+          <p className="mt-4 text-[15px] text-gray-600 leading-relaxed max-w-[300px]">
+            2019 Ethiopian New Year Special. Register today to claim one of the exclusive 10,000 guaranteed job slots!
+          </p>
         </motion.div>
-
-        {/* Subtitle */}
-        <motion.p 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
-          className="text-[16px] text-gray-600 leading-relaxed mb-8 max-w-[320px]"
-        >
-          Apply to verified opportunities from Embassies, NGOs, Airports and International Employers.
-        </motion.p>
 
         {/* CTA Buttons */}
         <motion.div 
@@ -74,7 +67,7 @@ export const HeroSection = ({ onApplyClick }: { onApplyClick: () => void }) => {
           className="grid grid-cols-2 gap-4"
         >
           {[
-            { num: 50000, suffix: "+", label: "Job Seekers" },
+            { num: 10000, suffix: "+", label: "2019 Job Slots" },
             { num: 5000, suffix: "+", label: "Active Jobs" },
             { num: 300, suffix: "+", label: "Organizations" },
             { num: 98, suffix: "%", label: "Success Rate" }

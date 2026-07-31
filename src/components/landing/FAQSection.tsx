@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Plus, Minus } from "lucide-react";
 
 const FAQS = [
-  { q: "Is registration really free?", a: "Yes! Registration and creating a profile on Pathway is 100% free for all job seekers." },
+  { q: "Is registration free?", a: "There is a small, one-time registration fee. However, once registered, we guarantee 100% job placement in your chosen career field!" },
   { q: "How do I apply for a job?", a: "Once you create your account and complete your profile, you can easily apply to any verified job with a single click." },
   { q: "Are the international jobs verified?", a: "Absolutely. We strictly vet every employer, especially for foreign employment, to ensure your safety and security." },
   { q: "Can I edit my profile later?", a: "Yes, you can update your CV, experience, and contact information at any time from your dashboard." }
@@ -17,7 +17,7 @@ export const FAQSection = () => {
   return (
     <section className="w-full max-w-[430px] mx-auto py-16 px-5 bg-white">
       <div className="mb-10">
-        <h2 className="text-[28px] font-black text-gray-900 tracking-tight leading-tight">Common <br /> Questions</h2>
+        <h2 className="text-[28px] sm:text-[32px] font-black text-gray-900 tracking-tight leading-tight">Common Questions</h2>
       </div>
 
       <div className="flex flex-col gap-3">
