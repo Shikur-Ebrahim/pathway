@@ -39,7 +39,7 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
           {/* Desktop Nav Links */}
           <nav className="hidden md:flex items-center gap-6 text-sm font-medium text-gray-600">
             <a href="#sectors" className="hover:text-blue-600 transition-colors">Job Categories</a>
-            <a href="#requirements" className="hover:text-blue-600 transition-colors">Requirements</a>
+            <a href="/requirements" className="hover:text-blue-600 transition-colors">Requirements</a>
             <a href="https://t.me/pathway_agency" target="_blank" rel="noopener noreferrer" className="hover:text-blue-600 transition-colors flex items-center gap-1">
               <Send className="w-3.5 h-3.5" />
               Telegram
@@ -183,7 +183,7 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
             )}
             <div className="flex flex-col gap-1 pt-2 border-t border-gray-100">
               <a href="#sectors" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-2 text-sm text-gray-600 font-medium">Job Categories</a>
-              <a href="#requirements" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-2 text-sm text-gray-600 font-medium">Requirements</a>
+              <a href="/requirements" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-2 text-sm text-gray-600 font-medium">Requirements</a>
               <a href="https://t.me/pathway_agency" target="_blank" rel="noopener noreferrer" className="py-2.5 px-2 text-sm text-blue-600 font-medium flex items-center gap-1.5">
                 <Send className="w-3.5 h-3.5" /> @pathway_agency
               </a>
