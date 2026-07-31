@@ -61,7 +61,7 @@ export default function Home() {
         <HeroSection onApplyClick={handleApplyClick} onBrowseJobs={handleBrowseJobs} />
         <ImageBannerSection />
         <CategoriesSection onSelectCategory={handleCategorySelect} />
-        <FeaturesSection />
+        <GallerySection />
         <LatestJobsSection 
           onApplyClick={handleApplyClick} 
           filterCategory={activeCategory} 
@@ -71,7 +71,7 @@ export default function Home() {
         />
         <ResourcesSection />
         <ProcessTimelineSection />
-        <GallerySection />
+        <FeaturesSection />
         <TrustedCompaniesSection />
         <FAQSection />
         <NewsletterSection />
