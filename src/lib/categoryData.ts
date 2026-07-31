@@ -53,7 +53,7 @@ export const CATEGORY_DATA: Record<string, {
     images: [
       "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=600&q=80",
       "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1573497491208-6f16bfc752e0?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80",
     ]
   },
   ngo: {
@@ -138,7 +138,7 @@ export const CATEGORY_DATA: Record<string, {
     images: [
       "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80",
       "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1583977374086-3f1a9e16dc57?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1464037866556-68bef5ce2e47?auto=format&fit=crop&w=600&q=80",
     ]
   },
   international: {
