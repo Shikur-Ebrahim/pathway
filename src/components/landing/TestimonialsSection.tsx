@@ -10,7 +10,7 @@ const TESTIMONIALS = [
     role: "NGO Professional",
     text: "Pathway made it incredibly easy to find verified NGO jobs. I got hired in 3 weeks!",
     rating: 5,
-    image: "https://images.unsplash.com/photo-1531123897727-8f129e1bfd8c?auto=format&fit=crop&w=400&q=80"
+    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=400&q=80"
   },
   {
     name: "Kaleb Dereje",
