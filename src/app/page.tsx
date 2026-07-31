@@ -12,7 +12,6 @@ import { HeroSection } from "@/components/landing/HeroSection";
 import { ImageBannerSection } from "@/components/landing/ImageBannerSection";
 import { CategoriesSection } from "@/components/landing/CategoriesSection";
 import { FeaturesSection } from "@/components/landing/FeaturesSection";
-import { SuccessStoriesSection } from "@/components/landing/SuccessStoriesSection";
 import { LatestJobsSection } from "@/components/landing/LatestJobsSection";
 import { ResourcesSection } from "@/components/landing/ResourcesSection";
 import { ProcessTimelineSection } from "@/components/landing/ProcessTimelineSection";
@@ -54,7 +53,6 @@ export default function Home() {
         <ImageBannerSection />
         <CategoriesSection onSelectCategory={handleCategorySelect} />
         <FeaturesSection />
-        <SuccessStoriesSection />
         <LatestJobsSection 
           onApplyClick={handleApplyClick} 
           filterCategory={activeCategory} 
