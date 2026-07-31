@@ -122,7 +122,7 @@ export const CULTURE_DATA: Record<string, {
       "https://images.unsplash.com/photo-1573496799652-408c2ac9fe98?auto=format&fit=crop&w=600&q=80",
       "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=600&q=80",
       "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1521791055366-0d553872952f?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=600&q=80",
       "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=600&q=80",
       "https://images.unsplash.com/photo-1616587226960-4a03badbe8bf?auto=format&fit=crop&w=600&q=80"
     ]
