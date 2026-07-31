@@ -138,7 +138,7 @@ export const CATEGORY_DATA: Record<string, {
     images: [
       "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80",
       "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=600&q=80",
-      "https://images.unsplash.com/photo-1464037866556-68bef5ce2e47?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=600&q=80",
     ]
   },
   international: {
