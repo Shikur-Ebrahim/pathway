@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { ArrowRight } from "lucide-react";
 
@@ -9,23 +9,28 @@ const RESOURCES = [
     title: "Resume Writing Tips",
     desc: "How to craft a CV that gets you hired.",
     image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
-    color: "from-orange-500/80 to-red-600/80"
+    color: "from-orange-500/80 to-red-600/80",
+    slug: "resume-tips"
   },
   {
     title: "Interview Preparation",
     desc: "Aces your next Embassy or NGO interview.",
     image: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=600&q=80",
-    color: "from-blue-500/80 to-indigo-600/80"
+    color: "from-blue-500/80 to-indigo-600/80",
+    slug: "interview-prep"
   },
   {
     title: "International Scholarships",
     desc: "Opportunities to study and work abroad.",
     image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80",
-    color: "from-emerald-500/80 to-teal-600/80"
+    color: "from-emerald-500/80 to-teal-600/80",
+    slug: "scholarships"
   }
 ];
 
 export const ResourcesSection = () => {
+  const router = useRouter();
+
   return (
     <section className="w-full max-w-[430px] mx-auto py-16 bg-white overflow-hidden">
       <div className="px-5 mb-8 flex justify-between items-end">
@@ -42,7 +47,8 @@ export const ResourcesSection = () => {
             initial={{ opacity: 0, x: 20 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true }}
-            className="w-[280px] h-[320px] shrink-0 rounded-[24px] overflow-hidden snap-center relative group"
+            className="w-[280px] h-[320px] shrink-0 rounded-[24px] overflow-hidden snap-center relative group cursor-pointer"
+            onClick={() => router.push(`/resources/${res.slug}`)}
           >
             <img src={res.image} alt={res.title} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
             
@@ -51,9 +57,9 @@ export const ResourcesSection = () => {
             <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/40 to-transparent" />
 
             <div className="absolute bottom-5 left-5 right-5">
-              <h3 className="text-white font-bold text-[20px] mb-2 leading-tight">{res.title}</h3>
+              <h3 className="text-white font-bold text-[20px] mb-2 leading-tight drop-shadow">{res.title}</h3>
               <p className="text-white/80 text-[13px] mb-4">{res.desc}</p>
-              <button className="flex items-center gap-2 text-white text-[13px] font-bold">
+              <button className="flex items-center gap-2 text-white text-[13px] font-bold group-hover:text-white/80 transition-colors">
                 Read Article <ArrowRight className="w-4 h-4" />
               </button>
             </div>
