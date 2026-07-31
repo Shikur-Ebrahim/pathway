@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Bookmark, MapPin, Clock, Briefcase, ArrowRight } from "lucide-react";
 
@@ -68,8 +68,10 @@ const generateJobs = () => {
 const ALL_JOBS = generateJobs();
 
 export const LatestJobsSection = ({ onApplyClick }: { onApplyClick: () => void }) => {
-  // We only display the first 10 items in the carousel
-  const displayJobs = ALL_JOBS.slice(0, 10);
+  const [showAll, setShowAll] = useState(false);
+
+  // We only display the first 10 items in the carousel initially
+  const displayJobs = showAll ? ALL_JOBS : ALL_JOBS.slice(0, 10);
   const remainingCount = ALL_JOBS.length - displayJobs.length;
 
   return (
@@ -80,10 +82,10 @@ export const LatestJobsSection = ({ onApplyClick }: { onApplyClick: () => void }
           <p className="text-[14px] text-gray-500 mt-1">{ALL_JOBS.length} Verified Job Opportunities.</p>
         </div>
         <button 
-          onClick={onApplyClick}
+          onClick={() => setShowAll(!showAll)}
           className="text-[14px] font-bold text-blue-600 hover:text-blue-700 shrink-0"
         >
-          View All
+          {showAll ? "Show Less" : "View All"}
         </button>
       </div>
 
@@ -131,20 +133,22 @@ export const LatestJobsSection = ({ onApplyClick }: { onApplyClick: () => void }
           </motion.div>
         ))}
 
-        {/* View Other Options Card */}
-        <motion.div
-          initial={{ opacity: 0, x: 20 }}
-          whileInView={{ opacity: 1, x: 0 }}
-          viewport={{ once: true }}
-          className="w-[280px] shrink-0 rounded-[24px] p-5 border-2 border-dashed border-gray-200 bg-gray-50/50 hover:bg-gray-50 transition-colors relative group snap-center flex flex-col items-center justify-center text-center cursor-pointer"
-          onClick={onApplyClick}
-        >
-          <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4 text-blue-600 group-hover:scale-110 transition-transform">
-            <ArrowRight className="w-8 h-8" />
-          </div>
-          <h3 className="text-[18px] font-black text-gray-900 mb-1">Explore More</h3>
-          <p className="text-[14px] text-gray-500 font-medium">View {remainingCount} other options across Ethiopia & Int'l</p>
-        </motion.div>
+        {/* View Other Options Card (only show if not showing all) */}
+        {!showAll && (
+          <motion.div
+            initial={{ opacity: 0, x: 20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="w-[280px] shrink-0 rounded-[24px] p-5 border-2 border-dashed border-gray-200 bg-gray-50/50 hover:bg-gray-50 transition-colors relative group snap-center flex flex-col items-center justify-center text-center cursor-pointer"
+            onClick={() => setShowAll(true)}
+          >
+            <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4 text-blue-600 group-hover:scale-110 transition-transform">
+              <ArrowRight className="w-8 h-8" />
+            </div>
+            <h3 className="text-[18px] font-black text-gray-900 mb-1">Explore More</h3>
+            <p className="text-[14px] text-gray-500 font-medium">View {remainingCount} other options across Ethiopia & Int'l</p>
+          </motion.div>
+        )}
       </div>
     </section>
   );
