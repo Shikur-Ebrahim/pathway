@@ -24,8 +24,8 @@ export default function ResourceArticlePage() {
           alt={article.title}
           className="absolute inset-0 w-full h-full object-cover"
         />
-        <div className={`absolute inset-0 bg-gradient-to-t ${article.gradient} mix-blend-multiply opacity-80`} />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+        <div className={`absolute inset-0 bg-gradient-to-t ${article.gradient} mix-blend-multiply opacity-35`} />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
 
         {/* Back Button */}
         <Link 
@@ -92,10 +92,32 @@ export default function ResourceArticlePage() {
         <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 mt-8">
           <h3 className="text-[16px] font-black text-gray-900 mb-2">Conclusion</h3>
           <p className="text-[15px] text-gray-700 leading-relaxed italic">
-            "{article.content.conclusion}"
+            &ldquo;{article.content.conclusion}&rdquo;
           </p>
         </div>
       </div>
+
+      {/* Photo Gallery */}
+      {article.images && article.images.length > 0 && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="px-5 pb-8"
+        >
+          <h2 className="text-[22px] font-black text-gray-900 mb-5">📸 Photo Gallery</h2>
+          <div className="grid grid-cols-2 gap-3">
+            {article.images.map((img, i) => (
+              <div
+                key={i}
+                className={`overflow-hidden rounded-2xl shadow-sm ${i === 0 ? "col-span-2 h-[200px]" : "h-[140px]"}`}
+              >
+                <img src={img} alt={`gallery-${i}`} className="w-full h-full object-cover hover:scale-105 transition-transform duration-500" />
+              </div>
+            ))}
+          </div>
+        </motion.div>
+      )}
 
     </div>
   );

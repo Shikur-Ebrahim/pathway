@@ -6,6 +6,7 @@ export const RESOURCES_DATA: Record<string, {
   readTime: string;
   heroImage: string;
   gradient: string;
+  images: string[];
   content: {
     introduction: string;
     sections: { heading: string; body: string; bulletPoints?: string[] }[];
@@ -25,6 +26,13 @@ export const RESOURCES_DATA: Record<string, {
     readTime: "5 min read",
     heroImage: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=800&q=80",
     gradient: "from-orange-500 to-red-700",
+    images: [
+      "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?auto=format&fit=crop&w=600&q=80"
+    ],
     content: {
       introduction: "In Ethiopia's highly competitive job market, especially for premium roles at Embassies, UN agencies, and multinational corporations, your Curriculum Vitae (CV) is your first—and sometimes only—chance to make an impression. A standard, generic CV simply won't cut it anymore.",
       sections: [
@@ -67,6 +75,13 @@ export const RESOURCES_DATA: Record<string, {
     readTime: "7 min read",
     heroImage: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=800&q=80",
     gradient: "from-blue-600 to-indigo-800",
+    images: [
+      "https://images.unsplash.com/photo-1565688534245-05d6b5be184a?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=600&q=80"
+    ],
     content: {
       introduction: "Interviewing for an Embassy, a UN agency, or a top international company in Addis Ababa is notoriously challenging. These organizations use structured, competency-based interviews to ensure they hire the absolute best talent. Here is how you can prepare and succeed.",
       sections: [
@@ -110,6 +125,13 @@ export const RESOURCES_DATA: Record<string, {
     readTime: "6 min read",
     heroImage: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80",
     gradient: "from-emerald-500 to-teal-700",
+    images: [
+      "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1471347334704-25603a9b7ea5?auto=format&fit=crop&w=600&q=80",
+      "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=600&q=80"
+    ],
     content: {
       introduction: "Pursuing higher education abroad is a dream for many Ethiopian professionals. A prestigious international degree can fast-track your career in NGOs, Embassies, and global corporations. Fortunately, there are dozens of fully-funded scholarships specifically targeting talented Ethiopians.",
       sections: [
