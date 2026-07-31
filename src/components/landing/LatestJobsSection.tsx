@@ -10,8 +10,7 @@ const JOBS = [
     title: "Senior Project Officer",
     company: "UNICEF Ethiopia",
     logo: "🌍",
-    location: "Addis Ababa",
-    salary: "$2,000 - $3,000",
+    location: "Addis Ababa, Ethiopia",
     type: "Full-time",
     exp: "5+ Years",
     bg: "bg-blue-50",
@@ -22,8 +21,7 @@ const JOBS = [
     title: "Visa Processing Clerk",
     company: "Canadian Embassy",
     logo: "🍁",
-    location: "Addis Ababa",
-    salary: "45,000 ETB",
+    location: "Addis Ababa, Ethiopia",
     type: "Contract",
     exp: "2+ Years",
     bg: "bg-red-50",
@@ -34,12 +32,22 @@ const JOBS = [
     title: "Customer Service Agent",
     company: "Ethiopian Airlines",
     logo: "✈️",
-    location: "Bole Airport",
-    salary: "Entry Level",
+    location: "Bole Airport, Ethiopia",
     type: "Full-time",
     exp: "0-1 Years",
     bg: "bg-emerald-50",
     color: "text-emerald-600"
+  },
+  {
+    id: 4,
+    title: "Operations Manager",
+    company: "Emirates Group",
+    logo: "🌐",
+    location: "Dubai, UAE",
+    type: "Full-time",
+    exp: "3+ Years",
+    bg: "bg-purple-50",
+    color: "text-purple-600"
   }
 ];
 
@@ -81,9 +89,6 @@ export const LatestJobsSection = ({ onApplyClick }: { onApplyClick: () => void }
             <div className="grid grid-cols-2 gap-3 mb-5">
               <div className="flex items-center gap-1.5 text-gray-500 text-[12px]">
                 <MapPin className="w-3.5 h-3.5" /> {job.location}
-              </div>
-              <div className="flex items-center gap-1.5 text-gray-500 text-[12px]">
-                <DollarSign className="w-3.5 h-3.5" /> {job.salary}
               </div>
               <div className="flex items-center gap-1.5 text-gray-500 text-[12px]">
                 <Briefcase className="w-3.5 h-3.5" /> {job.type}
