@@ -20,6 +20,7 @@ export interface PathwayItem {
   authorName: string;
   authorEmail: string;
   createdAt: any;
+  formData?: any;
 }
 
 const DEMO_ITEMS_STORAGE_KEY = "pathway_demo_items";
