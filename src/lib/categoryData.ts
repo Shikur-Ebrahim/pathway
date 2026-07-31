@@ -19,7 +19,7 @@ export const CATEGORY_DATA: Record<string, {
     title: "Embassies & Diplomatic Missions",
     subtitle: "Work at the heart of international diplomacy in Addis Ababa",
     emoji: "🏛️",
-    heroImage: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80",
+    heroImage: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=800&q=80",
     gradient: "from-blue-600 to-indigo-700",
     description: "Addis Ababa is the diplomatic capital of Africa, home to over 100 embassies, consulates, and diplomatic missions. Working at an embassy means being at the center of international relations, cultural exchange, and global cooperation. These roles offer competitive salaries, professional development, and the prestige of working in a world-class environment.",
     whyJoin: [
@@ -146,7 +146,7 @@ export const CATEGORY_DATA: Record<string, {
     title: "International Companies",
     subtitle: "Build a global career with top multinational companies in Ethiopia",
     emoji: "🌐",
-    heroImage: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=800&q=80",
+    heroImage: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80",
     gradient: "from-purple-600 to-violet-700",
     description: "As Ethiopia's economy continues to grow, major multinational corporations are establishing and expanding their presence in Addis Ababa. From luxury hotel chains like Hilton, Sheraton, and Radisson Blu, to global breweries like Heineken and Diageo, and tech companies like Safaricom — international employers offer world-class working conditions, competitive packages, and the opportunity to grow into regional and global roles.",
     whyJoin: [

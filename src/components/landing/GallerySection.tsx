@@ -16,7 +16,7 @@ const GALLERY_CARDS = [
   {
     slug: "embassy",
     label: "Embassies",
-    image: "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=600&q=80",
+    image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=600&q=80",
     span: "",
     height: "h-[160px]"
   },
@@ -30,7 +30,7 @@ const GALLERY_CARDS = [
   {
     slug: "international",
     label: "International",
-    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80",
+    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80",
     span: "col-span-2",
     height: "h-[240px]"
   }
@@ -40,7 +40,7 @@ export const GallerySection = () => {
   const router = useRouter();
 
   return (
-    <section className="w-full max-w-[430px] mx-auto py-16 bg-white overflow-hidden">
+    <section className="w-full max-w-[430px] mx-auto pt-16 pb-6 bg-white overflow-hidden">
       <div className="px-5 mb-8">
         <h2 className="text-[28px] font-black text-gray-900 tracking-tight leading-tight">Life at Top Companies</h2>
         <p className="text-[14px] text-gray-500 mt-2">Discover where your next career could take you.</p>
