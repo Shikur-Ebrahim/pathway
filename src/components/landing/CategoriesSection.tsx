@@ -69,11 +69,7 @@ export const CategoriesSection = ({ onSelectCategory }: { onSelectCategory: (cat
             <div className={`absolute inset-0 bg-gradient-to-t ${cat.color} mix-blend-multiply opacity-70`} />
             <div className="absolute inset-0 bg-gradient-to-t from-gray-900/95 via-gray-900/50 to-transparent" />
 
-            <div className="relative z-10 flex flex-col h-full p-6">
-              <div className="w-12 h-12 rounded-xl bg-white/20 backdrop-blur-md shadow-sm flex items-center justify-center text-2xl mb-auto text-white border border-white/20">
-                {cat.emoji}
-              </div>
-              
+            <div className="relative z-10 flex flex-col h-full p-6 justify-end">
               <h3 className="text-[22px] font-black text-white mb-2 tracking-tight drop-shadow-md">
                 {cat.title}
               </h3>
