@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: "Missing required fields" }, { status: 400 });
     }
 
-    const logoUrl = "https://pathway-chi.vercel.app/logo.png";
+    const logoUrl = "https://pathwayet.com/logo.png";
 
     const html = `
 <!DOCTYPE html>
