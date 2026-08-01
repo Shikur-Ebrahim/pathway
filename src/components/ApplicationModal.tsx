@@ -454,7 +454,6 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                      <InputField label="City" section="personal" field="city" formData={formData} updateForm={updateForm} />
                   </div>
                   <InputField label="Current Address" section="personal" field="currentAddress" type="textarea" formData={formData} updateForm={updateForm} />
-                  <InputField label="Nationality" section="personal" field="nationality" formData={formData} updateForm={updateForm} />
                   <InputField label="Ethiopian National ID (Optional)" section="personal" field="nationalId" formData={formData} updateForm={updateForm} />
                 </div>
               )}
