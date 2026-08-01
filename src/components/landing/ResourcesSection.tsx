@@ -11,22 +11,22 @@ export const ResourcesSection = ({ lang }: { lang: Language }) => {
 
   const RESOURCES = [
     {
-      title: lang === "am" ? "የ CV አጻጻፍ ምክሮች" : "Resume Writing Tips",
-      desc: lang === "am" ? "ሥራ የሚያስገኝልዎትን CV እንዴት ማዘጋጀት እንደሚችሉ።" : "How to craft a CV that gets you hired.",
+      title: lang === "am" ? "የ CV አጻጻፍ ምክሮች" : lang === "or" ? "Gorsa Barreeffama CV" : "Resume Writing Tips",
+      desc: lang === "am" ? "ሥራ የሚያስገኝልዎትን CV እንዴት ማዘጋጀት እንደሚችሉ።" : lang === "or" ? "Akkamitti CV hojiitti si galchu akka qopheessitu." : "How to craft a CV that gets you hired.",
       image: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
       color: "from-orange-500/80 to-red-600/80",
       slug: "resume-tips"
     },
     {
-      title: lang === "am" ? "የቃለ-መጠይቅ ዝግጅት" : "Interview Preparation",
-      desc: lang === "am" ? "ለሚቀጥለው የኤምባሲ ወይም የ NGO ቃለ-መጠይቅዎ ዝግጅት።" : "Aces your next Embassy or NGO interview.",
+      title: lang === "am" ? "የቃለ-መጠይቅ ዝግጅት" : lang === "or" ? "Qophii Gaafii fi Deebii" : "Interview Preparation",
+      desc: lang === "am" ? "ለሚቀጥለው የኤምባሲ ወይም የ NGO ቃለ-መጠይቅዎ ዝግጅት።" : lang === "or" ? "Gaafii fi deebii Embaasii ykn NGO itti aanuuf qophaa'i." : "Aces your next Embassy or NGO interview.",
       image: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=600&q=80",
       color: "from-blue-500/80 to-indigo-600/80",
       slug: "interview-prep"
     },
     {
-      title: lang === "am" ? "ዓለም አቀፍ ስኮላርሺፖች" : "International Scholarships",
-      desc: lang === "am" ? "በውጭ አገር ለመማር እና ለመሥራት ዕድሎች።" : "Opportunities to study and work abroad.",
+      title: lang === "am" ? "ዓለም አቀፍ ስኮላርሺፖች" : lang === "or" ? "Iskolaarshippii Idil-addunyaa" : "International Scholarships",
+      desc: lang === "am" ? "በውጭ አገር ለመማር እና ለመሥራት ዕድሎች።" : lang === "or" ? "Carraawwan biyya alaa barachuu fi hojjechuu." : "Opportunities to study and work abroad.",
       image: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80",
       color: "from-emerald-500/80 to-teal-600/80",
       slug: "scholarships"
@@ -58,7 +58,7 @@ export const ResourcesSection = ({ lang }: { lang: Language }) => {
               <h3 className="text-white font-bold text-[20px] mb-2 leading-tight drop-shadow">{res.title}</h3>
               <p className="text-white/80 text-[13px] mb-4">{res.desc}</p>
               <button className="flex items-center gap-2 text-white text-[13px] font-bold group-hover:text-white/80 transition-colors">
-                {lang === "am" ? "ጽሑፍ አንብብ" : "Read Article"} <ArrowRight className="w-4 h-4" />
+                {lang === "am" ? "ጽሑፍ አንብብ" : lang === "or" ? "Barreeffama Dubbisi" : "Read Article"} <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </motion.div>

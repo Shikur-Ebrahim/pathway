@@ -10,20 +10,20 @@ export const GallerySection = ({ lang }: { lang: Language }) => {
   const router = useRouter();
 
   const GALLERY_CARDS = [
-    { slug: "ngo", label: lang === "am" ? "ዓ.ድ.ት.ሀ. እና የ UN ኤጀንሲዎች" : "NGOs & UN Agencies", image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80", span: "col-span-2", height: "h-[200px]" },
-    { slug: "embassy", label: lang === "am" ? "ኤምባሲዎች" : "Embassies", image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=600&q=80", span: "", height: "h-[160px]" },
-    { slug: "aviation", label: lang === "am" ? "አቪዬሽን" : "Aviation", image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80", span: "", height: "h-[160px]" },
-    { slug: "international", label: lang === "am" ? "ዓለም አቀፍ" : "International", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80", span: "col-span-2", height: "h-[240px]" }
+    { slug: "ngo", label: lang === "am" ? "ዓ.ድ.ት.ሀ. እና የ UN ኤጀንሲዎች" : lang === "or" ? "NGO fi Ejensiiwwan UN" : "NGOs & UN Agencies", image: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80", span: "col-span-2", height: "h-[200px]" },
+    { slug: "embassy", label: lang === "am" ? "ኤምባሲዎች" : lang === "or" ? "Embaasii" : "Embassies", image: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=600&q=80", span: "", height: "h-[160px]" },
+    { slug: "aviation", label: lang === "am" ? "አቪዬሽን" : lang === "or" ? "Aviyeeshinii" : "Aviation", image: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80", span: "", height: "h-[160px]" },
+    { slug: "international", label: lang === "am" ? "ዓለም አቀፍ" : lang === "or" ? "Idil-addunyaa" : "International", image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80", span: "col-span-2", height: "h-[240px]" }
   ];
 
   return (
     <section className="w-full max-w-full md:max-w-5xl lg:max-w-7xl mx-auto pt-16 pb-6 bg-white overflow-hidden">
       <div className="px-5 mb-8">
         <h2 className="text-[22px] sm:text-[28px] font-black text-gray-900 tracking-tight leading-tight whitespace-nowrap">
-          {lang === "am" ? "በምርጥ ድርጅቶች ውስጥ ሕይወት" : "Life at Top Companies"}
+          {lang === "am" ? "በምርጥ ድርጅቶች ውስጥ ሕወት" : lang === "or" ? "Jireenya Dhaabbilee Gurguddoo Keessatti" : "Life at Top Companies"}
         </h2>
-        <p className="text-[14px] text-gray-500 mt-2">
-          {lang === "am" ? "ቀጣይ ሙያዎ ወዴት ሊወስድዎ እንደሚችል ያግኙ።" : "Discover where your next career could take you."}
+        <p className="text-[15px] text-gray-500 max-w-xl leading-relaxed">
+          {lang === "am" ? "ቀጣይ ሙያዎ ወዴት ሊወስድዎ እንደሚችሉ ያግኝ።" : lang === "or" ? "Ogummaan kee itti aanaa si geessuu danda'u iddoo argadhu." : "Discover where your next career could take you."}
         </p>
       </div>
       <div className="px-5">
@@ -52,7 +52,7 @@ export const GallerySection = ({ lang }: { lang: Language }) => {
           ))}
         </div>
         <p className="text-center text-[12px] text-gray-400 mt-4">
-          {lang === "am" ? "ያንን ዘርፍ ለማሰስ ማንኛውንም ምስል ይንኩ →" : "Tap any image to explore that sector →"}
+          {lang === "am" ? "ያንን ዘርፍ ለማሰስ ማናቸናምን ምስል ይንኩ →" : lang === "or" ? "Daandii kamiyyuu daawwachuuf suuraa kamiyyuu tuqi →" : "Tap any image to explore that sector →"}
         </p>
       </div>
     </section>

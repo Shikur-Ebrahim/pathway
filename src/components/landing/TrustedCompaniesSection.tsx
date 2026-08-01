@@ -10,7 +10,7 @@ export const TrustedCompaniesSection = ({ lang }: { lang: Language }) => {
   return (
     <section className="w-full max-w-full md:max-w-5xl lg:max-w-7xl mx-auto pt-4 pb-12 bg-white overflow-hidden border-b border-gray-100">
       <p className="text-center text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-6">
-        {lang === "am" ? "በምርጥ ድርጅቶች የታመነ" : "Trusted By Top Organizations"}
+        {lang === "am" ? "በምርጥ ድርጅቶች የታመነ" : lang === "or" ? "Dhaabbilee Gurguddoon Kan Amaname" : "Trusted By Top Organizations"}
       </p>
       <div className="relative w-full flex overflow-hidden">
         <div className="absolute left-0 top-0 bottom-0 w-16 bg-gradient-to-r from-white to-transparent z-10" />

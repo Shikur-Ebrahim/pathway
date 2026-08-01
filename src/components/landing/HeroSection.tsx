@@ -29,11 +29,8 @@ export const HeroSection = ({ onApplyClick, onBrowseJobs, lang }: { onApplyClick
                 <span>{t.heroBadge}</span>
               </div>
               <h1 className="text-4xl md:text-5xl lg:text-[64px] font-black text-gray-900 tracking-tighter leading-[1.1] mb-6">
-                {lang === "am" ? (
-                  <>ህልምዎን ያሳካሉ <br className="hidden lg:block" /><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">ሙያ ዛሬ</span></>
-                ) : (
-                  <>Secure Your <br className="hidden lg:block" /><span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">Dream Job</span>{" "}Today</>
-                )}
+                {t.heroTitle} <br className="hidden lg:block" />
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">{t.heroHighlight}</span>
               </h1>
               <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto lg:mx-0">{t.heroSub}</p>
             </motion.div>

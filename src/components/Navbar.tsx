@@ -57,6 +57,12 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
                 አማርኛ
               </button>
               <button
+                onClick={() => setLang("or")}
+                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${lang === "or" ? "bg-white text-blue-700 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
+              >
+                Afaan Oromoo
+              </button>
+              <button
                 onClick={() => setLang("en")}
                 className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${lang === "en" ? "bg-white text-blue-700 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
               >
@@ -155,9 +161,9 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
                       </div>
                     </div>
                     <div className="py-2">
-                      <button onClick={() => setLang(lang === "am" ? "en" : "am")} className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3">
+                      <button onClick={() => setLang(lang === "am" ? "or" : lang === "or" ? "en" : "am")} className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3">
                         <Globe className="w-4 h-4 text-gray-400" />
-                        Language: {lang === "am" ? "አማርኛ" : "English"}
+                        Language: {lang === "am" ? "አማርኛ" : lang === "or" ? "Afaan Oromoo" : "English"}
                       </button>
                       <a href="#sectors" onClick={() => setUserMenuOpen(false)} className="flex px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 items-center gap-3">
                         <Briefcase className="w-4 h-4 text-gray-400" /> Job Categories
@@ -195,11 +201,11 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
             ) : (
               <>
                 <button
-                  onClick={() => setLang(lang === "am" ? "en" : "am")}
+                  onClick={() => setLang(lang === "am" ? "or" : lang === "or" ? "en" : "am")}
                   className="p-2 rounded-lg bg-gray-100 text-gray-600 text-xs font-bold flex items-center gap-1"
                 >
                   <Globe className="w-3.5 h-3.5" />
-                  {lang === "am" ? "EN" : "አማ"}
+                  {lang === "am" ? "አማ" : lang === "or" ? "OR" : "EN"}
                 </button>
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
