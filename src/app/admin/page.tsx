@@ -6,7 +6,7 @@ import { getPathwayPosts, PathwayItem, PaymentConfig, getPaymentSettings, savePa
 import { useRouter } from "next/navigation";
 import {
   Users, FileText, LogOut, Eye, X, Phone, MapPin,
-  Briefcase, CheckCircle2, AlertCircle, Search, RefreshCw, Trash2, Settings
+  Briefcase, CheckCircle2, AlertCircle, Search, RefreshCw, Trash2, Settings, Calendar, Clock, Send
 } from "lucide-react";
 
 const SECTOR_LABELS: Record<string, string> = {
@@ -26,6 +26,12 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
   // Status can be at top-level (Firebase/updated) or inside formData (legacy)
   const appStatus = app.applicationStatus || fd?.applicationStatus;
   const [processing, setProcessing] = useState(false);
+  const [showInterviewPicker, setShowInterviewPicker] = useState(false);
+  const [interviewDate, setInterviewDate] = useState('');
+  const [interviewTime, setInterviewTime] = useState('');
+  const [emailSending, setEmailSending] = useState(false);
+  const [emailSent, setEmailSent] = useState(false);
+  const [emailError, setEmailError] = useState<string | null>(null);
 
   const handleAccept = async () => {
     if (!confirm("Are you sure you want to Accept this application?")) return;
@@ -43,12 +49,36 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
     onClose();
   };
 
-  const handleInterview = async () => {
-    if (!confirm("Are you sure you want to mark this application for an Interview?")) return;
-    setProcessing(true);
-    await onUpdate(app.id!, 'interview');
-    setProcessing(false);
-    onClose();
+  const handleScheduleInterview = async () => {
+    if (!interviewDate || !interviewTime) return;
+    setEmailSending(true);
+    setEmailError(null);
+    try {
+      // 1. Update status in DB
+      await onUpdate(app.id!, 'interview');
+      // 2. Send email notification
+      const toEmail = fd?.personal?.email || app.authorEmail;
+      const toName = fd?.personal?.fullName || app.authorName;
+      const res = await fetch('/api/send-interview-email', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          toEmail,
+          toName,
+          interviewDate,
+          interviewTime,
+          sector: fd?.sector || '',
+          role: fd?.sectorSpecific?.subCategory || '',
+        }),
+      });
+      const json = await res.json();
+      if (!res.ok) throw new Error(json.error || 'Email failed');
+      setEmailSent(true);
+    } catch (err: any) {
+      setEmailError(err.message || 'Failed to send email');
+    } finally {
+      setEmailSending(false);
+    }
   };
 
   const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
@@ -160,18 +190,53 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
 
         {/* Actions Footer */}
         {appStatus === 'accepted' ? (
-          <div className="px-5 py-4 border-t border-gray-100 grid grid-cols-2 gap-3 shrink-0">
-            <button onClick={handleReject} disabled={processing} className="w-full py-3 rounded-xl bg-red-50 text-red-600 font-bold text-[14px] hover:bg-red-100 flex items-center justify-center gap-2">
-              <Trash2 className="w-4 h-4" /> {processing ? "Processing..." : "Delete"}
-            </button>
-            <button onClick={handleInterview} disabled={processing} className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-[14px] hover:bg-blue-700 flex items-center justify-center gap-2">
-              <CheckCircle2 className="w-4 h-4" /> {processing ? "Processing..." : "Interview Appt."}
-            </button>
-          </div>
+          showInterviewPicker ? (
+            <div className="px-5 py-5 border-t border-gray-100 shrink-0 space-y-4">
+              <p className="text-[13px] font-black text-gray-800 flex items-center gap-2"><Calendar className="w-4 h-4 text-blue-600" /> Schedule Interview</p>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest block mb-1.5">Date</label>
+                  <input type="date" value={interviewDate} onChange={e => setInterviewDate(e.target.value)}
+                    className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-[14px] font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500" />
+                </div>
+                <div>
+                  <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest block mb-1.5">Time</label>
+                  <input type="time" value={interviewTime} onChange={e => setInterviewTime(e.target.value)}
+                    className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-[14px] font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500" />
+                </div>
+              </div>
+              {emailError && <p className="text-[12px] text-red-500 font-semibold">{emailError}</p>}
+              {emailSent ? (
+                <div className="p-3 bg-green-50 border border-green-200 rounded-xl text-green-700 text-[13px] font-bold flex items-center gap-2">
+                  <CheckCircle2 className="w-4 h-4" /> Email sent successfully!
+                </div>
+              ) : (
+                <div className="grid grid-cols-2 gap-3">
+                  <button onClick={() => setShowInterviewPicker(false)} className="w-full py-3 rounded-xl bg-gray-100 text-gray-600 font-bold text-[14px] hover:bg-gray-200">Cancel</button>
+                  <button onClick={handleScheduleInterview} disabled={emailSending || !interviewDate || !interviewTime}
+                    className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-[14px] hover:bg-blue-700 flex items-center justify-center gap-2 disabled:opacity-50">
+                    <Send className="w-4 h-4" /> {emailSending ? 'Sending...' : 'Send & Schedule'}
+                  </button>
+                </div>
+              )}
+              {emailSent && (
+                <button onClick={onClose} className="w-full py-3 rounded-xl bg-gray-100 text-gray-700 font-bold text-[14px] hover:bg-gray-200">Close</button>
+              )}
+            </div>
+          ) : (
+            <div className="px-5 py-4 border-t border-gray-100 grid grid-cols-2 gap-3 shrink-0">
+              <button onClick={handleReject} disabled={processing} className="w-full py-3 rounded-xl bg-red-50 text-red-600 font-bold text-[14px] hover:bg-red-100 flex items-center justify-center gap-2">
+                <Trash2 className="w-4 h-4" /> {processing ? 'Processing...' : 'Delete'}
+              </button>
+              <button onClick={() => setShowInterviewPicker(true)} className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-[14px] hover:bg-blue-700 flex items-center justify-center gap-2">
+                <Calendar className="w-4 h-4" /> Interview Appt.
+              </button>
+            </div>
+          )
         ) : appStatus === 'interview' ? (
           <div className="px-5 py-4 border-t border-gray-100 grid grid-cols-2 gap-3 shrink-0">
             <button onClick={handleReject} disabled={processing} className="w-full py-3 rounded-xl bg-red-50 text-red-600 font-bold text-[14px] hover:bg-red-100 flex items-center justify-center gap-2">
-              <Trash2 className="w-4 h-4" /> {processing ? "Processing..." : "Delete"}
+              <Trash2 className="w-4 h-4" /> {processing ? 'Processing...' : 'Delete'}
             </button>
             <div className="w-full py-3 rounded-xl bg-blue-50 text-blue-700 font-bold text-[14px] flex items-center justify-center gap-2">
               <CheckCircle2 className="w-4 h-4" /> Interview Scheduled
@@ -180,10 +245,10 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
         ) : (
           <div className="px-5 py-4 border-t border-gray-100 grid grid-cols-2 gap-3 shrink-0">
             <button onClick={handleReject} disabled={processing} className="w-full py-3 rounded-xl bg-red-50 text-red-600 font-bold text-[14px] hover:bg-red-100 flex items-center justify-center gap-2">
-              <Trash2 className="w-4 h-4" /> {processing ? "Processing..." : "Reject & Delete"}
+              <Trash2 className="w-4 h-4" /> {processing ? 'Processing...' : 'Reject & Delete'}
             </button>
             <button onClick={handleAccept} disabled={processing} className="w-full py-3 rounded-xl bg-green-600 text-white font-bold text-[14px] hover:bg-green-700 flex items-center justify-center gap-2">
-              <CheckCircle2 className="w-4 h-4" /> {processing ? "Processing..." : "Accept"}
+              <CheckCircle2 className="w-4 h-4" /> {processing ? 'Processing...' : 'Accept'}
             </button>
           </div>
         )}
