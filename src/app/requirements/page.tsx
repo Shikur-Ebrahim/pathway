@@ -139,7 +139,7 @@ export default function RequirementsPage() {
         {/* Fresh Grad Docs */}
         <h3 className="text-[16px] font-black text-blue-700 mb-4">{lang === "am" ? "ለአዲስ ተመራቂዎች (የ0 ዓመት ልምድ)" : "For Fresh Graduates (0 Year Experience)"}</h3>
         <div className="grid gap-3 mb-8">
-          {FRESH_GRAD_DOCS[lang].map((doc, i) => (
+          {FRESH_GRAD_DOCS[(lang === "or" ? "en" : lang) as "en" | "am"].map((doc, i) => (
             <div key={i} className="flex gap-4 bg-white p-4 rounded-2xl shadow-sm border border-blue-50">
               <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center shrink-0">
                 <doc.icon className="w-5 h-5 text-blue-600" />
@@ -155,7 +155,7 @@ export default function RequirementsPage() {
         {/* Experienced Docs */}
         <h3 className="text-[16px] font-black text-emerald-700 mb-4">{lang === "am" ? "ልምድ ላላቸው ባለሙያዎች" : "For Experienced Professionals"}</h3>
         <div className="grid gap-3">
-          {EXPERIENCED_DOCS[lang].map((doc, i) => (
+          {EXPERIENCED_DOCS[(lang === "or" ? "en" : lang) as "en" | "am"].map((doc, i) => (
             <div key={i} className="flex gap-4 bg-white p-4 rounded-2xl shadow-sm border border-emerald-50">
               <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center shrink-0">
                 <doc.icon className="w-5 h-5 text-emerald-600" />

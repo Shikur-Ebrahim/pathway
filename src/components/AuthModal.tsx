@@ -48,6 +48,21 @@ export const AuthModal: React.FC<AuthModalProps> = ({
       switchToSignup: "አካውንት የለዎትም? ይመዝገቡ →",
       loading: "በሂደት ላይ...",
     },
+    or: {
+      loginTitle: "Herrega Kee Seeni",
+      signupTitle: "Herrega Bilisaa Uumi",
+      loginSub: "Galmee hojii dhiyeessuuf seeni",
+      signupSub: "Guutummaatti bilisaa — har'a jalqabi!",
+      name: "Maqaa Guutuu",
+      email: "Teessoo Iimeelii",
+      password: "Jecha Darbii (xiqqaate qubee 6)",
+      submitLogin: "Seeni",
+      submitSignup: "Herrega Uumi",
+      googleBtn: "Google fayyadami",
+      switchToLogin: "Herrega qabdaa? Seeni →",
+      switchToSignup: "Herrega hin qabdu? Galmaa'i →",
+      loading: "Hojjetamaa jira...",
+    },
     en: {
       loginTitle: "Welcome Back",
       signupTitle: "Create Free Account",
@@ -65,7 +80,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     },
   };
 
-  const l = labels[lang];
+  const l = labels[lang as "en" | "am" | "or"] ?? labels["en"];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();

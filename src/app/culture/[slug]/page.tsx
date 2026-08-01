@@ -21,7 +21,8 @@ export default function CulturePage() {
   const rawData = CULTURE_DATA[slug];
   if (!rawData) return notFound();
 
-  const data = rawData[lang];
+  const dataLang = (lang === "or" ? "en" : lang) as "en" | "am";
+  const data = rawData[dataLang];
 
   return (
     <div className="min-h-screen bg-white max-w-[430px] mx-auto font-sans text-gray-900 pb-24">

@@ -95,11 +95,12 @@ const generateJobs = (lang: "en" | "am" | "or") => {
 
   for (let i = 1; i <= 250; i++) {
     const cat = categories[i % 4];
-    const title = cat.titles[lang][i % cat.titles[lang].length];
-    const company = cat.companies[lang][(i * 3) % cat.companies[lang].length];
-    const location = cat.locations[lang][(i * 7) % cat.locations[lang].length];
-    const exp = exps[lang][(i * 2) % exps[lang].length];
-    const type = jobTypes[lang][(i * 5) % jobTypes[lang].length];
+    const l = lang as "en" | "am" | "or";
+    const title = (cat.titles as any)[l][i % (cat.titles as any)[l].length];
+    const company = (cat.companies as any)[l][(i * 3) % (cat.companies as any)[l].length];
+    const location = (cat.locations as any)[l][(i * 7) % (cat.locations as any)[l].length];
+    const exp = (exps as any)[l][(i * 2) % (exps as any)[l].length];
+    const type = (jobTypes as any)[l][(i * 5) % (jobTypes as any)[l].length];
 
     jobs.push({ id: i, title, company, logo: cat.logo, location, type, exp, bg: cat.bg, color: cat.color });
   }

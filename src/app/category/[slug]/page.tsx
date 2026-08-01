@@ -21,7 +21,8 @@ export default function CategoryPage() {
   const rawCat = CATEGORY_DATA[slug];
   if (!rawCat) return notFound();
 
-  const cat = rawCat[lang];
+  const catLang = (lang === "or" ? "en" : lang) as "en" | "am";
+  const cat = rawCat[catLang];
 
   return (
     <div className="min-h-screen bg-white max-w-[430px] mx-auto font-sans text-gray-900 pb-24">

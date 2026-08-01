@@ -21,7 +21,8 @@ export default function ResourceArticlePage() {
   const rawArticle = RESOURCES_DATA[slug];
   if (!rawArticle) return notFound();
 
-  const article = rawArticle[lang];
+  const articleLang = (lang === "or" ? "en" : lang) as "en" | "am";
+  const article = rawArticle[articleLang];
 
   return (
     <div className="min-h-screen bg-white max-w-[430px] mx-auto font-sans text-gray-900 pb-20">
