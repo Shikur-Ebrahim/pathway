@@ -13,8 +13,8 @@ export const NewsletterSection = () => {
 
   const handleSubscribe = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !email.includes("@")) {
-      setErrorMsg("Please enter a valid email address.");
+    if (!email || !email.toLowerCase().endsWith("@gmail.com")) {
+      setErrorMsg("Please enter a valid Gmail address (e.g. example@gmail.com).");
       setStatus("error");
       return;
     }
