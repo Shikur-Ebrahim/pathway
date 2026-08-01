@@ -19,7 +19,7 @@ export const GallerySection = ({ lang }: { lang: Language }) => {
   return (
     <section className="w-full max-w-full md:max-w-5xl lg:max-w-7xl mx-auto pt-16 pb-6 bg-white overflow-hidden">
       <div className="px-5 mb-8">
-        <h2 className="text-[28px] font-black text-gray-900 tracking-tight leading-tight">
+        <h2 className="text-[22px] sm:text-[28px] font-black text-gray-900 tracking-tight leading-tight whitespace-nowrap">
           {lang === "am" ? "በምርጥ ድርጅቶች ውስጥ ሕይወት" : "Life at Top Companies"}
         </h2>
         <p className="text-[14px] text-gray-500 mt-2">
