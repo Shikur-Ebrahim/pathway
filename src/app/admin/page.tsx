@@ -21,7 +21,7 @@ const STATUS_LABELS: Record<string, string> = {
   experienced: "💼 Experienced",
 };
 
-function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; onClose: () => void; onUpdate: (id: string, status: 'accepted' | 'rejected') => Promise<void>; onDelete: (id: string) => Promise<void>; }) {
+function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; onClose: () => void; onUpdate: (id: string, status: 'accepted' | 'rejected' | 'interview') => Promise<void>; onDelete: (id: string) => Promise<void>; }) {
   const fd = app.formData;
   const [processing, setProcessing] = useState(false);
 
@@ -37,6 +37,14 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
     if (!confirm("Are you sure you want to REJECT and completely DELETE this application?")) return;
     setProcessing(true);
     await onDelete(app.id!);
+    setProcessing(false);
+    onClose();
+  };
+
+  const handleInterview = async () => {
+    if (!confirm("Are you sure you want to mark this application for an Interview?")) return;
+    setProcessing(true);
+    await onUpdate(app.id!, 'interview');
     setProcessing(false);
     onClose();
   };
@@ -73,7 +81,7 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
         {/* Body */}
         <div className="overflow-y-auto flex-1 px-5 py-5 space-y-6">
           {fd?.applicationStatus && (
-            <div className={`p-4 rounded-xl border ${fd.applicationStatus === 'accepted' ? 'bg-green-50 border-green-200 text-green-700' : 'bg-red-50 border-red-200 text-red-700'} flex items-center gap-3`}>
+            <div className={`p-4 rounded-xl border ${fd.applicationStatus === 'accepted' ? 'bg-green-50 border-green-200 text-green-700' : fd.applicationStatus === 'interview' ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-red-50 border-red-200 text-red-700'} flex items-center gap-3`}>
               <CheckCircle2 className="w-6 h-6" />
               <div>
                 <p className="text-sm font-bold">Application {fd.applicationStatus.toUpperCase()}</p>
@@ -149,14 +157,25 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
         </div>
 
         {/* Actions Footer */}
-        <div className="px-5 py-4 border-t border-gray-100 grid grid-cols-2 gap-3 shrink-0">
-          <button onClick={handleReject} disabled={processing} className="w-full py-3 rounded-xl bg-red-50 text-red-600 font-bold text-[14px] hover:bg-red-100 flex items-center justify-center gap-2">
-            <Trash2 className="w-4 h-4" /> {processing ? "Processing..." : "Reject & Delete"}
-          </button>
-          <button onClick={handleAccept} disabled={processing || fd?.applicationStatus === 'accepted'} className="w-full py-3 rounded-xl bg-green-600 text-white font-bold text-[14px] hover:bg-green-700 flex items-center justify-center gap-2">
-            <CheckCircle2 className="w-4 h-4" /> {fd?.applicationStatus === 'accepted' ? "Accepted" : processing ? "Processing..." : "Accept"}
-          </button>
-        </div>
+        {fd?.applicationStatus === 'accepted' ? (
+          <div className="px-5 py-4 border-t border-gray-100 grid grid-cols-2 gap-3 shrink-0">
+            <button onClick={handleReject} disabled={processing} className="w-full py-3 rounded-xl bg-red-50 text-red-600 font-bold text-[14px] hover:bg-red-100 flex items-center justify-center gap-2">
+              <Trash2 className="w-4 h-4" /> {processing ? "Processing..." : "Delete"}
+            </button>
+            <button onClick={handleInterview} disabled={processing} className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-[14px] hover:bg-blue-700 flex items-center justify-center gap-2">
+              <CheckCircle2 className="w-4 h-4" /> {processing ? "Processing..." : "Interview Appt."}
+            </button>
+          </div>
+        ) : (
+          <div className="px-5 py-4 border-t border-gray-100 grid grid-cols-2 gap-3 shrink-0">
+            <button onClick={handleReject} disabled={processing} className="w-full py-3 rounded-xl bg-red-50 text-red-600 font-bold text-[14px] hover:bg-red-100 flex items-center justify-center gap-2">
+              <Trash2 className="w-4 h-4" /> {processing ? "Processing..." : "Reject & Delete"}
+            </button>
+            <button onClick={handleAccept} disabled={processing} className="w-full py-3 rounded-xl bg-green-600 text-white font-bold text-[14px] hover:bg-green-700 flex items-center justify-center gap-2">
+              <CheckCircle2 className="w-4 h-4" /> {processing ? "Processing..." : "Accept"}
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
@@ -264,7 +283,7 @@ export default function AdminPage() {
     }
   };
 
-  const handleUpdateStatus = async (id: string, status: 'accepted' | 'rejected') => {
+  const handleUpdateStatus = async (id: string, status: 'accepted' | 'rejected' | 'interview') => {
     await updatePathwayPostStatus(id, status);
     fetchApplications();
   };
@@ -451,13 +470,15 @@ export default function AdminPage() {
                       : app.createdAt ? new Date(app.createdAt).toLocaleDateString('en-ET') : "";
                     const hasFiles = fd?.uploadedUrls && Object.keys(fd.uploadedUrls).length > 0;
                     const isAccepted = fd?.applicationStatus === 'accepted';
+                    const isInterview = fd?.applicationStatus === 'interview';
 
                     return (
-                      <div key={app.id} className={`px-5 py-4 hover:bg-gray-50/50 transition-colors flex items-center gap-4 ${isAccepted ? 'bg-green-50/30' : ''}`}>
+                      <div key={app.id} className={`px-5 py-4 hover:bg-gray-50/50 transition-colors flex items-center gap-4 ${isAccepted ? 'bg-green-50/30' : isInterview ? 'bg-blue-50/30' : ''}`}>
                         {/* Avatar */}
                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-black text-[15px] shrink-0 shadow-sm relative">
                           {name.charAt(0).toUpperCase()}
                           {isAccepted && <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-green-500 rounded-full border-2 border-white flex items-center justify-center"><CheckCircle2 className="w-2.5 h-2.5 text-white" /></div>}
+                          {isInterview && <div className="absolute -bottom-1 -right-1 w-4 h-4 bg-blue-500 rounded-full border-2 border-white flex items-center justify-center"><CheckCircle2 className="w-2.5 h-2.5 text-white" /></div>}
                         </div>
 
                         {/* Info */}
@@ -472,6 +493,11 @@ export default function AdminPage() {
                             {isAccepted && (
                               <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-green-100 text-green-700">
                                 Accepted
+                              </span>
+                            )}
+                            {isInterview && (
+                              <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-blue-100 text-blue-700">
+                                Interview
                               </span>
                             )}
                           </div>

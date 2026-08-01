@@ -122,7 +122,7 @@ export async function deletePathwayPost(id: string): Promise<void> {
   }
 }
 
-export async function updatePathwayPostStatus(id: string, status: 'accepted' | 'rejected'): Promise<void> {
+export async function updatePathwayPostStatus(id: string, status: 'accepted' | 'rejected' | 'interview'): Promise<void> {
   if (isFirebaseConfigured && db?.app) {
     const { updateDoc } = await import("firebase/firestore");
     await updateDoc(doc(db, "posts", id), { applicationStatus: status });
