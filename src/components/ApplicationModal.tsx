@@ -125,17 +125,26 @@ const InputField = ({ label, section, field, type = "text", required = false, op
           />
         </div>
       ) : (
-        <input
-          type={type}
-          required={required}
-          value={val}
-          min={min}
-          max={max}
-          step={step}
-          placeholder={placeholder}
-          onChange={(e) => updateForm(section, field, e.target.value)}
-          className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl text-[15px] font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
-        />
+        <>
+          <input
+            type={type}
+            required={required}
+            value={val}
+            min={min}
+            max={max}
+            step={step}
+            placeholder={placeholder}
+            onChange={(e) => {
+              const newVal = e.target.value;
+              if (max !== undefined && newVal !== '' && parseFloat(newVal) > parseFloat(max)) return;
+              updateForm(section, field, newVal);
+            }}
+            className={`w-full px-4 py-3.5 bg-gray-50 border rounded-2xl text-[15px] font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all ${val && max !== undefined && parseFloat(val) > parseFloat(max) ? 'border-red-400 bg-red-50' : 'border-gray-200'}`}
+          />
+          {val && max !== undefined && parseFloat(val) > parseFloat(max) && (
+            <p className="mt-1.5 ml-1 text-[12px] font-semibold text-red-500">⚠️ Grade cannot be above {max}</p>
+          )}
+        </>
       )}
     </div>
   );
