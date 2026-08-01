@@ -4,7 +4,7 @@ import React from "react";
 
 export const Footer = () => {
   return (
-    <footer className="w-full max-w-[430px] mx-auto bg-gray-50 pt-16 pb-8 px-8 rounded-t-[40px] border-t border-gray-100">
+    <footer className="w-full max-w-full md:max-w-5xl lg:max-w-7xl mx-auto bg-gray-50 pt-16 pb-8 px-8 rounded-t-[40px] border-t border-gray-100">
       <div className="mb-10">
         <h3 className="text-[20px] font-black text-gray-900 tracking-tight mb-2">Pathway</h3>
         <p className="text-[13px] text-gray-500 max-w-[250px]">
@@ -40,3 +40,4 @@ export const Footer = () => {
     </footer>
   );
 };
+

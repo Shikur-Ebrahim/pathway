@@ -15,7 +15,7 @@ const STEPS = [
 
 export const ProcessTimelineSection = () => {
   return (
-    <section className="w-full max-w-[430px] mx-auto py-16 px-5 bg-blue-50/50">
+    <section className="w-full max-w-full md:max-w-5xl lg:max-w-7xl mx-auto py-16 px-5 bg-blue-50/50">
       <div className="mb-12">
         <h2 className="text-[28px] font-black text-gray-900 tracking-tight leading-tight mb-2">How It Works</h2>
         <p className="text-[14px] text-gray-500">Your journey to a better career.</p>
@@ -52,3 +52,4 @@ export const ProcessTimelineSection = () => {
     </section>
   );
 };
+

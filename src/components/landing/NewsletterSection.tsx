@@ -124,3 +124,4 @@ export const NewsletterSection = () => {
     </section>
   );
 };
+

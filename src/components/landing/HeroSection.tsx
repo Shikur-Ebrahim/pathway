@@ -109,3 +109,4 @@ export const HeroSection = ({ onApplyClick, onBrowseJobs }: { onApplyClick: () =
     </section>
   );
 };
+

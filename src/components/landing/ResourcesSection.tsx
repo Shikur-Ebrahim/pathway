@@ -32,7 +32,7 @@ export const ResourcesSection = () => {
   const router = useRouter();
 
   return (
-    <section className="w-full max-w-[430px] mx-auto py-16 bg-white overflow-hidden">
+    <section className="w-full max-w-full md:max-w-5xl lg:max-w-7xl mx-auto py-16 bg-white overflow-hidden">
       <div className="px-5 mb-8 flex justify-between items-end">
         <div>
           <h2 className="text-[28px] font-black text-gray-900 tracking-tight leading-tight">Career Resources</h2>
@@ -69,3 +69,4 @@ export const ResourcesSection = () => {
     </section>
   );
 };
+

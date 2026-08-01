@@ -40,7 +40,7 @@ export const GallerySection = () => {
   const router = useRouter();
 
   return (
-    <section className="w-full max-w-[430px] mx-auto pt-16 pb-6 bg-white overflow-hidden">
+    <section className="w-full max-w-full md:max-w-5xl lg:max-w-7xl mx-auto pt-16 pb-6 bg-white overflow-hidden">
       <div className="px-5 mb-8">
         <h2 className="text-[28px] font-black text-gray-900 tracking-tight leading-tight">Life at Top Companies</h2>
         <p className="text-[14px] text-gray-500 mt-2">Discover where your next career could take you.</p>
@@ -84,3 +84,4 @@ export const GallerySection = () => {
     </section>
   );
 };
+

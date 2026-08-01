@@ -90,7 +90,7 @@ export const LatestJobsSection = ({
   const remainingCount = filteredJobs.length - displayJobs.length;
 
   return (
-    <section id="latest-jobs" className="w-full max-w-[430px] mx-auto py-16 bg-gray-50/50 overflow-hidden">
+    <section id="latest-jobs" className="w-full max-w-full md:max-w-5xl lg:max-w-7xl mx-auto py-16 bg-gray-50/50 overflow-hidden">
       <div className="flex justify-between items-end mb-8 px-5">
         <div>
           <h2 className="text-[28px] font-black text-gray-900 tracking-tight leading-tight">
@@ -175,3 +175,4 @@ export const LatestJobsSection = ({
     </section>
   );
 };
+

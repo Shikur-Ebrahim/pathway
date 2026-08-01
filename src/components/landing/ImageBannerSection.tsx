@@ -15,7 +15,7 @@ export const ImageBannerSection = () => {
   const router = useRouter();
 
   return (
-    <section className="w-full max-w-[430px] mx-auto py-12 overflow-hidden bg-white">
+    <section className="w-full max-w-full md:max-w-5xl lg:max-w-7xl mx-auto py-12 overflow-hidden bg-white">
       <div className="pl-5 mb-6">
         <h2 className="text-[24px] font-black text-gray-900 tracking-tight">
           Life at Top Companies
@@ -56,3 +56,4 @@ export const ImageBannerSection = () => {
     </section>
   );
 };
+

@@ -23,7 +23,7 @@ const TESTIMONIALS = [
 
 export const TestimonialsSection = () => {
   return (
-    <section className="w-full max-w-[430px] mx-auto py-16 px-5 bg-gray-50/50">
+    <section className="w-full max-w-full md:max-w-5xl lg:max-w-7xl mx-auto py-16 px-5 bg-gray-50/50">
       <div className="text-center mb-10">
         <h2 className="text-[28px] font-black text-gray-900 tracking-tight leading-tight mb-2">Loved by <br /> Thousands</h2>
         <p className="text-[14px] text-gray-500">Don't just take our word for it.</p>
@@ -62,3 +62,4 @@ export const TestimonialsSection = () => {
     </section>
   );
 };
+

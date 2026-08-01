@@ -15,7 +15,7 @@ export const FAQSection = () => {
   const [open, setOpen] = useState<number | null>(0);
 
   return (
-    <section className="w-full max-w-[430px] mx-auto py-16 px-5 bg-white">
+    <section className="w-full max-w-full md:max-w-5xl lg:max-w-7xl mx-auto py-16 px-5 bg-white">
       <div className="mb-10">
         <h2 className="text-[28px] sm:text-[32px] font-black text-gray-900 tracking-tight leading-tight">Common Questions</h2>
       </div>
@@ -54,3 +54,4 @@ export const FAQSection = () => {
     </section>
   );
 };
+

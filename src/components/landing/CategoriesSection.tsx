@@ -41,7 +41,7 @@ const CATEGORIES = [
 
 export const CategoriesSection = ({ onSelectCategory }: { onSelectCategory: (cat: string) => void }) => {
   return (
-    <section id="sectors" className="w-full max-w-[430px] mx-auto py-12 px-5 bg-white">
+    <section id="sectors" className="w-full max-w-full md:max-w-5xl lg:max-w-7xl mx-auto py-12 px-5 bg-white">
       <div className="mb-8">
         <h2 className="text-[28px] sm:text-[32px] font-black text-gray-900 tracking-tight leading-tight">
           Explore Top Industries
@@ -84,3 +84,4 @@ export const CategoriesSection = ({ onSelectCategory }: { onSelectCategory: (cat
     </section>
   );
 };
+

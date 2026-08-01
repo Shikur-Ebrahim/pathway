@@ -9,7 +9,7 @@ const COMPANIES = [
 
 export const TrustedCompaniesSection = () => {
   return (
-    <section className="w-full max-w-[430px] mx-auto pt-4 pb-12 bg-white overflow-hidden border-b border-gray-100">
+    <section className="w-full max-w-full md:max-w-5xl lg:max-w-7xl mx-auto pt-4 pb-12 bg-white overflow-hidden border-b border-gray-100">
       <p className="text-center text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-6">Trusted By Top Organizations</p>
       
       <div className="relative w-full flex overflow-hidden">
@@ -33,3 +33,4 @@ export const TrustedCompaniesSection = () => {
     </section>
   );
 };
+
