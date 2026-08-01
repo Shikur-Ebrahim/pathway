@@ -106,3 +106,71 @@ export async function getPathwayPosts(): Promise<PathwayItem[]> {
     }
   }
 }
+
+export async function deletePathwayPost(id: string): Promise<void> {
+  if (isFirebaseConfigured && db?.app) {
+    await import("firebase/firestore").then(({ deleteDoc }) => {
+      return deleteDoc(doc(db, "posts", id));
+    });
+  } else {
+    const existingStr = localStorage.getItem(DEMO_ITEMS_STORAGE_KEY);
+    if (existingStr) {
+      let items: PathwayItem[] = JSON.parse(existingStr);
+      items = items.filter(i => i.id !== id);
+      localStorage.setItem(DEMO_ITEMS_STORAGE_KEY, JSON.stringify(items));
+    }
+  }
+}
+
+export async function updatePathwayPostStatus(id: string, status: 'accepted' | 'rejected'): Promise<void> {
+  if (isFirebaseConfigured && db?.app) {
+    const { updateDoc } = await import("firebase/firestore");
+    await updateDoc(doc(db, "posts", id), { applicationStatus: status });
+  } else {
+    const existingStr = localStorage.getItem(DEMO_ITEMS_STORAGE_KEY);
+    if (existingStr) {
+      const items: PathwayItem[] = JSON.parse(existingStr);
+      const index = items.findIndex(i => i.id === id);
+      if (index !== -1) {
+        items[index].formData = { ...items[index].formData, applicationStatus: status };
+        localStorage.setItem(DEMO_ITEMS_STORAGE_KEY, JSON.stringify(items));
+      }
+    }
+  }
+}
+
+export interface PaymentConfig {
+  cbe: { active: boolean; holderName: string; account: string; };
+  telebirr: { active: boolean; holderName: string; account: string; };
+  boa: { active: boolean; holderName: string; account: string; };
+  awash: { active: boolean; holderName: string; account: string; };
+  feeAmount: number;
+}
+
+const DEFAULT_PAYMENT_CONFIG: PaymentConfig = {
+  cbe: { active: true, holderName: "Pathway Agency", account: "1000123456789" },
+  telebirr: { active: true, holderName: "Pathway Agency", account: "0911234567" },
+  boa: { active: false, holderName: "", account: "" },
+  awash: { active: false, holderName: "", account: "" },
+  feeAmount: 500,
+};
+
+export async function getPaymentSettings(): Promise<PaymentConfig> {
+  if (isFirebaseConfigured && db?.app) {
+    const docSnap = await getDoc(doc(db, "settings", "payments"));
+    if (docSnap.exists()) {
+      return docSnap.data() as PaymentConfig;
+    }
+    return DEFAULT_PAYMENT_CONFIG;
+  }
+  const local = localStorage.getItem("pathway_payment_settings");
+  return local ? JSON.parse(local) : DEFAULT_PAYMENT_CONFIG;
+}
+
+export async function savePaymentSettings(config: PaymentConfig): Promise<void> {
+  if (isFirebaseConfigured && db?.app) {
+    await setDoc(doc(db, "settings", "payments"), config);
+  } else {
+    localStorage.setItem("pathway_payment_settings", JSON.stringify(config));
+  }
+}

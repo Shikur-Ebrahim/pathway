@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { uploadToCloudinary } from "@/lib/cloudinary";
-import { addPathwayPost } from "@/lib/db";
+import { addPathwayPost, getPaymentSettings, PaymentConfig } from "@/lib/db";
 import {
   X, CheckCircle2, ChevronLeft, ChevronDown, Building2, Globe2, Plane, AlertCircle, FileText, Upload, Trash2
 } from "lucide-react";
@@ -190,6 +190,13 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
+  const [paymentConfig, setPaymentConfig] = useState<PaymentConfig | null>(null);
+
+  useEffect(() => {
+    if (isOpen && !paymentConfig) {
+      getPaymentSettings().then(setPaymentConfig);
+    }
+  }, [isOpen, paymentConfig]);
   
   // Data State
   const [formData, setFormData] = useState<any>({
@@ -320,7 +327,12 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
     else canProceed = true;
   }
   if (step === 6) canProceed = !!files.cv && !!files.passportPhoto;
-  if (step === 7) canProceed = formData.declarations.isTrue && formData.declarations.shareProfile;
+  if (step === 7) canProceed = formData.declarations.isTrue && formData.declarations.shareProfile && !!files.paymentScreenshot;
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    alert(`Copied: ${text}`);
+  };
 
   return (
     <div className="fixed inset-0 z-[100] flex items-center justify-center bg-gray-900/40 backdrop-blur-sm sm:p-4">
@@ -691,8 +703,66 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                     </div>
                   </div>
 
+                  {/* Payment Section */}
+                  {paymentConfig && (
+                    <div className="bg-white rounded-2xl border-2 border-blue-100 overflow-hidden shadow-sm">
+                      <div className="bg-blue-50 px-5 py-4 border-b border-blue-100">
+                        <h3 className="font-black text-blue-900 text-[16px]">Application Fee: {paymentConfig.feeAmount} ETB</h3>
+                        <p className="text-[13px] text-blue-700 mt-1 font-medium">Please pay the {paymentConfig.feeAmount} ETB fee for your application to proceed. We will notify you via email for interviews once processed.</p>
+                      </div>
+                      <div className="p-5 space-y-4">
+                        <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-2">Accepted Payment Methods</p>
+                        <div className="grid sm:grid-cols-2 gap-3">
+                          {paymentConfig.cbe.active && (
+                            <div className="p-3 border border-gray-200 rounded-xl bg-gray-50 flex items-center justify-between">
+                              <div>
+                                <p className="font-bold text-gray-900 text-[14px]">CBE</p>
+                                <p className="text-[12px] text-gray-500">{paymentConfig.cbe.holderName}</p>
+                                <p className="text-[14px] font-black font-mono text-blue-600 mt-0.5">{paymentConfig.cbe.account}</p>
+                              </div>
+                              <button onClick={() => handleCopy(paymentConfig.cbe.account)} className="p-2 bg-white rounded-lg border border-gray-200 text-gray-500 hover:text-blue-600 shadow-sm"><FileText className="w-4 h-4" /></button>
+                            </div>
+                          )}
+                          {paymentConfig.telebirr.active && (
+                            <div className="p-3 border border-gray-200 rounded-xl bg-gray-50 flex items-center justify-between">
+                              <div>
+                                <p className="font-bold text-gray-900 text-[14px]">Telebirr</p>
+                                <p className="text-[12px] text-gray-500">{paymentConfig.telebirr.holderName}</p>
+                                <p className="text-[14px] font-black font-mono text-blue-600 mt-0.5">{paymentConfig.telebirr.account}</p>
+                              </div>
+                              <button onClick={() => handleCopy(paymentConfig.telebirr.account)} className="p-2 bg-white rounded-lg border border-gray-200 text-gray-500 hover:text-blue-600 shadow-sm"><FileText className="w-4 h-4" /></button>
+                            </div>
+                          )}
+                          {paymentConfig.boa.active && (
+                            <div className="p-3 border border-gray-200 rounded-xl bg-gray-50 flex items-center justify-between">
+                              <div>
+                                <p className="font-bold text-gray-900 text-[14px]">BOA</p>
+                                <p className="text-[12px] text-gray-500">{paymentConfig.boa.holderName}</p>
+                                <p className="text-[14px] font-black font-mono text-blue-600 mt-0.5">{paymentConfig.boa.account}</p>
+                              </div>
+                              <button onClick={() => handleCopy(paymentConfig.boa.account)} className="p-2 bg-white rounded-lg border border-gray-200 text-gray-500 hover:text-blue-600 shadow-sm"><FileText className="w-4 h-4" /></button>
+                            </div>
+                          )}
+                          {paymentConfig.awash.active && (
+                            <div className="p-3 border border-gray-200 rounded-xl bg-gray-50 flex items-center justify-between">
+                              <div>
+                                <p className="font-bold text-gray-900 text-[14px]">Awash Bank</p>
+                                <p className="text-[12px] text-gray-500">{paymentConfig.awash.holderName}</p>
+                                <p className="text-[14px] font-black font-mono text-blue-600 mt-0.5">{paymentConfig.awash.account}</p>
+                              </div>
+                              <button onClick={() => handleCopy(paymentConfig.awash.account)} className="p-2 bg-white rounded-lg border border-gray-200 text-gray-500 hover:text-blue-600 shadow-sm"><FileText className="w-4 h-4" /></button>
+                            </div>
+                          )}
+                        </div>
+                        <div className="mt-4 pt-4 border-t border-gray-100">
+                          <FileUploadCard id="paymentScreenshot" label="Upload Payment Screenshot / Receipt" accept="image/*" required files={files} handleFileChange={handleFileChange} />
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
                   {/* Declarations */}
-                  <div className="space-y-3 border-2 border-gray-100 p-5 rounded-[20px] bg-white">
+                  <div className="space-y-3 border border-gray-100 p-5 rounded-[20px] bg-white shadow-sm">
                     <p className="text-[13px] font-bold text-gray-500 uppercase tracking-wide mb-3">Declarations</p>
                     <label className="flex items-start gap-4 cursor-pointer group">
                       <input
