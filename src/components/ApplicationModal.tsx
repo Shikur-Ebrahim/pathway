@@ -444,15 +444,34 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
           )}
 
           {submitted ? (
-            <div className="h-full flex flex-col items-center justify-center text-center space-y-6 pb-20">
+            <div className="h-full flex flex-col items-center justify-center text-center space-y-6 pb-20 px-4">
               <div className="w-24 h-24 rounded-full bg-green-50 flex items-center justify-center border-[6px] border-green-100">
                 <CheckCircle2 className="w-12 h-12 text-green-500" />
               </div>
               <div className="space-y-2">
-                 <h2 className="text-2xl font-black text-gray-900">Application Submitted!</h2>
-                 <p className="text-[15px] text-gray-500 px-4 leading-relaxed">
+                 <h2 className="text-2xl font-black text-gray-900">Application Submitted! 🎉</h2>
+                 <p className="text-[15px] text-gray-500 leading-relaxed">
                    Your profile has been created successfully. Our team will review your application soon.
                  </p>
+              </div>
+
+              {/* Email notification info card */}
+              <div className="w-full bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl p-5 text-left space-y-3">
+                <div className="flex items-center gap-2 mb-1">
+                  <div className="w-8 h-8 rounded-xl bg-blue-100 flex items-center justify-center">
+                    <span className="text-base">📧</span>
+                  </div>
+                  <p className="text-[13px] font-bold text-blue-800 uppercase tracking-wide">What Happens Next?</p>
+                </div>
+                <p className="text-[14px] text-gray-600 leading-relaxed">
+                  After our team reviews and <strong>accepts</strong> your application, you will receive an <strong>email notification</strong> directly from <span className="text-blue-700 font-semibold">Pathway Agency Ethiopia</span>.
+                </p>
+                <div className="bg-white/70 rounded-xl p-3 flex items-start gap-2.5 border border-blue-100">
+                  <span className="text-lg mt-0.5">🍀</span>
+                  <p className="text-[13px] text-gray-700 font-medium leading-relaxed">
+                    <strong>Good Luck!</strong> We look forward to helping you secure your dream career opportunity.
+                  </p>
+                </div>
               </div>
             </div>
           ) : (
