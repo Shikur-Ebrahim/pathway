@@ -36,9 +36,25 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
   const handleAccept = async () => {
     if (!confirm("Are you sure you want to Accept this application?")) return;
     setProcessing(true);
-    await onUpdate(app.id!, 'accepted');
-    setProcessing(false);
-    onClose();
+    try {
+      await onUpdate(app.id!, 'accepted');
+      
+      const toEmail = fd?.personal?.email || app.authorEmail;
+      const toName = fd?.personal?.fullName || app.authorName || 'Applicant';
+      
+      if (toEmail) {
+        await fetch('/api/send-acceptance-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ toEmail, toName })
+        });
+      }
+    } catch (err) {
+      console.error("Error accepting application:", err);
+    } finally {
+      setProcessing(false);
+      onClose();
+    }
   };
 
   const handleReject = async () => {
