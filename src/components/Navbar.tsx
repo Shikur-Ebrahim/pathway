@@ -158,6 +158,12 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
                     </div>
                     <div className="border-t border-gray-50 pt-2">
                       <button
+                        onClick={() => { setUserMenuOpen(false); onApplyClick(); }}
+                        className="w-full text-left px-4 py-2.5 text-sm font-bold text-blue-700 hover:bg-blue-50 flex items-center gap-3"
+                      >
+                        <Briefcase className="w-4 h-4" /> Apply for Job
+                      </button>
+                      <button
                         onClick={() => { setUserMenuOpen(false); logout(); }}
                         className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 flex items-center gap-3"
                       >
