@@ -6,13 +6,22 @@ import { motion } from "framer-motion";
 import { ArrowLeft, Clock, Tag } from "lucide-react";
 import { RESOURCES_DATA } from "@/lib/resourcesData";
 import { useParams, notFound } from "next/navigation";
+import { Language } from "@/lib/translations";
 
 export default function ResourceArticlePage() {
   const params = useParams();
   const slug = params?.slug as string;
-  const article = RESOURCES_DATA[slug];
+  const [lang, setLang] = React.useState<Language>("am");
 
-  if (!article) return notFound();
+  React.useEffect(() => {
+    const saved = localStorage.getItem("pathway_lang") as Language;
+    if (saved) setLang(saved);
+  }, []);
+
+  const rawArticle = RESOURCES_DATA[slug];
+  if (!rawArticle) return notFound();
+
+  const article = rawArticle[lang];
 
   return (
     <div className="min-h-screen bg-white max-w-[430px] mx-auto font-sans text-gray-900 pb-20">
@@ -33,7 +42,7 @@ export default function ResourceArticlePage() {
           className="absolute top-12 left-5 flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white text-[14px] font-bold px-4 py-2 rounded-full hover:bg-white/30 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back
+          {lang === "am" ? "ተመለስ" : "Back"}
         </Link>
 
         {/* Article Meta */}
@@ -57,7 +66,7 @@ export default function ResourceArticlePage() {
           {article.content.introduction}
         </p>
 
-        {article.content.sections.map((section, idx) => (
+        {article.content.sections.map((section: { heading: string; body: string; bulletPoints?: string[] }, idx: number) => (
           <motion.div 
             key={idx}
             initial={{ opacity: 0, y: 10 }}
@@ -70,7 +79,7 @@ export default function ResourceArticlePage() {
             <p className="text-[15px] text-gray-600 leading-relaxed">{section.body}</p>
             {section.bulletPoints && (
               <ul className="list-disc pl-5 space-y-2 mt-3">
-                {section.bulletPoints.map((point, i) => (
+                {section.bulletPoints.map((point: string, i: number) => (
                   <li key={i} className="text-[15px] text-gray-600 leading-relaxed">
                     {point}
                   </li>
@@ -81,7 +90,7 @@ export default function ResourceArticlePage() {
         ))}
 
         <div className="bg-gray-50 rounded-2xl p-6 border border-gray-100 mt-8">
-          <h3 className="text-[16px] font-black text-gray-900 mb-2">Conclusion</h3>
+          <h3 className="text-[16px] font-black text-gray-900 mb-2">{lang === "am" ? "ማጠቃለያ" : "Conclusion"}</h3>
           <p className="text-[15px] text-gray-700 leading-relaxed italic">
             &ldquo;{article.content.conclusion}&rdquo;
           </p>
@@ -96,9 +105,9 @@ export default function ResourceArticlePage() {
           viewport={{ once: true }}
           className="px-5 pb-8"
         >
-          <h2 className="text-[22px] font-black text-gray-900 mb-5">📸 Photo Gallery</h2>
+          <h2 className="text-[22px] font-black text-gray-900 mb-5">📸 {lang === "am" ? "የፎቶ ማዕከለ-ስዕላት" : "Photo Gallery"}</h2>
           <div className="grid grid-cols-2 gap-3">
-            {article.images.map((img, i) => (
+            {article.images.map((img: string, i: number) => (
               <div
                 key={i}
                 className={`overflow-hidden rounded-2xl shadow-sm ${i === 0 ? "col-span-2 h-[200px]" : "h-[140px]"}`}

@@ -6,13 +6,22 @@ import { motion } from "framer-motion";
 import { ArrowLeft, CheckCircle2, ChevronRight } from "lucide-react";
 import { CULTURE_DATA } from "@/lib/cultureData";
 import { useParams, notFound } from "next/navigation";
+import { Language } from "@/lib/translations";
 
 export default function CulturePage() {
   const params = useParams();
   const slug = params?.slug as string;
-  const data = CULTURE_DATA[slug];
+  const [lang, setLang] = React.useState<Language>("am");
 
-  if (!data) return notFound();
+  React.useEffect(() => {
+    const saved = localStorage.getItem("pathway_lang") as Language;
+    if (saved) setLang(saved);
+  }, []);
+
+  const rawData = CULTURE_DATA[slug];
+  if (!rawData) return notFound();
+
+  const data = rawData[lang];
 
   return (
     <div className="min-h-screen bg-white max-w-[430px] mx-auto font-sans text-gray-900 pb-24">
@@ -33,7 +42,7 @@ export default function CulturePage() {
           className="absolute top-12 left-5 flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white text-[14px] font-bold px-4 py-2 rounded-full hover:bg-white/30 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back
+          {lang === "am" ? "ተመለስ" : "Back"}
         </Link>
 
         <div className="absolute bottom-6 left-5 right-5">
@@ -49,7 +58,7 @@ export default function CulturePage() {
         animate={{ opacity: 1, y: 0 }}
         className="px-5 py-8 border-b border-gray-100 flex flex-col gap-4"
       >
-        {data.description.split('\n\n').map((paragraph, i) => (
+        {data.description.split('\n\n').map((paragraph: string, i: number) => (
           <p key={i} className="text-[16px] text-gray-700 leading-relaxed font-medium">
             {paragraph}
           </p>
@@ -63,9 +72,9 @@ export default function CulturePage() {
         transition={{ delay: 0.1 }}
         className="px-5 py-8 border-b border-gray-100 bg-gray-50/50"
       >
-        <h2 className="text-[22px] font-black text-gray-900 mb-6">What to Expect</h2>
+        <h2 className="text-[22px] font-black text-gray-900 mb-6">{lang === "am" ? "ምን እንደሚጠብቁ" : "What to Expect"}</h2>
         <div className="grid gap-4">
-          {data.highlights.map((item, i) => (
+          {data.highlights.map((item: { title: string; desc: string }, i: number) => (
             <div key={i} className="flex gap-4 bg-white p-5 rounded-2xl shadow-sm border border-gray-100">
               <CheckCircle2 className="w-6 h-6 text-blue-600 shrink-0" />
               <div>
@@ -95,9 +104,9 @@ export default function CulturePage() {
         transition={{ delay: 0.3 }}
         className="px-5 py-8"
       >
-        <h2 className="text-[22px] font-black text-gray-900 mb-5">A Glimpse Inside</h2>
+        <h2 className="text-[22px] font-black text-gray-900 mb-5">{lang === "am" ? "በውስጥ በኩል የሚታይ እይታ" : "A Glimpse Inside"}</h2>
         <div className="space-y-4">
-          {data.images.map((img, i) => (
+          {data.images.map((img: string, i: number) => (
             <div key={i} className="w-full h-[220px] rounded-3xl overflow-hidden shadow-sm">
               <img src={img} alt="gallery" className="w-full h-full object-cover" />
             </div>
@@ -108,7 +117,7 @@ export default function CulturePage() {
       {/* Sticky CTA */}
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white border-t border-gray-100 px-5 py-4 shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.1)] z-50">
         <Link href="/" className={`w-full py-4 rounded-2xl bg-gradient-to-r ${data.gradient} text-white font-black text-[16px] flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all active:scale-[0.98]`}>
-          Find Your Dream Job
+          {lang === "am" ? "የሕልምዎን ሥራ ያግኙ" : "Find Your Dream Job"}
           <ChevronRight className="w-5 h-5" />
         </Link>
       </div>

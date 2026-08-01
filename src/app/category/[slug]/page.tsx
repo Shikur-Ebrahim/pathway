@@ -6,13 +6,22 @@ import { motion } from "framer-motion";
 import { ArrowLeft, CheckCircle2, ChevronRight, MapPin } from "lucide-react";
 import { CATEGORY_DATA } from "@/lib/categoryData";
 import { useParams, notFound } from "next/navigation";
+import { Language } from "@/lib/translations";
 
 export default function CategoryPage() {
   const params = useParams();
   const slug = params?.slug as string;
-  const cat = CATEGORY_DATA[slug];
+  const [lang, setLang] = React.useState<Language>("am");
 
-  if (!cat) return notFound();
+  React.useEffect(() => {
+    const saved = localStorage.getItem("pathway_lang") as Language;
+    if (saved) setLang(saved);
+  }, []);
+
+  const rawCat = CATEGORY_DATA[slug];
+  if (!rawCat) return notFound();
+
+  const cat = rawCat[lang];
 
   return (
     <div className="min-h-screen bg-white max-w-[430px] mx-auto font-sans text-gray-900 pb-24">
@@ -33,7 +42,7 @@ export default function CategoryPage() {
           className="absolute top-12 left-5 flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white text-[14px] font-bold px-4 py-2 rounded-full"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back
+          {lang === "am" ? "ተመለስ" : "Back"}
         </Link>
 
         <div className="absolute bottom-6 left-5 right-5">
@@ -49,7 +58,7 @@ export default function CategoryPage() {
         animate={{ opacity: 1, y: 0 }}
         className="px-5 py-8 border-b border-gray-100"
       >
-        <h2 className="text-[20px] font-black text-gray-900 mb-3">About This Sector</h2>
+        <h2 className="text-[20px] font-black text-gray-900 mb-3">{lang === "am" ? "ስለዚህ ዘርፍ" : "About This Sector"}</h2>
         <p className="text-[15px] text-gray-600 leading-relaxed">{cat.description}</p>
       </motion.div>
 
@@ -60,9 +69,9 @@ export default function CategoryPage() {
         transition={{ delay: 0.1 }}
         className="px-5 py-8 border-b border-gray-100"
       >
-        <h2 className="text-[20px] font-black text-gray-900 mb-5">Why This Sector?</h2>
+        <h2 className="text-[20px] font-black text-gray-900 mb-5">{lang === "am" ? "ለምን ይህን ዘርፍ መረጡ?" : "Why This Sector?"}</h2>
         <div className="space-y-3">
-          {cat.whyJoin.map((item, i) => (
+          {cat.whyJoin.map((item: string, i: number) => (
             <div key={i} className="flex items-start gap-3">
               <CheckCircle2 className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
               <p className="text-[14px] text-gray-700 leading-relaxed">{item}</p>
@@ -78,7 +87,7 @@ export default function CategoryPage() {
         transition={{ delay: 0.15 }}
         className="px-5 py-8 border-b border-gray-100"
       >
-        <h2 className="text-[20px] font-black text-gray-900 mb-5">Life in This Sector</h2>
+        <h2 className="text-[20px] font-black text-gray-900 mb-5">{lang === "am" ? "ሕይወት በዚህ ዘርፍ" : "Life in This Sector"}</h2>
         <div className="grid grid-cols-2 gap-3">
           <div className="col-span-2 rounded-2xl overflow-hidden h-[180px]">
             <img src={cat.images[0]} alt="gallery" className="w-full h-full object-cover" />
@@ -99,9 +108,9 @@ export default function CategoryPage() {
         transition={{ delay: 0.2 }}
         className="px-5 py-8 border-b border-gray-100"
       >
-        <h2 className="text-[20px] font-black text-gray-900 mb-5">Available Roles</h2>
+        <h2 className="text-[20px] font-black text-gray-900 mb-5">{lang === "am" ? "ያሉ የሥራ ድርሻዎች" : "Available Roles"}</h2>
         <div className="flex flex-wrap gap-2">
-          {cat.roles.map((role, i) => (
+          {cat.roles.map((role: string, i: number) => (
             <span key={i} className="text-[13px] font-medium bg-blue-50 text-blue-700 px-3 py-1.5 rounded-full border border-blue-100">
               {role}
             </span>
@@ -116,9 +125,9 @@ export default function CategoryPage() {
         transition={{ delay: 0.25 }}
         className="px-5 py-8 border-b border-gray-100"
       >
-        <h2 className="text-[20px] font-black text-gray-900 mb-5">General Requirements</h2>
+        <h2 className="text-[20px] font-black text-gray-900 mb-5">{lang === "am" ? "አጠቃላይ መስፈርቶች" : "General Requirements"}</h2>
         <div className="space-y-3">
-          {cat.requirements.map((req, i) => (
+          {cat.requirements.map((req: string, i: number) => (
             <div key={i} className="flex items-start gap-3 bg-gray-50 rounded-2xl p-4">
               <div className="w-6 h-6 rounded-full bg-blue-600 text-white text-[12px] font-black flex items-center justify-center shrink-0">
                 {i + 1}
@@ -136,9 +145,9 @@ export default function CategoryPage() {
         transition={{ delay: 0.3 }}
         className="px-5 py-8 border-b border-gray-100"
       >
-        <h2 className="text-[20px] font-black text-gray-900 mb-5">Top Employers</h2>
+        <h2 className="text-[20px] font-black text-gray-900 mb-5">{lang === "am" ? "ዋና አሠሪዎች" : "Top Employers"}</h2>
         <div className="space-y-3">
-          {cat.companies.map((company, i) => (
+          {cat.companies.map((company: string, i: number) => (
             <div key={i} className="flex items-center justify-between bg-white border border-gray-100 rounded-2xl px-4 py-3 shadow-sm">
               <div className="flex items-center gap-3">
                 <div className="w-10 h-10 rounded-xl bg-gray-50 flex items-center justify-center text-xl">
@@ -147,7 +156,7 @@ export default function CategoryPage() {
                 <div>
                   <p className="text-[14px] font-bold text-gray-900">{company}</p>
                   <p className="text-[12px] text-gray-400 flex items-center gap-1">
-                    <MapPin className="w-3 h-3" /> Addis Ababa, Ethiopia
+                    <MapPin className="w-3 h-3" /> {lang === "am" ? "አዲስ አበባ፣ ኢትዮጵያ" : "Addis Ababa, Ethiopia"}
                   </p>
                 </div>
               </div>
@@ -160,7 +169,7 @@ export default function CategoryPage() {
       {/* Sticky CTA */}
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white border-t border-gray-100 px-5 py-4 shadow-2xl z-50">
         <Link href="/" className={`w-full py-4 rounded-2xl bg-gradient-to-r ${cat.gradient} text-white font-black text-[16px] flex items-center justify-center gap-2 shadow-lg`}>
-          Apply for {cat.emoji} Jobs
+          {lang === "am" ? "ለ" : "Apply for"} {cat.emoji} {lang === "am" ? "ሥራዎች ያመልክቱ" : "Jobs"}
           <ChevronRight className="w-5 h-5" />
         </Link>
       </div>

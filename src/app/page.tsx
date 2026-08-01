@@ -22,7 +22,18 @@ import { NewsletterSection } from "@/components/landing/NewsletterSection";
 import { Footer } from "@/components/landing/Footer";
 
 export default function Home() {
-  const [lang, setLang] = useState<Language>("am");
+  const [lang, setLangState] = useState<Language>("am");
+
+  React.useEffect(() => {
+    const saved = localStorage.getItem("pathway_lang") as Language;
+    if (saved) setLangState(saved);
+  }, []);
+
+  const setLang = (newLang: Language) => {
+    setLangState(newLang);
+    localStorage.setItem("pathway_lang", newLang);
+  };
+
   const [isAppModalOpen, setIsAppModalOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
