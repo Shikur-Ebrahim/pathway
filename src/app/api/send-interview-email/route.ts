@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { Resend } from "resend";
-
-const resend = new Resend(process.env.RESEND_API_KEY);
+import nodemailer from "nodemailer";
 
 export async function POST(req: NextRequest) {
   try {
@@ -127,20 +125,22 @@ export async function POST(req: NextRequest) {
 </html>
 `;
 
-    const { data, error } = await resend.emails.send({
-      from: "Pathway Agency <onboarding@resend.dev>",
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.GMAIL_USER,
+        pass: process.env.GMAIL_APP_PASSWORD
+      }
+    });
+
+    const info = await transporter.sendMail({
+      from: '"Pathway Agency" <' + process.env.GMAIL_USER + '>',
       to: toEmail,
-      subject: `🎉 Interview Appointment Confirmed — ${interviewDate} at ${interviewTime}`,
+      subject: \`🎉 Interview Appointment Confirmed — \${interviewDate} at \${interviewTime}\`,
       html,
     });
 
-    if (error) {
-      console.error("Resend error:", JSON.stringify(error));
-      const msg = typeof error === 'string' ? error : (error as any)?.message || JSON.stringify(error);
-      return NextResponse.json({ error: msg }, { status: 500 });
-    }
-
-    return NextResponse.json({ success: true, id: data?.id });
+    return NextResponse.json({ success: true, id: info.messageId });
   } catch (err: any) {
     console.error("API error:", err);
     const msg = typeof err === 'string' ? err : err?.message || 'Unknown error';
