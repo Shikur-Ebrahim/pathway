@@ -191,10 +191,17 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [paymentConfig, setPaymentConfig] = useState<PaymentConfig | null>(null);
+  const [selectedBank, setSelectedBank] = useState<string>('');
 
   useEffect(() => {
     if (isOpen && !paymentConfig) {
-      getPaymentSettings().then(setPaymentConfig);
+      getPaymentSettings().then((config) => {
+        setPaymentConfig(config);
+        if (config.cbe.active) setSelectedBank('cbe');
+        else if (config.telebirr.active) setSelectedBank('telebirr');
+        else if (config.boa.active) setSelectedBank('boa');
+        else if (config.awash.active) setSelectedBank('awash');
+      });
     }
   }, [isOpen, paymentConfig]);
   
@@ -711,49 +718,37 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                         <p className="text-[13px] text-blue-700 mt-1 font-medium">Please pay the {paymentConfig.feeAmount} ETB fee for your application to proceed. We will notify you via email for interviews once processed.</p>
                       </div>
                       <div className="p-5 space-y-4">
-                        <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-2">Accepted Payment Methods</p>
-                        <div className="grid sm:grid-cols-2 gap-3">
-                          {paymentConfig.cbe.active && (
-                            <div className="p-3 border border-gray-200 rounded-xl bg-gray-50 flex items-center justify-between">
-                              <div>
-                                <p className="font-bold text-gray-900 text-[14px]">CBE</p>
-                                <p className="text-[12px] text-gray-500">{paymentConfig.cbe.holderName}</p>
-                                <p className="text-[14px] font-black font-mono text-blue-600 mt-0.5">{paymentConfig.cbe.account}</p>
-                              </div>
-                              <button onClick={() => handleCopy(paymentConfig.cbe.account)} className="p-2 bg-white rounded-lg border border-gray-200 text-gray-500 hover:text-blue-600 shadow-sm"><FileText className="w-4 h-4" /></button>
-                            </div>
-                          )}
-                          {paymentConfig.telebirr.active && (
-                            <div className="p-3 border border-gray-200 rounded-xl bg-gray-50 flex items-center justify-between">
-                              <div>
-                                <p className="font-bold text-gray-900 text-[14px]">Telebirr</p>
-                                <p className="text-[12px] text-gray-500">{paymentConfig.telebirr.holderName}</p>
-                                <p className="text-[14px] font-black font-mono text-blue-600 mt-0.5">{paymentConfig.telebirr.account}</p>
-                              </div>
-                              <button onClick={() => handleCopy(paymentConfig.telebirr.account)} className="p-2 bg-white rounded-lg border border-gray-200 text-gray-500 hover:text-blue-600 shadow-sm"><FileText className="w-4 h-4" /></button>
-                            </div>
-                          )}
-                          {paymentConfig.boa.active && (
-                            <div className="p-3 border border-gray-200 rounded-xl bg-gray-50 flex items-center justify-between">
-                              <div>
-                                <p className="font-bold text-gray-900 text-[14px]">BOA</p>
-                                <p className="text-[12px] text-gray-500">{paymentConfig.boa.holderName}</p>
-                                <p className="text-[14px] font-black font-mono text-blue-600 mt-0.5">{paymentConfig.boa.account}</p>
-                              </div>
-                              <button onClick={() => handleCopy(paymentConfig.boa.account)} className="p-2 bg-white rounded-lg border border-gray-200 text-gray-500 hover:text-blue-600 shadow-sm"><FileText className="w-4 h-4" /></button>
-                            </div>
-                          )}
-                          {paymentConfig.awash.active && (
-                            <div className="p-3 border border-gray-200 rounded-xl bg-gray-50 flex items-center justify-between">
-                              <div>
-                                <p className="font-bold text-gray-900 text-[14px]">Awash Bank</p>
-                                <p className="text-[12px] text-gray-500">{paymentConfig.awash.holderName}</p>
-                                <p className="text-[14px] font-black font-mono text-blue-600 mt-0.5">{paymentConfig.awash.account}</p>
-                              </div>
-                              <button onClick={() => handleCopy(paymentConfig.awash.account)} className="p-2 bg-white rounded-lg border border-gray-200 text-gray-500 hover:text-blue-600 shadow-sm"><FileText className="w-4 h-4" /></button>
-                            </div>
-                          )}
+                        <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-2">Select Payment Method</p>
+                        
+                        <div className="relative">
+                          <select 
+                            value={selectedBank}
+                            onChange={(e) => setSelectedBank(e.target.value)}
+                            className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-[15px] font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all appearance-none cursor-pointer"
+                          >
+                            {paymentConfig.cbe.active && <option value="cbe">CBE (Commercial Bank of Ethiopia)</option>}
+                            {paymentConfig.telebirr.active && <option value="telebirr">Telebirr</option>}
+                            {paymentConfig.boa.active && <option value="boa">BOA (Bank of Abyssinia)</option>}
+                            {paymentConfig.awash.active && <option value="awash">Awash Bank</option>}
+                          </select>
+                          <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
                         </div>
+
+                        {selectedBank && paymentConfig[selectedBank as keyof Omit<PaymentConfig, 'feeAmount'>] && (
+                          <div className="p-4 border-2 border-gray-100 rounded-xl bg-gray-50 flex items-center justify-between">
+                            <div>
+                              <p className="text-[12px] font-bold text-gray-400 mb-1">Account Holder</p>
+                              <p className="font-bold text-gray-900 text-[15px] mb-2">{(paymentConfig[selectedBank as keyof Omit<PaymentConfig, 'feeAmount'>] as any).holderName}</p>
+                              <p className="text-[12px] font-bold text-gray-400 mb-1">Account / Phone Number</p>
+                              <p className="text-[17px] font-black font-mono text-blue-600">{(paymentConfig[selectedBank as keyof Omit<PaymentConfig, 'feeAmount'>] as any).account}</p>
+                            </div>
+                            <button onClick={() => handleCopy((paymentConfig[selectedBank as keyof Omit<PaymentConfig, 'feeAmount'>] as any).account)} className="p-3 bg-white rounded-xl border border-gray-200 text-gray-500 hover:text-blue-600 hover:border-blue-300 shadow-sm transition-colors flex flex-col items-center gap-1 shrink-0">
+                              <FileText className="w-5 h-5" />
+                              <span className="text-[10px] font-bold">Copy</span>
+                            </button>
+                          </div>
+                        )}
+
                         <div className="mt-4 pt-4 border-t border-gray-100">
                           <FileUploadCard id="paymentScreenshot" label="Upload Payment Screenshot / Receipt" accept="image/*" required files={files} handleFileChange={handleFileChange} />
                         </div>
