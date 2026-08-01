@@ -68,8 +68,8 @@ export const NewsletterSection = () => {
                 <div className="w-16 h-16 bg-green-500/20 rounded-full flex items-center justify-center">
                   <CheckCircle2 className="w-8 h-8 text-green-400" />
                 </div>
-                <h2 className="text-2xl font-black text-white">You're Subscribed! 🎉</h2>
-                <p className="text-gray-300 text-sm">A welcome email has been sent to your inbox. Stay tuned for the latest job alerts!</p>
+                <h2 className="text-2xl font-black text-white">Thank You! 🎉</h2>
+                <p className="text-gray-300 text-sm">You are now subscribed to Pathway Agency job alerts. Stay tuned for the latest opportunities!</p>
               </motion.div>
             ) : (
               <motion.div key="form">
