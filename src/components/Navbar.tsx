@@ -15,7 +15,7 @@ interface NavbarProps {
 
 export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) => {
   const t = content[lang];
-  const { user, logout } = useAuth();
+  const { user, logout, isAdmin } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
@@ -87,11 +87,21 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
                       <p className="text-xs text-gray-500">Signed in as</p>
                       <p className="text-sm font-semibold text-gray-800 truncate">{user.email}</p>
                     </div>
+                    {isAdmin && (
+                      <a
+                        href="/admin"
+                        onClick={() => setUserMenuOpen(false)}
+                        className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-2 transition-colors border-b border-gray-50"
+                      >
+                        <Briefcase className="w-4 h-4 text-blue-600" />
+                        Admin Dashboard
+                      </a>
+                    )}
                     <button
                       onClick={() => { setUserMenuOpen(false); onApplyClick(); }}
                       className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-blue-50 hover:text-blue-700 flex items-center gap-2 transition-colors"
                     >
-                      <Briefcase className="w-4 h-4" />
+                      <FileText className="w-4 h-4" />
                       Apply for Job
                     </button>
                     <button
@@ -157,11 +167,20 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
                       </a>
                     </div>
                     <div className="border-t border-gray-50 pt-2">
+                      {isAdmin && (
+                        <a
+                          href="/admin"
+                          onClick={() => setUserMenuOpen(false)}
+                          className="w-full text-left px-4 py-2.5 text-sm font-bold text-gray-700 hover:bg-blue-50 flex items-center gap-3 border-b border-gray-50"
+                        >
+                          <Briefcase className="w-4 h-4 text-blue-600" /> Admin Dashboard
+                        </a>
+                      )}
                       <button
                         onClick={() => { setUserMenuOpen(false); onApplyClick(); }}
                         className="w-full text-left px-4 py-2.5 text-sm font-bold text-blue-700 hover:bg-blue-50 flex items-center gap-3"
                       >
-                        <Briefcase className="w-4 h-4" /> Apply for Job
+                        <FileText className="w-4 h-4" /> Apply for Job
                       </button>
                       <button
                         onClick={() => { setUserMenuOpen(false); logout(); }}

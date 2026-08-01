@@ -48,7 +48,7 @@ async function upsertUserInFirestore(user: User) {
   try {
     const ref = doc(db, "users", user.uid);
     const snap = await getDoc(ref);
-    const isAdmin = user.email === ADMIN_EMAIL;
+    const isAdmin = user.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase();
     if (!snap.exists()) {
       await setDoc(ref, {
         uid: user.uid,
@@ -71,7 +71,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | DemoUser | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const isAdmin = user?.email === ADMIN_EMAIL;
+  const isAdmin = user?.email?.toLowerCase() === ADMIN_EMAIL.toLowerCase();
 
   useEffect(() => {
     if (isFirebaseConfigured && auth?.app) {
@@ -131,7 +131,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (isFirebaseConfigured && auth?.app) {
       const result = await signInWithPopup(auth, googleProvider);
       const signedInEmail = result.user.email;
-      return { isAdmin: signedInEmail === ADMIN_EMAIL };
+      return { isAdmin: signedInEmail?.toLowerCase() === ADMIN_EMAIL.toLowerCase() };
     } else {
       const mockUser: DemoUser = {
         uid: "google_demo_" + Date.now(),

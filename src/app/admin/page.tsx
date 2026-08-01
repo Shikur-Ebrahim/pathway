@@ -147,7 +147,7 @@ function DetailModal({ app, onClose }: { app: PathwayItem; onClose: () => void }
 }
 
 export default function AdminPage() {
-  const { user, logout } = useAuth();
+  const { user, logout, isAdmin, loading: authLoading } = useAuth();
   const router = useRouter();
   const [applications, setApplications] = useState<PathwayItem[]>([]);
   const [loading, setLoading] = useState(true);
@@ -157,10 +157,13 @@ export default function AdminPage() {
   const [filterStatus, setFilterStatus] = useState("all");
 
   useEffect(() => {
-    if (!user) { router.push("/"); return; }
-    if (user.email !== ADMIN_EMAIL) { router.push("/"); return; }
+    if (authLoading) return;
+    if (!user || !isAdmin) {
+      router.push("/");
+      return;
+    }
     fetchApplications();
-  }, [user]);
+  }, [user, isAdmin, authLoading, router]);
 
   const fetchApplications = async () => {
     setLoading(true);
@@ -176,7 +179,15 @@ export default function AdminPage() {
     }
   };
 
-  if (!user || user.email !== ADMIN_EMAIL) {
+  if (authLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+      </div>
+    );
+  }
+
+  if (!user || !isAdmin) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
         <div className="text-center space-y-3">
