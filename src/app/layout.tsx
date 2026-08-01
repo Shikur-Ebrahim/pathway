@@ -5,6 +5,10 @@ import { AuthProvider } from "@/context/AuthContext";
 export const metadata: Metadata = {
   title: "Pathway Agency Ethiopia — Find Your Career: Embassy, NGO, Aviation & International Jobs",
   description: "Ethiopia's leading career placement agency connecting 10,000 graduates and professionals with Embassy, NGO, Aviation, and International job opportunities.",
+  icons: {
+    icon: "/logo.png",
+    apple: "/logo.png",
+  },
 };
 
 export default function RootLayout({
