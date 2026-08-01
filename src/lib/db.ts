@@ -21,6 +21,8 @@ export interface PathwayItem {
   authorEmail: string;
   createdAt: any;
   formData?: any;
+  applicationStatus?: string;
+  isViewed?: boolean;
 }
 
 const DEMO_ITEMS_STORAGE_KEY = "pathway_demo_items";
@@ -132,7 +134,24 @@ export async function updatePathwayPostStatus(id: string, status: 'accepted' | '
       const items: PathwayItem[] = JSON.parse(existingStr);
       const index = items.findIndex(i => i.id === id);
       if (index !== -1) {
-        items[index].formData = { ...items[index].formData, applicationStatus: status };
+        items[index].applicationStatus = status;
+        localStorage.setItem(DEMO_ITEMS_STORAGE_KEY, JSON.stringify(items));
+      }
+    }
+  }
+}
+
+export async function markApplicationAsViewed(id: string): Promise<void> {
+  if (isFirebaseConfigured && db?.app) {
+    const { updateDoc } = await import("firebase/firestore");
+    await updateDoc(doc(db, "posts", id), { isViewed: true });
+  } else {
+    const existingStr = localStorage.getItem(DEMO_ITEMS_STORAGE_KEY);
+    if (existingStr) {
+      const items: PathwayItem[] = JSON.parse(existingStr);
+      const index = items.findIndex(i => i.id === id);
+      if (index !== -1) {
+        items[index].isViewed = true;
         localStorage.setItem(DEMO_ITEMS_STORAGE_KEY, JSON.stringify(items));
       }
     }

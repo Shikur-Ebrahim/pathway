@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { getPathwayPosts, PathwayItem, PaymentConfig, getPaymentSettings, savePaymentSettings, deletePathwayPost, updatePathwayPostStatus } from "@/lib/db";
+import { getPathwayPosts, PathwayItem, PaymentConfig, getPaymentSettings, savePaymentSettings, deletePathwayPost, updatePathwayPostStatus, markApplicationAsViewed } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import {
   Users, FileText, LogOut, Eye, X, Phone, MapPin,
@@ -320,7 +320,13 @@ export default function AdminPage() {
     const matchSector = filterSector === "all" || fd?.sector === filterSector;
     const matchStatus = filterStatus === "all" || fd?.status === filterStatus;
     return matchSearch && matchSector && matchStatus;
+  }).sort((a, b) => {
+    const aViewed = a.isViewed || a.formData?.isViewed ? 1 : 0;
+    const bViewed = b.isViewed || b.formData?.isViewed ? 1 : 0;
+    return aViewed - bViewed;
   });
+
+  const unviewedCount = applications.filter(a => !(a.isViewed || a.formData?.isViewed)).length;
 
   const stats = {
     total: applications.length,
@@ -348,8 +354,8 @@ export default function AdminPage() {
             </div>
             
             <nav className="hidden sm:flex gap-1">
-              <button onClick={() => setActiveTab('apps')} className={`px-4 py-2 rounded-lg text-[13px] font-bold transition-all ${activeTab === 'apps' ? 'bg-gray-100 text-gray-900' : 'text-gray-400 hover:text-gray-600'}`}>
-                Applications
+              <button onClick={() => setActiveTab('apps')} className={`px-4 py-2 rounded-lg text-[13px] font-bold transition-all flex items-center gap-2 ${activeTab === 'apps' ? 'bg-gray-100 text-gray-900' : 'text-gray-400 hover:text-gray-600'}`}>
+                Applications {unviewedCount > 0 && <span className="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">{unviewedCount}</span>}
               </button>
               <button onClick={() => setActiveTab('settings')} className={`px-4 py-2 rounded-lg text-[13px] font-bold transition-all flex items-center gap-2 ${activeTab === 'settings' ? 'bg-gray-100 text-gray-900' : 'text-gray-400 hover:text-gray-600'}`}>
                 <Settings className="w-3.5 h-3.5" /> Settings
@@ -370,8 +376,8 @@ export default function AdminPage() {
         
         {/* Mobile Nav */}
         <div className="sm:hidden px-4 flex gap-1 border-t border-gray-50 pt-2 pb-2 bg-white">
-          <button onClick={() => setActiveTab('apps')} className={`flex-1 py-2 rounded-lg text-[13px] font-bold text-center transition-all ${activeTab === 'apps' ? 'bg-gray-100 text-gray-900' : 'text-gray-400'}`}>
-            Applications
+          <button onClick={() => setActiveTab('apps')} className={`flex-1 py-2 rounded-lg text-[13px] font-bold text-center transition-all flex items-center justify-center gap-2 ${activeTab === 'apps' ? 'bg-gray-100 text-gray-900' : 'text-gray-400'}`}>
+            Applications {unviewedCount > 0 && <span className="bg-red-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">{unviewedCount}</span>}
           </button>
           <button onClick={() => setActiveTab('settings')} className={`flex-1 py-2 rounded-lg text-[13px] font-bold text-center transition-all flex items-center justify-center gap-2 ${activeTab === 'settings' ? 'bg-gray-100 text-gray-900' : 'text-gray-400'}`}>
             <Settings className="w-3.5 h-3.5" /> Settings
@@ -471,9 +477,10 @@ export default function AdminPage() {
                     const hasFiles = fd?.uploadedUrls && Object.keys(fd.uploadedUrls).length > 0;
                     const isAccepted = fd?.applicationStatus === 'accepted';
                     const isInterview = fd?.applicationStatus === 'interview';
+                    const isViewed = app.isViewed || fd?.isViewed;
 
                     return (
-                      <div key={app.id} className={`px-5 py-4 hover:bg-gray-50/50 transition-colors flex items-center gap-4 ${isAccepted ? 'bg-green-50/30' : isInterview ? 'bg-blue-50/30' : ''}`}>
+                      <div key={app.id} className={`px-5 py-4 hover:bg-gray-50/50 transition-colors flex items-center gap-4 ${!isViewed ? 'bg-blue-50/10 border-l-2 border-l-blue-500' : ''} ${isAccepted ? 'bg-green-50/30' : isInterview ? 'bg-blue-50/30' : ''}`}>
                         {/* Avatar */}
                         <div className="w-10 h-10 rounded-full bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center text-white font-black text-[15px] shrink-0 shadow-sm relative">
                           {name.charAt(0).toUpperCase()}
@@ -511,7 +518,13 @@ export default function AdminPage() {
                         {/* Date + View button */}
                         <div className="text-right shrink-0 flex flex-col items-end">
                           <p className="text-[11px] font-bold text-gray-400 mb-1.5">{date}</p>
-                          <button onClick={() => setSelectedApp(app)}
+                          <button onClick={() => {
+                            setSelectedApp(app);
+                            if (!isViewed) {
+                              markApplicationAsViewed(app.id!);
+                              setApplications(apps => apps.map(a => a.id === app.id ? { ...a, isViewed: true } : a));
+                            }
+                          }}
                             className="flex items-center gap-1.5 px-3 py-1.5 bg-white border border-gray-200 text-gray-700 text-[12px] font-bold rounded-xl hover:bg-blue-50 hover:text-blue-700 hover:border-blue-200 transition-colors shadow-sm">
                             <Eye className="w-3.5 h-3.5" /> View
                           </button>
