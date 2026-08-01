@@ -205,7 +205,7 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
                     className="w-full px-3 py-2.5 bg-gray-50 border border-gray-200 rounded-xl text-[14px] font-semibold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500" />
                 </div>
               </div>
-              {emailError && <p className="text-[12px] text-red-500 font-semibold">❌ {String(emailError).includes('unauthorized') || String(emailError).includes('credentials') ? 'Gmail App Password missing or invalid. Check Vercel env vars.' : String(emailError)}</p>}
+              {emailError && <p className="text-[12px] text-red-500 font-semibold">❌ {String(emailError).includes('unauthorized') || String(emailError).includes('domain') ? 'Domain verification required or API key invalid. Check Resend.' : String(emailError)}</p>}
 
               {emailSent ? (
                 <div className="p-3 bg-green-50 border border-green-200 rounded-xl text-green-700 text-[13px] font-bold flex items-center gap-2">
