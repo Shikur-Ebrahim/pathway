@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { uploadToCloudinary } from "@/lib/cloudinary";
 import { addPathwayPost } from "@/lib/db";
@@ -186,6 +186,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
   const { user } = useAuth();
   
   const [step, setStep] = useState(1);
+  const bodyRef = useRef<HTMLDivElement>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
@@ -247,13 +248,17 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
     }));
   };
 
+  const scrollBodyToTop = () => {
+    if (bodyRef.current) bodyRef.current.scrollTop = 0;
+  };
+
   const handleNext = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollBodyToTop();
     setStep(s => Math.min(s + 1, 7));
   };
   
   const handleBack = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    scrollBodyToTop();
     setStep(s => Math.max(s - 1, 1));
   };
 
@@ -336,7 +341,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
         )}
 
         {/* Body Content */}
-        <div className="flex-1 overflow-y-auto px-5 py-6 hide-scrollbar relative bg-gray-50/30">
+        <div ref={bodyRef} className="flex-1 overflow-y-auto px-5 py-6 hide-scrollbar relative bg-gray-50/30">
           {error && (
             <div className="mb-6 p-4 rounded-2xl bg-red-50 border border-red-100 flex items-start gap-3 text-red-600 text-[14px]">
               <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
