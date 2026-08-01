@@ -3,31 +3,32 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { UserPlus, FileEdit, UploadCloud, Send, Users, Award } from "lucide-react";
+import { content, Language } from "@/lib/translations";
 
-const STEPS = [
-  { icon: UserPlus, title: "Register Account", desc: "Pay a small one-time registration fee to access 250 verified jobs." },
-  { icon: FileEdit, title: "Complete Profile", desc: "Add your education and experience." },
-  { icon: UploadCloud, title: "Upload Documents", desc: "Securely upload your CV and ID." },
-  { icon: Send, title: "Apply to Jobs", desc: "One-click apply to verified jobs." },
-  { icon: Users, title: "Interview", desc: "Meet with top employers directly." },
-  { icon: Award, title: "100% Guaranteed!", desc: "We guarantee you get hired in your chosen career field." },
-];
+const ICONS = [UserPlus, FileEdit, UploadCloud, Send, Users, Award];
 
-export const ProcessTimelineSection = () => {
+export const ProcessTimelineSection = ({ lang }: { lang: Language }) => {
+  const t = content[lang];
+  const STEPS = [
+    { title: t.step1Title, desc: t.step1Desc },
+    { title: t.step2Title, desc: t.step2Desc },
+    { title: t.step3Title, desc: t.step3Desc },
+    { title: t.step4Title, desc: t.step4Desc },
+    { title: t.step5Title, desc: t.step5Desc },
+    { title: t.step6Title, desc: t.step6Desc },
+  ];
+
   return (
     <section className="w-full max-w-full md:max-w-5xl lg:max-w-7xl mx-auto py-16 px-5 bg-blue-50/50">
       <div className="mb-12">
-        <h2 className="text-[28px] font-black text-gray-900 tracking-tight leading-tight mb-2">How It Works</h2>
-        <p className="text-[14px] text-gray-500">Your journey to a better career.</p>
+        <h2 className="text-[28px] font-black text-gray-900 tracking-tight leading-tight mb-2">{t.processTitle}</h2>
+        <p className="text-[14px] text-gray-500">{t.processSub}</p>
       </div>
-
       <div className="relative pl-6">
-        {/* Vertical Line */}
         <div className="absolute left-[39px] top-4 bottom-10 w-0.5 bg-blue-200" />
-
         <div className="space-y-8">
           {STEPS.map((step, idx) => {
-            const Icon = step.icon;
+            const Icon = ICONS[idx];
             return (
               <motion.div
                 key={idx}
@@ -52,4 +53,3 @@ export const ProcessTimelineSection = () => {
     </section>
   );
 };
-

@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import { motion } from "framer-motion";
 import { Bookmark, MapPin, Clock, Briefcase, ArrowRight } from "lucide-react";
+import { Language } from "@/lib/translations";
 
-// Procedural generation of 250 jobs evenly distributed across 4 categories
 const generateJobs = () => {
   const jobs = [];
   const categories = [
@@ -38,47 +38,24 @@ const generateJobs = () => {
   const jobTypes = ["Full-time", "Contract", "Part-time"];
 
   for (let i = 1; i <= 250; i++) {
-    // Distribute evenly across the 4 categories
     const cat = categories[i % 4];
-    
-    // Pseudo-random selection based on index to keep it consistent on re-renders
     const title = cat.titles[i % cat.titles.length];
     const company = cat.companies[(i * 3) % cat.companies.length];
     const location = cat.locations[(i * 7) % cat.locations.length];
     const exp = exps[(i * 2) % exps.length];
     const type = jobTypes[(i * 5) % jobTypes.length];
 
-    jobs.push({
-      id: i,
-      title,
-      company,
-      logo: cat.logo,
-      location,
-      type,
-      exp,
-      bg: cat.bg,
-      color: cat.color
-    });
+    jobs.push({ id: i, title, company, logo: cat.logo, location, type, exp, bg: cat.bg, color: cat.color });
   }
-
   return jobs;
 };
 
-// Generate once in module scope
 const ALL_JOBS = generateJobs();
 
 export const LatestJobsSection = ({ 
-  onApplyClick, 
-  filterCategory, 
-  onClearFilter,
-  showAll,
-  onToggleShowAll
+  onApplyClick, filterCategory, onClearFilter, showAll, onToggleShowAll, lang 
 }: { 
-  onApplyClick: () => void; 
-  filterCategory?: string | null;
-  onClearFilter?: () => void;
-  showAll: boolean;
-  onToggleShowAll: () => void;
+  onApplyClick: () => void; filterCategory?: string | null; onClearFilter?: () => void; showAll: boolean; onToggleShowAll: () => void; lang: Language;
 }) => {
   const filteredJobs = useMemo(() => {
     if (!filterCategory) return ALL_JOBS;
@@ -94,20 +71,17 @@ export const LatestJobsSection = ({
       <div className="flex justify-between items-end mb-8 px-5">
         <div>
           <h2 className="text-[28px] font-black text-gray-900 tracking-tight leading-tight">
-            {filterCategory ? `${filterCategory} Jobs` : "Trending in 2019"}
+            {filterCategory ? `${filterCategory} ${lang === "am" ? "ሥራዎች" : "Jobs"}` : (lang === "am" ? "በ 2019 በመታየት ላይ ያሉ" : "Trending in 2019")}
           </h2>
-          <p className="text-[14px] text-gray-500 mt-1">{filteredJobs.length} Verified Job Opportunities.</p>
+          <p className="text-[14px] text-gray-500 mt-1">{filteredJobs.length} {lang === "am" ? "የተረጋገጡ የሥራ ዕድሎች።" : "Verified Job Opportunities."}</p>
           {filterCategory && (
             <button onClick={onClearFilter} className="text-[12px] font-bold text-red-500 mt-2 hover:underline">
-              Clear Filter ✕
+              {lang === "am" ? "ማጣሪያውን ያጽዱ ✕" : "Clear Filter ✕"}
             </button>
           )}
         </div>
-        <button 
-          onClick={onToggleShowAll}
-          className="text-[14px] font-bold text-blue-600 hover:text-blue-700 shrink-0"
-        >
-          {showAll ? "Show Less" : "View All"}
+        <button onClick={onToggleShowAll} className="text-[14px] font-bold text-blue-600 hover:text-blue-700 shrink-0">
+          {showAll ? (lang === "am" ? "ትንሽ አሳይ" : "Show Less") : (lang === "am" ? "ሁሉንም ይመልከቱ" : "View All")}
         </button>
       </div>
 
@@ -125,9 +99,7 @@ export const LatestJobsSection = ({
             </button>
 
             <div className="flex items-center gap-4 mb-4 pr-10">
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 ${job.bg}`}>
-                {job.logo}
-              </div>
+              <div className={`w-12 h-12 rounded-xl flex items-center justify-center text-2xl shrink-0 ${job.bg}`}>{job.logo}</div>
               <div className="min-w-0">
                 <h3 className="text-[16px] font-bold text-gray-900 truncate">{job.title}</h3>
                 <p className={`text-[13px] font-medium truncate ${job.color}`}>{job.company}</p>
@@ -135,27 +107,17 @@ export const LatestJobsSection = ({
             </div>
 
             <div className="space-y-2 mb-6">
-              <div className="flex items-center gap-2 text-gray-600 text-[13px]">
-                <MapPin className="w-4 h-4 text-gray-400 shrink-0" /> <span className="truncate">{job.location}</span>
-              </div>
-              <div className="flex items-center gap-2 text-gray-600 text-[13px]">
-                <Briefcase className="w-4 h-4 text-gray-400 shrink-0" /> <span className="truncate">{job.type}</span>
-              </div>
-              <div className="flex items-center gap-2 text-gray-600 text-[13px]">
-                <Clock className="w-4 h-4 text-gray-400 shrink-0" /> <span className="truncate">{job.exp}</span>
-              </div>
+              <div className="flex items-center gap-2 text-gray-600 text-[13px]"><MapPin className="w-4 h-4 text-gray-400 shrink-0" /> <span className="truncate">{job.location}</span></div>
+              <div className="flex items-center gap-2 text-gray-600 text-[13px]"><Briefcase className="w-4 h-4 text-gray-400 shrink-0" /> <span className="truncate">{job.type}</span></div>
+              <div className="flex items-center gap-2 text-gray-600 text-[13px]"><Clock className="w-4 h-4 text-gray-400 shrink-0" /> <span className="truncate">{job.exp}</span></div>
             </div>
 
-            <button 
-              onClick={onApplyClick}
-              className="mt-auto w-full py-3.5 rounded-xl bg-gray-900 hover:bg-black text-white font-bold text-[14px] transition-colors flex items-center justify-center gap-2"
-            >
-              Apply Now
+            <button onClick={onApplyClick} className="mt-auto w-full py-3.5 rounded-xl bg-gray-900 hover:bg-black text-white font-bold text-[14px] transition-colors flex items-center justify-center gap-2">
+              {lang === "am" ? "አሁን ያመልክቱ" : "Apply Now"}
             </button>
           </motion.div>
         ))}
 
-        {/* View Other Options Card (only show if not showing all and there are remaining items) */}
         {!showAll && remainingCount > 0 && (
           <motion.div
             initial={{ opacity: 0, x: 20 }}
@@ -167,12 +129,11 @@ export const LatestJobsSection = ({
             <div className="w-16 h-16 rounded-full bg-blue-100 flex items-center justify-center mb-4 text-blue-600 group-hover:scale-110 transition-transform">
               <ArrowRight className="w-8 h-8" />
             </div>
-            <h3 className="text-[18px] font-black text-gray-900 mb-1">Explore More</h3>
-            <p className="text-[14px] text-gray-500 font-medium">View {remainingCount} other options across Ethiopia & Int'l</p>
+            <h3 className="text-[18px] font-black text-gray-900 mb-1">{lang === "am" ? "ተጨማሪ ያስሱ" : "Explore More"}</h3>
+            <p className="text-[14px] text-gray-500 font-medium">{lang === "am" ? `${remainingCount} ሌሎች አማራጮችን ይመልከቱ` : `View ${remainingCount} other options across Ethiopia & Int'l`}</p>
           </motion.div>
         )}
       </div>
     </section>
   );
 };
-

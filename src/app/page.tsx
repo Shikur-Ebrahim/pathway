@@ -58,26 +58,27 @@ export default function Home() {
 
       <main className="flex-1 w-full flex flex-col overflow-x-hidden">
         {/* We pass handleApplyClick to sections that need to trigger the modal */}
-        <HeroSection onApplyClick={handleApplyClick} onBrowseJobs={handleBrowseJobs} />
-        <ImageBannerSection />
-        <CategoriesSection onSelectCategory={handleCategorySelect} />
-        <GallerySection />
-        <TrustedCompaniesSection />
+        <HeroSection onApplyClick={handleApplyClick} onBrowseJobs={handleBrowseJobs} lang={lang} />
+        <ImageBannerSection lang={lang} />
+        <CategoriesSection onSelectCategory={handleCategorySelect} lang={lang} />
+        <GallerySection lang={lang} />
+        <TrustedCompaniesSection lang={lang} />
         <LatestJobsSection 
           onApplyClick={handleApplyClick} 
           filterCategory={activeCategory} 
           onClearFilter={() => setActiveCategory(null)}
           showAll={showAllJobs}
           onToggleShowAll={() => setShowAllJobs(prev => !prev)}
+          lang={lang}
         />
-        <ResourcesSection />
-        <ProcessTimelineSection />
-        <FeaturesSection />
-        <FAQSection />
-        <NewsletterSection />
+        <ResourcesSection lang={lang} />
+        <ProcessTimelineSection lang={lang} />
+        <FeaturesSection lang={lang} />
+        <FAQSection lang={lang} />
+        <NewsletterSection lang={lang} />
       </main>
 
-      <Footer />
+      <Footer lang={lang} />
 
       {/* Modals */}
       <AuthModal 

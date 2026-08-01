@@ -2,35 +2,115 @@ export type Language = "am" | "en";
 
 export const content = {
   am: {
-    heroBadge: "🔥 ለ 10,000 ስራ ፈላጊዎች ብቻ የተዘጋጀ ልዩ እድል!",
-    heroTitle: "በኢትዮጵያ ውስጥ በየትኛውም የስራ ዘርፍ ተመርቀው ስራ እየፈለጉ ነው?",
-    heroSub: "ወይስ ስራ ላይ ሆነው በ እኛ በኩል በሚመጡ ስራዎች የተሻለ እድል ማግኘት ይፈልጋሉ? ለእርስዎ የሚሆን ታላቅ ብስራት አለን! 🚀",
-    heroDesc: "Pathway Agency አዲስ ተመራቂዎችን እና ስራ ላይ ያሉ ባለሙያዎችን በኢትዮጵያ ውስጥ ካሉ ከፍተኛ የስራ ዘርፎች እና ከውጭ ሀገር እድሎች ጋር የሚያገናኝ ታማኝ አጋርዎ ነው!",
+    // ── Hero ──
+    heroBadge: "🌟 የ 2019 ዓ.ም የኢትዮጵያ አዲስ ዓመት ልዩ እድል!",
+    heroTitle: "ህልምዎን ያሳካሉ",
+    heroHighlight: "ሙያ ዛሬ",
+    heroSub: "Pathway Agency Ethiopia ጋር በመቀላቀል ከምርጥ ዓለም አቀፍ ድርጅቶች ጋር ይገናኙ። ዛሬ ይመዝገቡ እና ከ 10,000 የሥራ ዕድሎች አንዱን ያረጋግጡ!",
+    heroApplyBtn: "ነፃ መለያ ይፍጠሩ",
+    heroBrowseBtn: "ሥራዎችን ያስሱ",
+    heroStatJobs: "የሥራ ዕድሎች",
+    heroStatActive: "ንቁ ሥራዎች",
+    heroStatOrgs: "ዓለም አቀፍ ድርጅቶች",
+    heroStatRate: "የስኬት መጠን",
+
+    // ── Categories ──
+    categoriesTitle: "ዋና ዋና ዘርፎችን ያስሱ",
+    cat1Title: "ኤምባሲዎች እና ልዑካን",
+    cat1Desc: "አስተዳደር፣ ፅህፈት፣ ፋይናንስ፣ ቴክኖሎጂ እና ቴክኒካዊ ቦታዎች።",
+    cat2Title: "ዓ.ድ.ት.ሀ. እና የ UN ኤጀንሲዎች",
+    cat2Desc: "ልማት፣ ሰብዓዊ ዕርዳታ፣ የፕሮጀክት አስተዳደር እና ቢሮ ሥራዎች።",
+    cat3Title: "አቪዬሽን እና አየር ማረፊያዎች",
+    cat3Desc: "የአየር ማረፊያ ሥራ አፈፃፀም፣ የደንበኛ አገልግሎት፣ ሎጅስቲክስ።",
+    cat4Title: "ዓለም አቀፍ ሥራዎች",
+    cat4Desc: "በዓለም ዙሪያ የተረጋገጡ የሥራ ዕድሎች።",
+
+    // ── Features ──
+    featuresTitle: "ለምን Pathway ይምረጡ?",
+    featuresSub: "ሁሉም ነገር ህልምዎን ሙያ ለማግኘት፣ በአንድ ቀላል ስርዓት ውስጥ።",
+    feat1: "የተረጋገጡ አሠሪዎች",
+    feat2: "ፈጣን ማመልከቻ",
+    feat3: "የሙያ ድጋፍ",
+    feat4: "100% ዋስትና",
+    feat5: "ደህንነቱ የተጠበቀ ሰነዶች",
+    feat6: "ሞባይል ተስማሚ",
+
+    // ── Process Timeline ──
+    processTitle: "እንዴት ይሰራል",
+    processSub: "ወደ ተሻለ ሙያ የሚወስደው መንገድዎ።",
+    step1Title: "መለያ ይፍጠሩ",
+    step1Desc: "250 የተረጋገጡ ሥራዎችን ለማግኘት አነስተኛ የምዝገባ ክፍያ ይክፈሉ።",
+    step2Title: "መገለጫ ይሙሉ",
+    step2Desc: "ትምህርትዎን እና ልምድዎን ያክሉ።",
+    step3Title: "ሰነዶችን ይጫኑ",
+    step3Desc: "CV እና መታወቂያዎን በደህና ይጫኑ።",
+    step4Title: "ለሥራዎች ያመልክቱ",
+    step4Desc: "በአንድ ጠቅ ወደ ተረጋገጡ ሥራዎች ያመልክቱ።",
+    step5Title: "ቃለ-መጠይቅ",
+    step5Desc: "ምርጥ አሠሪዎች ጋር ቀጥታ ይገናኙ።",
+    step6Title: "100% ዋስትና!",
+    step6Desc: "በፈለጉት የሙያ ዘርፍ ሥራ እንደሚያገኙ እናረጋግጣለን።",
+
+    // ── FAQ ──
+    faqTitle: "ተደጋጋሚ ጥያቄዎች",
+    faq1Q: "ምዝገባ ነፃ ነው?",
+    faq1A: "አነስተኛ አንድ ጊዜ ክፍያ አለ። ሆኖም ከተመዘገቡ በኋላ በፈለጉት የሙያ ዘርፍ 100% ሥራ ዋስትና ይሰጣናዎታለን!",
+    faq2Q: "እንዴት ለሥራ ማመልከት እችላለሁ?",
+    faq2A: "መለያ ፈጥረው መገለጫዎን ካሟሉ በኋላ ማንኛውም የተረጋገጠ ሥራ ላይ በአንድ ጠቅ ማመልከት ይችላሉ።",
+    faq3Q: "ዓለም አቀፍ ሥራዎቹ ተረጋግጠዋል?",
+    faq3A: "አዎ። ደህንነትዎን ለማረጋገጥ ሁሉንም አሠሪዎች፣ በተለይ ለውጭ ሥራ፣ በጥብቅ እናረጋግጣለን።",
+    faq4Q: "ቆየት ብዬ መገለጫዬን ማስተካከል እችላለሁ?",
+    faq4A: "አዎ፣ CV፣ ልምድ እና የ連絡 መረጃዎን ከዳሽቦርዱ በማንኛውም ጊዜ ማዘመን ይችላሉ።",
+
+    // ── Newsletter ──
+    newsletterTitle: "የሥራ ማስጠንቀቂያ ያግኙ",
+    newsletterSub: "ምርጥ ሥራ ማስታወቂያዎችን ቀጥታ ወደ ኢሜልዎ ለማግኘት ይመዝገቡ።",
+    newsletterPlaceholder: "የኢሜል አድራሻዎን ያስገቡ",
+    newsletterBtn: "አሁን ይመዝገቡ",
+    newsletterSuccessTitle: "እናመሰግናለን! 🎉",
+    newsletterSuccessMsg: "አሁን ለ Pathway Agency ሥራ ማስጠንቀቂያዎች ተመዝግበዋል። ለቅርብ ሥራ ዕድሎች ይከታተሉ!",
+    newsletterExists: "ይህ ኢሜል አስቀድሞ ተመዝግቧል! ✅",
+    newsletterError: "ትክክለኛ Gmail አድራሻ ያስገቡ (ምሳሌ: example@gmail.com)።",
+    newsletterLoading: "እየተመዘገቡ ነው...",
+
+    // ── Footer ──
+    footerTagline: "ኢትዮጵያዊ ሙያተኞችን ከዓለም ዓቀፍ ዕድሎች ጋር የሚያገናኝ በጣም ታማኝ የቅጥር ስርዓት።",
+    footerQuickLinks: "ፈጣን አገናኞች",
+    footerLegal: "ህጋዊ",
+    footerHome: "መነሻ ገፅ",
+    footerJobs: "ሥራ ዕድሎች",
+    footerRequirements: "መስፈርቶች",
+    footerApply: "አሁን ያመልክቱ",
+    footerPrivacy: "የግላዊነት ፖሊሲ",
+    footerTerms: "አጠቃቀም ውሎች",
+    footerContact: "ያነጋግሩን",
+    footerRights: "ሁሉም መብቶች የተጠበቁ ናቸው",
+
+    // ── Resources ──
+    resourcesTitle: "ሀብቶች",
+    resourcesSub: "ሙያዎን ለማሳደግ የሚረዱ መሳሪያዎች።",
+
+    // ── Existing keys ──
+    heroBadgeLegacy: "🔥 ለ 10,000 ስራ ፈላጊዎች ብቻ የተዘጋጀ ልዩ እድል!",
+    heroTitleLegacy: "በኢትዮጵያ ውስጥ በየትኛውም የስራ ዘርፍ ተመርቀው ስራ እየፈለጉ ነው?",
+    heroSubLegacy: "ወይስ ስራ ላይ ሆነው በ እኛ በኩል በሚመጡ ስራዎች የተሻለ እድል ማግኘት ይፈልጋሉ? ለእርስዎ የሚሆን ታላቅ ብስራት አለን! 🚀",
+    heroDescLegacy: "Pathway Agency አዲስ ተመራቂዎችን እና ስራ ላይ ያሉ ባለሙያዎችን በኢትዮጵያ ውስጥ ካሉ ከፍተኛ የስራ ዘርፎች እና ከውጭ ሀገር እድሎች ጋር የሚያገናኝ ታማኝ አጋርዎ ነው!",
     applyTelegramBtn: "በቴሌግራም ያነጋግሩን (@pathway_agency)",
     applyOnlineBtn: "በዌብሳይቱ ላይ በቀጥታ ያመልክቱ",
     quotaNotice: "የ 10,000 ሰዎች ብቻ ስለሆነ ቀድመው በመመዝገብ የቦታዎ ባለቤት ይሁኑ!",
     seatsTaken: "7,845 / 10,000 አመልካቾች ተመዝግበዋል (ቦታ ሳይሞላ በፍጥነት ያመልክቱ)",
-    
-    // 4 Major Sectors
     sectorsTitle: "💼 እኛ የምናመቻቻቸው 4 ዋነኛ የስራ አይነቶች",
     sectorsSub: "በድርጅታችን Pathway Agency በኩል ስራዎችን በቀጥታ የሚያገኙበት ታላቅ እድል ተመቻችቷል",
-    
     sector1Title: "ኤምባሲዎች (Embassies & Diplomatic Missions)",
     sector1Desc: "በኢትዮጵያ ውስጥ በሚገኙ ኤምባሲዎች የአስተዳደር፣ ፅህፈት፣ ትርጉም እና የቴክኒክ ስራዎች እድል",
-    
     sector2Title: "ዓለም አቀፍ ድርጅቶች (NGOs & UN Agencies)",
     sector2Desc: "በተለያዩ አለም አቀፍ ድርጅቶች ከ 0 ዓመት እስከ ከፍተኛ ልምድ ያላቸው ባለሙያዎች የሚፈልጉ እድሎች",
-    
     sector3Title: "አቪዬሽን እና ኤርፖርት (Airport & Aviation Operations)",
     sector3Desc: "የአየር መንገድ፣ የኤርፖርት ሎጅስቲክስ፣ የደንበኞች አገልግሎት እና የኦፕሬሽን ስራዎች",
-    
     sector4Title: "የውጭ ሀገር ስራዎች (Foreign & International Jobs)",
     sector4Desc: "ህጋዊና አስተማማኝ የውጭ ሀገር የስራ እድሎች ከተሟላ የቪዛ እና የመረጃ ማረጋገጫ ጋር",
-
-    // Requirements
     reqTitle: "📋 ለማመልከት የሚያስፈልጉ መስፈርቶች (Requirements)",
     reqSub: "ማመልከቻዎ በፍጥነት ተቀባይነት እንዲገኝ ሰነዶችዎን እና CVዎን በጥራት አዘጋጅተው ይላኩልን!",
-    
     freshTitle: "🎓 1. አዲስ ተመራቂዎች (ለ 0 ዓመት የልምድ እድሎች)",
     freshBadge: "2015 - 2018 ዓ.ም ተመራቂዎች",
     fresh1: "ከ 2015 እስከ 2018 ዓ.ም የተመረቃችሁ እና በአሁኑ ሰዓት ስራ ላይ የሌላችሁ",
@@ -38,7 +118,6 @@ export const content = {
     fresh3: "የተደማማሪ ውጤት (Cumulative GPA): 2.1 እና ከዚያ በላይ",
     fresh4: "በስነ-ስርዓት የተዘጋጀ CV (Standard Resume)",
     fresh5: "ጉርድ ፎቶግራፍ (Passport Size Photo)",
-
     expTitle: "💼 2. ስራ ላይ ያሉ / ልምድ ያላቸው ባለሙያዎች",
     expBadge: "ቀደም ብለው የተመረቁ / ስራ ላይ ያሉ",
     exp1: "በአሁኑ ሰዓት ስራ ላይ ያላችሁ ወይም ከ 2015 ዓ.ም በፊት የተመረቃችሁ",
@@ -46,46 +125,122 @@ export const content = {
     exp3: "የስራ ክህሎት እና ልምድ ማስረጃ (Work Skill & Experience Documents)",
     exp4: "በስነ-ስርዓት የተዘጋጀ ዘመናዊ CV (Professional Resume)",
     exp5: "ጉርድ ፎቶግራፍ (Passport Size Photo)",
-
-    // Vision Statement
     missionTitle: "🌟 ዓላማችን",
     missionText: "የትምህርትና የልምድ ህይወትዎን ወደ ስኬታማ የሙያ መስመር መቀየር ነው!",
-
-    // Contact
     contactTitle: "📲 ለበለጠ መረጃ እና ማመልከቻ ለመላክ",
     contactSub: "አሁኑኑ በቴሌግራም አድራሻችን ያነጋግሩን፤ ፈጣን ምላሽ እንሰጣለን!",
     telegramHandle: "@pathway_agency",
   },
   en: {
-    heroBadge: "🔥 Exclusive Opportunity for 10,000 Job Seekers!",
-    heroTitle: "Are you a graduate looking for employment in Ethiopia?",
-    heroSub: "Or currently employed and seeking better high-paying career opportunities? We have great news for you! 🚀",
-    heroDesc: "Pathway Agency is your trusted career bridge connecting fresh graduates and experienced professionals with top diplomatic, NGO, aviation, and international positions.",
+    // ── Hero ──
+    heroBadge: "🌟 2019 Ethiopian New Year Special!",
+    heroTitle: "Secure Your",
+    heroHighlight: "Dream Job Today",
+    heroSub: "Join Pathway Agency Ethiopia and connect with top global organizations. Register today to claim one of the exclusive 10,000 guaranteed employment opportunities!",
+    heroApplyBtn: "Create Free Account",
+    heroBrowseBtn: "Browse Jobs",
+    heroStatJobs: "Employment Opportunities",
+    heroStatActive: "Active Jobs",
+    heroStatOrgs: "Global Orgs",
+    heroStatRate: "Success Rate",
+
+    // ── Categories ──
+    categoriesTitle: "Explore Top Industries",
+    cat1Title: "Embassies & Missions",
+    cat1Desc: "Administrative, Secretarial, Finance, IT and Technical Positions.",
+    cat2Title: "NGOs & UN Agencies",
+    cat2Desc: "Development, Humanitarian, Project Management and Administration.",
+    cat3Title: "Aviation & Airports",
+    cat3Desc: "Airport Operations, Customer Service, Ground Handling and Logistics.",
+    cat4Title: "International Jobs",
+    cat4Desc: "Verified Employment Opportunities across the globe.",
+
+    // ── Features ──
+    featuresTitle: "Why Choose Pathway?",
+    featuresSub: "Everything you need to land your dream job, built into one seamless platform.",
+    feat1: "Verified Employers",
+    feat2: "Fast Applications",
+    feat3: "Career Support",
+    feat4: "100% Guaranteed",
+    feat5: "Secure Documents",
+    feat6: "Mobile Friendly",
+
+    // ── Process Timeline ──
+    processTitle: "How It Works",
+    processSub: "Your journey to a better career.",
+    step1Title: "Register Account",
+    step1Desc: "Pay a small one-time registration fee to access 250 verified jobs.",
+    step2Title: "Complete Profile",
+    step2Desc: "Add your education and experience.",
+    step3Title: "Upload Documents",
+    step3Desc: "Securely upload your CV and ID.",
+    step4Title: "Apply to Jobs",
+    step4Desc: "One-click apply to verified jobs.",
+    step5Title: "Interview",
+    step5Desc: "Meet with top employers directly.",
+    step6Title: "100% Guaranteed!",
+    step6Desc: "We guarantee you get hired in your chosen career field.",
+
+    // ── FAQ ──
+    faqTitle: "Common Questions",
+    faq1Q: "Is registration free?",
+    faq1A: "There is a small, one-time registration fee. However, once registered, we guarantee 100% job placement in your chosen career field!",
+    faq2Q: "How do I apply for a job?",
+    faq2A: "Once you create your account and complete your profile, you can easily apply to any verified job with a single click.",
+    faq3Q: "Are the international jobs verified?",
+    faq3A: "Absolutely. We strictly vet every employer, especially for foreign employment, to ensure your safety and security.",
+    faq4Q: "Can I edit my profile later?",
+    faq4A: "Yes, you can update your CV, experience, and contact information at any time from your dashboard.",
+
+    // ── Newsletter ──
+    newsletterTitle: "Get Job Alerts",
+    newsletterSub: "Subscribe to receive the latest premium job postings directly in your inbox.",
+    newsletterPlaceholder: "Enter your email address",
+    newsletterBtn: "Subscribe Now",
+    newsletterSuccessTitle: "Thank You! 🎉",
+    newsletterSuccessMsg: "You are now subscribed to Pathway Agency job alerts. Stay tuned for the latest opportunities!",
+    newsletterExists: "This email is already subscribed! ✅",
+    newsletterError: "Please enter a valid Gmail address (e.g. example@gmail.com).",
+    newsletterLoading: "Subscribing...",
+
+    // ── Footer ──
+    footerTagline: "The most trusted recruitment platform connecting Ethiopian professionals with global opportunities.",
+    footerQuickLinks: "Quick Links",
+    footerLegal: "Legal",
+    footerHome: "Home",
+    footerJobs: "Job Opportunities",
+    footerRequirements: "Requirements",
+    footerApply: "Apply Now",
+    footerPrivacy: "Privacy Policy",
+    footerTerms: "Terms of Service",
+    footerContact: "Contact Us",
+    footerRights: "All rights reserved",
+
+    // ── Resources ──
+    resourcesTitle: "Resources",
+    resourcesSub: "Tools to help you grow your career.",
+
+    // ── Existing keys ──
+    heroBadgeLegacy: "🔥 Exclusive Opportunity for 10,000 Job Seekers!",
+    heroTitleLegacy: "Are you a graduate looking for employment in Ethiopia?",
+    heroSubLegacy: "Or currently employed and seeking better high-paying career opportunities? We have great news for you! 🚀",
+    heroDescLegacy: "Pathway Agency is your trusted career bridge connecting fresh graduates and experienced professionals with top diplomatic, NGO, aviation, and international positions.",
     applyTelegramBtn: "Contact on Telegram (@pathway_agency)",
     applyOnlineBtn: "Apply Directly Online",
     quotaNotice: "Limited to 10,000 applicants only! Register early to secure your slot.",
     seatsTaken: "7,845 / 10,000 Applicants Registered (Apply quickly before slots fill up)",
-
-    // 4 Major Sectors
     sectorsTitle: "💼 4 Primary Career Categories We Facilitate",
     sectorsSub: "Direct employment placement opportunities with trusted partner organizations",
-
     sector1Title: "Embassies & Diplomatic Missions",
     sector1Desc: "Administrative, secretarial, translation, and technical operational roles in diplomatic missions.",
-    
     sector2Title: "NGOs & UN Agencies",
     sector2Desc: "Global non-profit & UN agency positions ranging from 0-year entry level to experienced positions.",
-    
     sector3Title: "Airport & Aviation Operations",
     sector3Desc: "Aviation logistics, airport operations, customer care, and flight support positions.",
-    
     sector4Title: "Foreign & International Jobs",
     sector4Desc: "Legal, verified, and safe international job opportunities with full documentation guidance.",
-
-    // Requirements
     reqTitle: "📋 Applicant Eligibility Requirements",
     reqSub: "Prepare your standard documents to ensure rapid processing of your application",
-
     freshTitle: "🎓 1. Fresh Graduates (0-Year Experience Track)",
     freshBadge: "Graduates from 2015 - 2018 E.C.",
     fresh1: "Graduated between 2015 – 2018 Ethiopian Calendar & currently seeking employment",
@@ -93,7 +248,6 @@ export const content = {
     fresh3: "Cumulative GPA: 2.1 and above",
     fresh4: "Well-structured Standard Resume (CV)",
     fresh5: "Passport Size Photograph",
-
     expTitle: "💼 2. Experienced / Previously Graduated Professionals",
     expBadge: "Employed or Pre-2015 E.C. Graduates",
     exp1: "Currently employed or graduated prior to 2015 E.C. (all fields welcome)",
@@ -101,12 +255,8 @@ export const content = {
     exp3: "Work Experience Certificates & Skill Proofs",
     exp4: "Updated Professional Resume (CV)",
     exp5: "Passport Size Photograph",
-
-    // Vision Statement
     missionTitle: "🌟 Our Mission",
     missionText: "Transforming your educational achievements and experience into a thriving professional career!",
-
-    // Contact
     contactTitle: "📲 Reach Out & Submit Application",
     contactSub: "Message us directly on Telegram for instant response and registration guidance",
     telegramHandle: "@pathway_agency",
