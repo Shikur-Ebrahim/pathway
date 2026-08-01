@@ -135,13 +135,15 @@ export async function POST(req: NextRequest) {
     });
 
     if (error) {
-      console.error("Resend error:", error);
-      return NextResponse.json({ error }, { status: 500 });
+      console.error("Resend error:", JSON.stringify(error));
+      const msg = typeof error === 'string' ? error : (error as any)?.message || JSON.stringify(error);
+      return NextResponse.json({ error: msg }, { status: 500 });
     }
 
     return NextResponse.json({ success: true, id: data?.id });
   } catch (err: any) {
     console.error("API error:", err);
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    const msg = typeof err === 'string' ? err : err?.message || 'Unknown error';
+    return NextResponse.json({ error: msg }, { status: 500 });
   }
 }
