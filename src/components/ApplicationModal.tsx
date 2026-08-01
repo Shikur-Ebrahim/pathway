@@ -314,7 +314,13 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
       : true;
     canProceed = baseEduDone && higherEduDone && expDone;
   }
-  if (step === 5) canProceed = true; // Make sector specific optional to proceed easily, can add strict validation later
+  if (step === 5) {
+    if (formData.sector === 'embassy') canProceed = !!formData.sectorSpecific.englishLevel;
+    else if (formData.sector === 'ngo') canProceed = !!formData.sectorSpecific.ngoExperience;
+    else if (formData.sector === 'airport') canProceed = !!formData.sectorSpecific.customerService && !!formData.sectorSpecific.shiftAvailability;
+    else if (formData.sector === 'foreign') canProceed = !!formData.sectorSpecific.preferredCountry && !!formData.sectorSpecific.passportAvailable && !!formData.sectorSpecific.readyToRelocate;
+    else canProceed = true;
+  }
   if (step === 6) canProceed = !!files.cv && !!files.passportPhoto;
   if (step === 7) canProceed = formData.declarations.isTrue && formData.declarations.shareProfile;
 
@@ -375,9 +381,9 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
               {/* STEP 1: Career Status */}
               {step === 1 && (
                 <div className="space-y-6 animate-fadeIn">
-                  <div className="mb-8">
-                    <h1 className="text-2xl font-black text-gray-900 mb-2">Welcome!</h1>
-                    <p className="text-[15px] text-gray-500">To get started, please tell us about your career status.</p>
+                  <div className="mb-6">
+                    <h1 className="text-2xl font-black text-gray-900 mb-2">Welcome to Pathway!</h1>
+                    <p className="text-[15px] text-gray-500 leading-relaxed">Let's get you started. First, tell us about your current career status so we can tailor your application.</p>
                   </div>
 
                   <div className="space-y-4">
@@ -396,7 +402,12 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                         </div>
                       </div>
                       <h3 className="text-[17px] font-bold text-gray-900 mb-1">Fresh Graduate</h3>
-                      <p className="text-[13px] text-gray-500 leading-relaxed">Recently graduated and looking for my first professional job.</p>
+                      <p className="text-[13px] text-gray-500 leading-relaxed">Recently graduated (2015–2018 E.C.) and looking for your first professional opportunity.</p>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {['0 Years Exp', 'Any Sector', 'No Work History Needed'].map(tag => (
+                          <span key={tag} className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${ formData.status === 'fresh' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500' }`}>{tag}</span>
+                        ))}
+                      </div>
                     </button>
 
                     <button
@@ -414,7 +425,12 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                         </div>
                       </div>
                       <h3 className="text-[17px] font-bold text-gray-900 mb-1">Experienced Professional</h3>
-                      <p className="text-[13px] text-gray-500 leading-relaxed">I have previous work experience and I'm applying for another job.</p>
+                      <p className="text-[13px] text-gray-500 leading-relaxed">Currently working or graduated before 2015 E.C. with prior work experience.</p>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {['1+ Years Exp', 'Career Change', 'Professionals Welcome'].map(tag => (
+                          <span key={tag} className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${ formData.status === 'experienced' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500' }`}>{tag}</span>
+                        ))}
+                      </div>
                     </button>
                   </div>
                 </div>
@@ -561,52 +577,59 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
               {step === 5 && (
                 <div className="space-y-6 animate-fadeIn">
                   <div className="mb-6">
-                    <h1 className="text-2xl font-black text-gray-900 mb-2">Additional Info</h1>
-                    <p className="text-[15px] text-gray-500">Specific requirements for {SECTORS.find(s=>s.id===formData.sector)?.title}.</p>
+                    <div className="inline-flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-full mb-3">
+                      <span className="text-[13px] font-bold text-blue-700">{SECTORS.find(s=>s.id===formData.sector)?.emoji} {SECTORS.find(s=>s.id===formData.sector)?.title}</span>
+                    </div>
+                    <h1 className="text-2xl font-black text-gray-900 mb-2">Sector Requirements</h1>
+                    <p className="text-[15px] text-gray-500">Please fill in the specific information required for this sector.</p>
                   </div>
 
                   {formData.sector === 'embassy' && (
                     <>
-                      <InputField label="English Level" section="sectorSpecific" field="englishLevel" options={["Basic", "Intermediate", "Fluent", "Native"]} formData={formData} updateForm={updateForm} />
-                      <InputField label="Other Languages" section="sectorSpecific" field="otherLanguages" formData={formData} updateForm={updateForm} />
-                      <InputField label="Computer Skills" section="sectorSpecific" field="embassyComputerSkills" type="textarea" formData={formData} updateForm={updateForm} />
-                      <InputField label="Security Clearance" section="sectorSpecific" field="securityClearance" options={["Yes", "No"]} formData={formData} updateForm={updateForm} />
-                      <InputField label="Typing Skills (WPM)" section="sectorSpecific" field="typingSkills" formData={formData} updateForm={updateForm} />
-                      <InputField label="Motivation Letter / Statement" section="sectorSpecific" field="motivationLetter" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label="English Proficiency Level" section="sectorSpecific" field="englishLevel" options={["Basic", "Intermediate", "Advanced", "Fluent / Native"]} required formData={formData} updateForm={updateForm} />
+                      <InputField label="Other Languages Spoken (Optional)" section="sectorSpecific" field="otherLanguages" formData={formData} updateForm={updateForm} />
+                      <InputField label="Computer & Software Skills" section="sectorSpecific" field="embassyComputerSkills" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label="Typing Speed (words per minute, Optional)" section="sectorSpecific" field="typingSkills" formData={formData} updateForm={updateForm} />
+                      <InputField label="Do you have Security Clearance?" section="sectorSpecific" field="securityClearance" options={["Yes", "No", "Can Obtain"]} formData={formData} updateForm={updateForm} />
+                      <InputField label="Motivation Statement (Why do you want this role?)" section="sectorSpecific" field="motivationLetter" type="textarea" formData={formData} updateForm={updateForm} />
                     </>
                   )}
 
                   {formData.sector === 'ngo' && (
                     <>
-                      <InputField label="NGO Experience (Years)" section="sectorSpecific" field="ngoExperience" formData={formData} updateForm={updateForm} />
-                      <InputField label="Project Management Skills" section="sectorSpecific" field="projectManagement" type="textarea" formData={formData} updateForm={updateForm} />
-                      <InputField label="Community Development Exp." section="sectorSpecific" field="communityDevelopment" type="textarea" formData={formData} updateForm={updateForm} />
-                      <InputField label="Proposal Writing" section="sectorSpecific" field="proposalWriting" options={["Yes", "No", "Basic"]} formData={formData} updateForm={updateForm} />
-                      <InputField label="Report Writing" section="sectorSpecific" field="reportWriting" options={["Yes", "No", "Basic"]} formData={formData} updateForm={updateForm} />
-                      <InputField label="Donor Experience (USAID, UN, etc)" section="sectorSpecific" field="donorExperience" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label="Years of NGO / Development Work Experience" section="sectorSpecific" field="ngoExperience" options={["None", "Less than 1 year", "1-3 years", "3-5 years", "5+ years"]} required formData={formData} updateForm={updateForm} />
+                      <InputField label="Project Management Experience" section="sectorSpecific" field="projectManagement" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label="Community Development Experience" section="sectorSpecific" field="communityDevelopment" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label="Can you write Proposals?" section="sectorSpecific" field="proposalWriting" options={["Yes – Independently", "Yes – With Support", "No"]} formData={formData} updateForm={updateForm} />
+                      <InputField label="Can you write Reports?" section="sectorSpecific" field="reportWriting" options={["Yes – Independently", "Yes – With Support", "No"]} formData={formData} updateForm={updateForm} />
+                      <InputField label="Donor / Partner Experience (USAID, UNICEF, EU, etc.)" section="sectorSpecific" field="donorExperience" type="textarea" formData={formData} updateForm={updateForm} />
                     </>
                   )}
 
                   {formData.sector === 'airport' && (
                     <>
-                      <InputField label="Customer Service Experience" section="sectorSpecific" field="customerService" type="textarea" formData={formData} updateForm={updateForm} />
-                      <InputField label="Ground Handling Experience" section="sectorSpecific" field="groundHandling" type="textarea" formData={formData} updateForm={updateForm} />
-                      <InputField label="Cargo Experience" section="sectorSpecific" field="cargoExperience" type="textarea" formData={formData} updateForm={updateForm} />
-                      <InputField label="Shift Availability" section="sectorSpecific" field="shiftAvailability" options={["Day Shift", "Night Shift", "Any Shift"]} formData={formData} updateForm={updateForm} />
-                      <InputField label="Physical Fitness Status" section="sectorSpecific" field="physicalFitness" options={["Excellent", "Good", "Average"]} formData={formData} updateForm={updateForm} />
-                      <InputField label="Travel Availability" section="sectorSpecific" field="travelAvailability" options={["Yes", "No"]} formData={formData} updateForm={updateForm} />
+                      <InputField label="Preferred Airport Role" section="sectorSpecific" field="customerService" options={["Customer Service Agent", "Ground Handling", "Cargo & Logistics", "Airport Operations", "Check-in Agent", "Other"]} required formData={formData} updateForm={updateForm} />
+                      <InputField label="Do you have Ground Handling experience?" section="sectorSpecific" field="groundHandling" options={["Yes", "No"]} formData={formData} updateForm={updateForm} />
+                      <InputField label="Cargo / Freight Experience (Optional)" section="sectorSpecific" field="cargoExperience" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label="Shift Preference" section="sectorSpecific" field="shiftAvailability" options={["Day Shift Only", "Night Shift Only", "Any Shift"]} required formData={formData} updateForm={updateForm} />
+                      <InputField label="Physical Fitness Level" section="sectorSpecific" field="physicalFitness" options={["Excellent", "Good", "Average"]} formData={formData} updateForm={updateForm} />
+                      <InputField label="Available to Travel / Work Different Locations?" section="sectorSpecific" field="travelAvailability" options={["Yes", "No"]} formData={formData} updateForm={updateForm} />
                     </>
                   )}
 
                   {formData.sector === 'foreign' && (
                     <>
-                      <InputField label="Preferred Country" section="sectorSpecific" field="preferredCountry" formData={formData} updateForm={updateForm} />
-                      <InputField label="Passport Available" section="sectorSpecific" field="passportAvailable" options={["Yes", "No"]} formData={formData} updateForm={updateForm} />
-                      <InputField label="Passport Number" section="sectorSpecific" field="passportNumber" formData={formData} updateForm={updateForm} />
-                      <InputField label="Passport Expiry Date" section="sectorSpecific" field="passportExpiry" type="date" formData={formData} updateForm={updateForm} />
-                      <InputField label="Ready to Relocate" section="sectorSpecific" field="readyToRelocate" options={["Immediately", "Within 1 Month", "Within 3 Months"]} formData={formData} updateForm={updateForm} />
-                      <InputField label="Medical Certificate" section="sectorSpecific" field="medicalCertificate" options={["Yes", "No"]} formData={formData} updateForm={updateForm} />
-                      <InputField label="Police Clearance" section="sectorSpecific" field="policeClearance" options={["Yes", "No"]} formData={formData} updateForm={updateForm} />
+                      <InputField label="Preferred Destination Country" section="sectorSpecific" field="preferredCountry" options={["Saudi Arabia", "UAE", "Qatar", "Kuwait", "Oman", "Bahrain", "Jordan", "Lebanon", "Other"]} required formData={formData} updateForm={updateForm} />
+                      <InputField label="Do you have a valid Passport?" section="sectorSpecific" field="passportAvailable" options={["Yes", "No – Can Apply"]} required formData={formData} updateForm={updateForm} />
+                      {formData.sectorSpecific.passportAvailable === 'Yes' && (
+                        <>
+                          <InputField label="Passport Number" section="sectorSpecific" field="passportNumber" formData={formData} updateForm={updateForm} />
+                          <InputField label="Passport Expiry Date" section="sectorSpecific" field="passportExpiry" type="date" formData={formData} updateForm={updateForm} />
+                        </>
+                      )}
+                      <InputField label="When can you travel?" section="sectorSpecific" field="readyToRelocate" options={["Immediately", "Within 1 Month", "Within 3 Months", "After 3 Months"]} required formData={formData} updateForm={updateForm} />
+                      <InputField label="Do you have a Medical Certificate?" section="sectorSpecific" field="medicalCertificate" options={["Yes", "No – Can Obtain"]} formData={formData} updateForm={updateForm} />
+                      <InputField label="Do you have a Police Clearance?" section="sectorSpecific" field="policeClearance" options={["Yes", "No – Can Obtain"]} formData={formData} updateForm={updateForm} />
                     </>
                   )}
                 </div>
@@ -614,59 +637,106 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
 
               {/* STEP 6: File Uploads */}
               {step === 6 && (
-                <div className="space-y-6 animate-fadeIn">
-                  <div className="mb-6">
+                <div className="space-y-5 animate-fadeIn">
+                  <div className="mb-4">
                     <h1 className="text-2xl font-black text-gray-900 mb-2">Upload Documents</h1>
-                    <p className="text-[15px] text-gray-500">Provide your files (PDF, DOC, JPG, PNG)</p>
+                    <p className="text-[15px] text-gray-500">Upload your files. Accepted: PDF, DOC, JPG, PNG.</p>
                   </div>
-                  
-                  <FileUploadCard id="cv" label="CV / Resume" required files={files} handleFileChange={handleFileChange} />
-                  <FileUploadCard id="educationalCert" label="Highest Educational Certificate" required files={files} handleFileChange={handleFileChange} />
-                  <FileUploadCard id="experienceCert" label="Experience Certificate (If any)" files={files} handleFileChange={handleFileChange} />
-                  <FileUploadCard id="passportPhoto" label="Passport Size Photo" accept="image/*" required files={files} handleFileChange={handleFileChange} />
-                  <FileUploadCard id="passport" label="Passport / ID Copy (Optional)" files={files} handleFileChange={handleFileChange} />
+
+                  {/* Required for everyone */}
+                  <div>
+                    <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-3">Required Documents</p>
+                    <FileUploadCard id="cv" label="CV / Resume" required files={files} handleFileChange={handleFileChange} />
+                    <FileUploadCard id="passportPhoto" label="Passport Size Photo (clear background)" accept="image/*" required files={files} handleFileChange={handleFileChange} />
+                    <FileUploadCard id="educationalCert" label="Highest Educational Certificate" required files={files} handleFileChange={handleFileChange} />
+                  </div>
+
+                  <div className="h-px bg-gray-200" />
+
+                  {/* Conditional docs */}
+                  <div>
+                    <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-3">Additional Documents (Optional)</p>
+                    {formData.status === 'experienced' && (
+                      <FileUploadCard id="experienceCert" label="Work Experience Certificate" files={files} handleFileChange={handleFileChange} />
+                    )}
+                    {formData.sector === 'foreign' && (
+                      <FileUploadCard id="passport" label="Passport Copy" files={files} handleFileChange={handleFileChange} />
+                    )}
+                    {formData.sector !== 'foreign' && (
+                      <FileUploadCard id="passport" label="National ID / Fayda Card Copy" files={files} handleFileChange={handleFileChange} />
+                    )}
+                  </div>
                 </div>
               )}
 
               {/* STEP 7: Review & Final */}
               {step === 7 && (
-                <div className="space-y-6 animate-fadeIn">
-                  <div className="mb-6">
+                <div className="space-y-5 animate-fadeIn">
+                  <div className="mb-4">
                     <h1 className="text-2xl font-black text-gray-900 mb-2">Review & Submit</h1>
-                    <p className="text-[15px] text-gray-500">Almost done! Please review your declarations.</p>
+                    <p className="text-[15px] text-gray-500">Almost done! Review your info and confirm.</p>
                   </div>
 
-                  <div className="bg-blue-50 border border-blue-100 rounded-2xl p-5 mb-6">
-                     <p className="text-[14px] font-bold text-gray-900 mb-1">Applying as: <span className="text-blue-600">{formData.status === 'fresh' ? 'Fresh Graduate' : 'Experienced Professional'}</span></p>
-                     <p className="text-[14px] font-bold text-gray-900">Target Sector: <span className="text-blue-600">{SECTORS.find(s=>s.id===formData.sector)?.title}</span></p>
+                  {/* Summary Card */}
+                  <div className="bg-white rounded-2xl border border-gray-100 shadow-sm overflow-hidden">
+                    <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-4">
+                      <p className="text-white font-black text-[17px]">{formData.personal.fullName || 'Applicant'}</p>
+                      <p className="text-blue-100 text-[13px]">+251{formData.personal.phone} · {formData.personal.email}</p>
+                    </div>
+                    <div className="divide-y divide-gray-50">
+                      <div className="px-5 py-3 flex justify-between items-center">
+                        <span className="text-[13px] text-gray-400 font-semibold">Status</span>
+                        <span className="text-[13px] font-bold text-gray-900">{formData.status === 'fresh' ? '🎓 Fresh Graduate' : '💼 Experienced'}</span>
+                      </div>
+                      <div className="px-5 py-3 flex justify-between items-center">
+                        <span className="text-[13px] text-gray-400 font-semibold">Sector</span>
+                        <span className="text-[13px] font-bold text-gray-900">{SECTORS.find(s=>s.id===formData.sector)?.emoji} {SECTORS.find(s=>s.id===formData.sector)?.title}</span>
+                      </div>
+                      <div className="px-5 py-3 flex justify-between items-center">
+                        <span className="text-[13px] text-gray-400 font-semibold">Role</span>
+                        <span className="text-[13px] font-bold text-gray-900">{formData.sectorSpecific.subCategory}</span>
+                      </div>
+                      <div className="px-5 py-3 flex justify-between items-center">
+                        <span className="text-[13px] text-gray-400 font-semibold">Education</span>
+                        <span className="text-[13px] font-bold text-gray-900">{formData.education.highestLevel}</span>
+                      </div>
+                      <div className="px-5 py-3 flex justify-between items-center">
+                        <span className="text-[13px] text-gray-400 font-semibold">City</span>
+                        <span className="text-[13px] font-bold text-gray-900">{formData.personal.city || formData.personal.region || '—'}</span>
+                      </div>
+                      <div className="px-5 py-3 flex justify-between items-center">
+                        <span className="text-[13px] text-gray-400 font-semibold">Documents</span>
+                        <span className="text-[13px] font-bold text-green-600">{Object.values(files).filter(Boolean).length} uploaded</span>
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="space-y-4 border-2 border-gray-100 p-5 rounded-[20px] bg-white">
-                     <label className="flex items-start gap-4 cursor-pointer group">
-                       <input 
-                         type="checkbox" 
-                         checked={formData.declarations.isTrue} 
-                         onChange={(e) => updateForm('declarations', 'isTrue', e.target.checked)}
-                         className="w-6 h-6 rounded-md border-gray-300 text-blue-600 focus:ring-blue-500 mt-0.5 cursor-pointer"
-                       />
-                       <span className="text-[14px] font-medium text-gray-700 leading-relaxed select-none group-hover:text-gray-900 transition-colors">
-                         I confirm that all information provided in this application is true and accurate to the best of my knowledge.
-                       </span>
-                     </label>
-
-                     <div className="h-px bg-gray-100 my-2" />
-
-                     <label className="flex items-start gap-4 cursor-pointer group">
-                       <input 
-                         type="checkbox" 
-                         checked={formData.declarations.shareProfile} 
-                         onChange={(e) => updateForm('declarations', 'shareProfile', e.target.checked)}
-                         className="w-6 h-6 rounded-md border-gray-300 text-blue-600 focus:ring-blue-500 mt-0.5 cursor-pointer"
-                       />
-                       <span className="text-[14px] font-medium text-gray-700 leading-relaxed select-none group-hover:text-gray-900 transition-colors">
-                         I agree that Pathway Agency may share my profile and uploaded documents with prospective employers for recruitment purposes.
-                       </span>
-                     </label>
+                  {/* Declarations */}
+                  <div className="space-y-3 border-2 border-gray-100 p-5 rounded-[20px] bg-white">
+                    <p className="text-[13px] font-bold text-gray-500 uppercase tracking-wide mb-3">Declarations</p>
+                    <label className="flex items-start gap-4 cursor-pointer group">
+                      <input
+                        type="checkbox"
+                        checked={formData.declarations.isTrue}
+                        onChange={(e) => updateForm('declarations', 'isTrue', e.target.checked)}
+                        className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mt-0.5 cursor-pointer shrink-0"
+                      />
+                      <span className="text-[14px] font-medium text-gray-700 leading-relaxed select-none">
+                        I confirm that all information I have provided is true and accurate.
+                      </span>
+                    </label>
+                    <div className="h-px bg-gray-100" />
+                    <label className="flex items-start gap-4 cursor-pointer group">
+                      <input
+                        type="checkbox"
+                        checked={formData.declarations.shareProfile}
+                        onChange={(e) => updateForm('declarations', 'shareProfile', e.target.checked)}
+                        className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mt-0.5 cursor-pointer shrink-0"
+                      />
+                      <span className="text-[14px] font-medium text-gray-700 leading-relaxed select-none">
+                        I agree that Pathway Agency may share my profile and documents with prospective employers.
+                      </span>
+                    </label>
                   </div>
                 </div>
               )}
