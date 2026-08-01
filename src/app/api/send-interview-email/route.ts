@@ -115,7 +115,7 @@ export async function POST(req: NextRequest) {
           <tr>
             <td style="background:#f8fafc;padding:24px 40px;text-align:center;border-top:1px solid #e2e8f0;">
               <p style="color:#94a3b8;font-size:12px;margin:0 0 4px;">Pathway Agency Ethiopia</p>
-              <p style="color:#94a3b8;font-size:12px;margin:0;">This is an automated notification. Please do not reply to this email.</p>
+              <p style="color:#94a3b8;font-size:12px;margin:0;">Reply directly to this email if you have any questions.</p>
             </td>
           </tr>
 
@@ -130,6 +130,7 @@ export async function POST(req: NextRequest) {
     const { data, error } = await resend.emails.send({
       from: "Pathway Agency <notifications@pathwayet.com>",
       to: toEmail,
+      replyTo: "pathwayagency15@gmail.com",
       subject: `🎉 Interview Appointment Confirmed — ${interviewDate} at ${interviewTime}`,
       html,
     });
