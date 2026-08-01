@@ -305,7 +305,15 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
   if (step === 1) canProceed = !!formData.status;
   if (step === 2) canProceed = !!formData.sector && !!formData.sectorSpecific.subCategory;
   if (step === 3) canProceed = !!formData.personal.fullName && formData.personal.phone?.length === 9 && !!formData.personal.email;
-  if (step === 4) canProceed = !!formData.education.highestLevel;
+  if (step === 4) {
+    const isHighSchool = formData.education.highestLevel === "High School / Preparatory";
+    const baseEduDone = !!formData.education.highestLevel && !!formData.education.university && !!formData.education.gradYear;
+    const higherEduDone = isHighSchool ? true : !!formData.education.field;
+    const expDone = formData.status === 'experienced'
+      ? !!formData.experience.yearsOfExperience && !!formData.experience.currentEmployer && !!formData.experience.currentPosition
+      : true;
+    canProceed = baseEduDone && higherEduDone && expDone;
+  }
   if (step === 5) canProceed = true; // Make sector specific optional to proceed easily, can add strict validation later
   if (step === 6) canProceed = !!files.cv && !!files.passportPhoto;
   if (step === 7) canProceed = formData.declarations.isTrue && formData.declarations.shareProfile;
@@ -489,48 +497,65 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
               {/* STEP 4: Education & Experience */}
               {step === 4 && (
                 <div className="space-y-8 animate-fadeIn">
+                  {/* Education Section */}
                   <div>
                     <h1 className="text-2xl font-black text-gray-900 mb-2">Education</h1>
                     <p className="text-[15px] text-gray-500 mb-6">Your academic background.</p>
-                    <InputField label="Highest Education" section="education" field="highestLevel" options={["High School", "Diploma", "Bachelor's Degree", "Master's Degree", "PhD"]} required formData={formData} updateForm={updateForm} />
-                    <InputField label="University / College" section="education" field="university" required formData={formData} updateForm={updateForm} />
-                    <InputField label="Field of Study" section="education" field="field" required formData={formData} updateForm={updateForm} />
-                    <div className="grid grid-cols-2 gap-4">
-                      <InputField label="Graduation Year" section="education" field="gradYear" type="number" required formData={formData} updateForm={updateForm} />
-                      <InputField label="CGPA" section="education" field="cgpa" type="number" formData={formData} updateForm={updateForm} />
-                    </div>
+                    <InputField label="Highest Education" section="education" field="highestLevel" options={["High School / Preparatory", "Diploma / TVET", "Bachelor's Degree", "Master's Degree", "PhD"]} required formData={formData} updateForm={updateForm} />
+                    
+                    {/* Only show University/College if not High School */}
+                    {formData.education.highestLevel && formData.education.highestLevel !== "High School / Preparatory" && (
+                      <>
+                        <InputField label="University / College / Institution" section="education" field="university" required formData={formData} updateForm={updateForm} />
+                        <InputField label="Field of Study" section="education" field="field" required formData={formData} updateForm={updateForm} />
+                        <div className="grid grid-cols-2 gap-4">
+                          <InputField label="Graduation Year" section="education" field="gradYear" type="number" required formData={formData} updateForm={updateForm} />
+                          <InputField label="CGPA (Optional)" section="education" field="cgpa" type="number" formData={formData} updateForm={updateForm} />
+                        </div>
+                      </>
+                    )}
+
+                    {/* For High School - show school name and completion year */}
+                    {formData.education.highestLevel === "High School / Preparatory" && (
+                      <>
+                        <InputField label="School Name" section="education" field="university" required formData={formData} updateForm={updateForm} />
+                        <InputField label="Completion Year" section="education" field="gradYear" type="number" required formData={formData} updateForm={updateForm} />
+                      </>
+                    )}
                   </div>
 
                   <div className="h-px bg-gray-200" />
 
+                  {/* Experience Section - based on career status */}
                   {formData.status === 'fresh' ? (
-                     <div>
-                       <h1 className="text-2xl font-black text-gray-900 mb-2">Experience</h1>
-                       <p className="text-[15px] text-gray-500 mb-6">Even without full-time jobs, tell us what you've done.</p>
-                       <InputField label="Internship Experience (Optional)" section="experience" field="internship" type="textarea" formData={formData} updateForm={updateForm} />
-                       <InputField label="Volunteer Experience" section="experience" field="volunteer" type="textarea" formData={formData} updateForm={updateForm} />
-                       <InputField label="Projects" section="experience" field="projects" type="textarea" formData={formData} updateForm={updateForm} />
-                       <InputField label="Skills" section="experience" field="skills" type="textarea" formData={formData} updateForm={updateForm} />
-                       <InputField label="Languages" section="experience" field="languages" type="textarea" formData={formData} updateForm={updateForm} />
-                       <InputField label="Computer Skills" section="experience" field="computerSkills" type="textarea" formData={formData} updateForm={updateForm} />
-                     </div>
+                    <div>
+                      <h1 className="text-2xl font-black text-gray-900 mb-2">Experience</h1>
+                      <p className="text-[15px] text-gray-500 mb-6">Even without full-time work, share what you've done.</p>
+                      <InputField label="Internship Experience (Optional)" section="experience" field="internship" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label="Volunteer / Community Work" section="experience" field="volunteer" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label="Personal Projects" section="experience" field="projects" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label="Key Skills" section="experience" field="skills" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label="Languages Spoken" section="experience" field="languages" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label="Computer & IT Skills" section="experience" field="computerSkills" type="textarea" formData={formData} updateForm={updateForm} />
+                    </div>
                   ) : (
-                     <div>
-                       <h1 className="text-2xl font-black text-gray-900 mb-2">Professional Experience</h1>
-                       <p className="text-[15px] text-gray-500 mb-6">Your work history.</p>
-                       <InputField label="Years of Experience" section="experience" field="yearsOfExperience" type="number" formData={formData} updateForm={updateForm} />
-                       <InputField label="Current/Latest Employer" section="experience" field="currentEmployer" formData={formData} updateForm={updateForm} />
-                       <InputField label="Current Position" section="experience" field="currentPosition" formData={formData} updateForm={updateForm} />
-                       <InputField label="Previous Employer" section="experience" field="previousEmployer" formData={formData} updateForm={updateForm} />
-                       <InputField label="Employment Type" section="experience" field="employmentType" options={["Full-time", "Part-time", "Contract", "Freelance"]} formData={formData} updateForm={updateForm} />
-                       <InputField label="Current Salary (Optional)" section="experience" field="currentSalary" formData={formData} updateForm={updateForm} />
-                       <InputField label="Professional Skills" section="experience" field="professionalSkills" type="textarea" formData={formData} updateForm={updateForm} />
-                       <InputField label="Leadership Experience" section="experience" field="leadershipExperience" type="textarea" formData={formData} updateForm={updateForm} />
-                       <InputField label="References" section="experience" field="references" type="textarea" formData={formData} updateForm={updateForm} />
-                     </div>
+                    <div>
+                      <h1 className="text-2xl font-black text-gray-900 mb-2">Professional Experience</h1>
+                      <p className="text-[15px] text-gray-500 mb-6">Your work history and professional background.</p>
+                      <InputField label="Years of Experience" section="experience" field="yearsOfExperience" options={["Less than 1 year", "1-2 years", "3-5 years", "5-10 years", "10+ years"]} required formData={formData} updateForm={updateForm} />
+                      <InputField label="Current / Latest Employer" section="experience" field="currentEmployer" required formData={formData} updateForm={updateForm} />
+                      <InputField label="Current / Latest Position" section="experience" field="currentPosition" required formData={formData} updateForm={updateForm} />
+                      <InputField label="Employment Type" section="experience" field="employmentType" options={["Full-time", "Part-time", "Contract", "Freelance", "Self-employed"]} required formData={formData} updateForm={updateForm} />
+                      <InputField label="Previous Employer (Optional)" section="experience" field="previousEmployer" formData={formData} updateForm={updateForm} />
+                      <InputField label="Current Monthly Salary (Optional)" section="experience" field="currentSalary" formData={formData} updateForm={updateForm} />
+                      <InputField label="Professional Skills" section="experience" field="professionalSkills" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label="Leadership / Management Experience (Optional)" section="experience" field="leadershipExperience" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label="References (Name, Phone)" section="experience" field="references" type="textarea" formData={formData} updateForm={updateForm} />
+                    </div>
                   )}
                 </div>
               )}
+
 
               {/* STEP 5: Sector Specific */}
               {step === 5 && (
