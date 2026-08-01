@@ -101,13 +101,36 @@ const InputField = ({ label, section, field, type = "text", required = false, op
           rows={3}
           className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
         />
+      ) : type === "tel" ? (
+        <div className="flex bg-gray-50 border border-gray-200 rounded-2xl focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-500 transition-all overflow-hidden">
+          <div className="px-4 py-3.5 bg-gray-100/70 border-r border-gray-200 text-gray-700 font-bold text-[15px] select-none flex items-center justify-center shrink-0">
+            +251
+          </div>
+          <input
+            type="tel"
+            required={required}
+            value={val}
+            placeholder="9 or 7 _ _ _ _ _ _ _"
+            onChange={(e) => {
+              let v = e.target.value.replace(/\D/g, '');
+              if (v.startsWith('251')) v = v.substring(3);
+              if (v.startsWith('0')) v = v.substring(1);
+              if (v.length > 0 && v[0] !== '9' && v[0] !== '7') {
+                v = v.substring(1); // Remove the invalid first character
+              }
+              v = v.substring(0, 9);
+              updateForm(section, field, v);
+            }}
+            className="w-full px-4 py-3.5 bg-transparent text-[15px] font-medium text-gray-900 focus:outline-none placeholder:text-gray-400"
+          />
+        </div>
       ) : (
         <input
           type={type}
           required={required}
           value={val}
           onChange={(e) => updateForm(section, field, e.target.value)}
-          className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl text-[15px] focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
+          className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl text-[15px] font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
         />
       )}
     </div>
@@ -257,7 +280,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
       
       await addPathwayPost({
         title: `[App] ${formData.personal.fullName} - ${formData.sectorSpecific.subCategory} in ${formData.sector} (${formData.status})`,
-        description: `Phone: ${formData.personal.phone} | Email: ${formData.personal.email}`,
+        description: `Phone: +251${formData.personal.phone} | Email: ${formData.personal.email}`,
         imageUrl: uploadedUrls.passportPhoto || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
         authorName: formData.personal.fullName,
         authorEmail: formData.personal.email || formData.personal.phone,
@@ -276,7 +299,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
   let canProceed = false;
   if (step === 1) canProceed = !!formData.status;
   if (step === 2) canProceed = !!formData.sector && !!formData.sectorSpecific.subCategory;
-  if (step === 3) canProceed = !!formData.personal.fullName && !!formData.personal.phone && !!formData.personal.email;
+  if (step === 3) canProceed = !!formData.personal.fullName && formData.personal.phone?.length === 9 && !!formData.personal.email;
   if (step === 4) canProceed = !!formData.education.highestLevel;
   if (step === 5) canProceed = true; // Make sector specific optional to proceed easily, can add strict validation later
   if (step === 6) canProceed = !!files.cv && !!files.passportPhoto;
