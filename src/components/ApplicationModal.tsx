@@ -306,13 +306,11 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
   if (step === 2) canProceed = !!formData.sector && !!formData.sectorSpecific.subCategory;
   if (step === 3) canProceed = !!formData.personal.fullName && !!formData.personal.gender && formData.personal.phone?.length === 9 && !!formData.personal.email && !!formData.personal.region && !!formData.personal.city;
   if (step === 4) {
-    const isHighSchool = formData.education.highestLevel === "High School / Preparatory";
-    const baseEduDone = !!formData.education.highestLevel && !!formData.education.university && !!formData.education.gradYear;
-    const higherEduDone = isHighSchool ? true : !!formData.education.field;
+    const eduDone = !!formData.education.highestLevel && !!formData.education.university && !!formData.education.field && !!formData.education.gradYear;
     const expDone = formData.status === 'experienced'
       ? !!formData.experience.yearsOfExperience && !!formData.experience.currentEmployer && !!formData.experience.currentPosition
       : true;
-    canProceed = baseEduDone && higherEduDone && expDone;
+    canProceed = eduDone && expDone;
   }
   if (step === 5) {
     if (formData.sector === 'embassy') canProceed = !!formData.sectorSpecific.englishLevel;
@@ -515,10 +513,9 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                   <div>
                     <h1 className="text-2xl font-black text-gray-900 mb-2">Education</h1>
                     <p className="text-[15px] text-gray-500 mb-6">Your academic background.</p>
-                    <InputField label="Highest Education" section="education" field="highestLevel" options={["High School / Preparatory", "Diploma / TVET", "Bachelor's Degree", "Master's Degree", "PhD"]} required formData={formData} updateForm={updateForm} />
+                    <InputField label="Highest Education" section="education" field="highestLevel" options={["Diploma / TVET", "Bachelor's Degree", "Master's Degree", "PhD"]} required formData={formData} updateForm={updateForm} />
                     
-                    {/* Only show University/College if not High School */}
-                    {formData.education.highestLevel && formData.education.highestLevel !== "High School / Preparatory" && (
+                    {formData.education.highestLevel && (
                       <>
                         <InputField label="University / College / Institution" section="education" field="university" required formData={formData} updateForm={updateForm} />
                         <InputField label="Field of Study" section="education" field="field" required formData={formData} updateForm={updateForm} />
@@ -526,14 +523,6 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                           <InputField label="Graduation Year" section="education" field="gradYear" type="number" required formData={formData} updateForm={updateForm} />
                           <InputField label="CGPA (Optional)" section="education" field="cgpa" type="number" formData={formData} updateForm={updateForm} />
                         </div>
-                      </>
-                    )}
-
-                    {/* For High School - show school name and completion year */}
-                    {formData.education.highestLevel === "High School / Preparatory" && (
-                      <>
-                        <InputField label="School Name" section="education" field="university" required formData={formData} updateForm={updateForm} />
-                        <InputField label="Completion Year" section="education" field="gradYear" type="number" required formData={formData} updateForm={updateForm} />
                       </>
                     )}
                   </div>
