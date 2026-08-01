@@ -72,7 +72,7 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
                 >
                   <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden">
                     {user.photoURL
-                      ? <img src={user.photoURL} alt="avatar" className="w-full h-full object-cover" />
+                      ? <img src={user.photoURL} alt="avatar" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = "/default-avatar.jpg"; e.currentTarget.onerror = null; }} />
                       : <UserIcon className="w-4 h-4 text-blue-600" />}
                   </div>
                   <span className="text-sm font-semibold text-gray-700 max-w-[100px] truncate">
@@ -130,14 +130,14 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden border-2 border-blue-200 shadow-sm"
                 >
-                  {user.photoURL ? <img src={user.photoURL} alt="avatar" className="w-full h-full object-cover" /> : <UserIcon className="w-5 h-5 text-blue-600" />}
+                  {user.photoURL ? <img src={user.photoURL} alt="avatar" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = "/default-avatar.jpg"; e.currentTarget.onerror = null; }} /> : <UserIcon className="w-5 h-5 text-blue-600" />}
                 </button>
 
                 {userMenuOpen && (
                   <div className="absolute right-0 mt-3 w-64 bg-white border border-gray-100 rounded-2xl shadow-xl py-2 animate-fadeIn z-50">
                     <div className="px-4 py-3 border-b border-gray-50 flex items-center gap-3">
                       <div className="w-11 h-11 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden shrink-0">
-                        {user.photoURL ? <img src={user.photoURL} alt="avatar" className="w-full h-full object-cover" /> : <UserIcon className="w-6 h-6 text-blue-600" />}
+                        {user.photoURL ? <img src={user.photoURL} alt="avatar" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = "/default-avatar.jpg"; e.currentTarget.onerror = null; }} /> : <UserIcon className="w-6 h-6 text-blue-600" />}
                       </div>
                       <div className="overflow-hidden">
                         <p className="text-sm font-bold text-gray-900 truncate">{user.displayName || user.email?.split("@")[0]}</p>
