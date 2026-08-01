@@ -45,7 +45,7 @@ const SUB_CATEGORIES: Record<string, string[]> = {
   foreign: ["Domestic Work", "Technical Skills", "Hospitality", "Construction", "Other"]
 };
 
-const InputField = ({ label, section, field, type = "text", required = false, options = [], formData, updateForm }: any) => {
+const InputField = ({ label, section, field, type = "text", required = false, options = [], formData, updateForm, min, max, step, placeholder }: any) => {
   const val = formData[section][field];
   const [isOpen, setIsOpen] = useState(false);
   
@@ -129,6 +129,10 @@ const InputField = ({ label, section, field, type = "text", required = false, op
           type={type}
           required={required}
           value={val}
+          min={min}
+          max={max}
+          step={step}
+          placeholder={placeholder}
           onChange={(e) => updateForm(section, field, e.target.value)}
           className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-2xl text-[15px] font-medium text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all"
         />
@@ -598,8 +602,8 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                         <InputField label="University / College / Institution" section="education" field="university" required formData={formData} updateForm={updateForm} />
                         <InputField label="Field of Study" section="education" field="field" required formData={formData} updateForm={updateForm} />
                         <div className="grid grid-cols-2 gap-4">
-                          <InputField label="Graduation Year" section="education" field="gradYear" type="number" required formData={formData} updateForm={updateForm} />
-                          <InputField label="CGPA (Optional)" section="education" field="cgpa" type="number" formData={formData} updateForm={updateForm} />
+                          <InputField label="Graduation Year" section="education" field="gradYear" type="number" min="1950" max={new Date().getFullYear() + 5} required formData={formData} updateForm={updateForm} />
+                          <InputField label="CGPA (Optional)" section="education" field="cgpa" type="number" min="0" max="4" step="0.01" formData={formData} updateForm={updateForm} />
                         </div>
                       </>
                     )}
