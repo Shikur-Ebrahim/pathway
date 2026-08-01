@@ -43,7 +43,7 @@ export const HeroSection = ({ onApplyClick, onBrowseJobs }: { onApplyClick: () =
                 {" "}Today
               </h1>
               <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto lg:mx-0">
-                Join Pathway Agency Ethiopia and connect with top global organizations. Register today to claim one of the exclusive 10,000 guaranteed job slots!
+                Join Pathway Agency Ethiopia and connect with top global organizations. Register today to claim one of the exclusive 10,000 guaranteed employment opportunities!
               </p>
             </motion.div>
 
@@ -83,7 +83,7 @@ export const HeroSection = ({ onApplyClick, onBrowseJobs }: { onApplyClick: () =
               <div className="absolute -inset-4 bg-gradient-to-tr from-blue-100 to-purple-50 rounded-[2.5rem] opacity-50 blur-2xl -z-10" />
 
               {[
-                { num: 10000, suffix: "+", label: "Job Slots", icon: Briefcase, color: "text-blue-600", bg: "bg-blue-100" },
+                { num: 10000, suffix: "+", label: "Employment Opportunities", icon: Briefcase, color: "text-blue-600", bg: "bg-blue-100" },
                 { num: 200, suffix: "+", label: "Active Jobs", icon: Search, color: "text-purple-600", bg: "bg-purple-100" },
                 { num: 4, suffix: "", label: "Global Orgs", icon: Globe2, color: "text-indigo-600", bg: "bg-indigo-100" },
                 { num: 98, suffix: "%", label: "Success Rate", icon: ShieldCheck, color: "text-green-600", bg: "bg-green-100" }
