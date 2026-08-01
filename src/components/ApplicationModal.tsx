@@ -38,6 +38,13 @@ const SECTORS = [
   }
 ];
 
+const SUB_CATEGORIES: Record<string, string[]> = {
+  embassy: ["Administrative", "Secretarial", "Finance", "IT", "Technical Positions", "Other"],
+  ngo: ["Development", "Humanitarian", "Project Management", "Administration", "Other"],
+  airport: ["Airport Operations", "Customer Service", "Ground Handling", "Cargo and Logistics", "Other"],
+  foreign: ["Domestic Work", "Technical Skills", "Hospitality", "Construction", "Other"]
+};
+
 const InputField = ({ label, section, field, type = "text", required = false, options = [], formData, updateForm }: any) => {
   const val = formData[section][field];
   const [isOpen, setIsOpen] = useState(false);
@@ -178,6 +185,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
       yearsOfExperience: "", currentEmployer: "", currentPosition: "", previousEmployer: "", employmentType: "", currentSalary: "", professionalSkills: "", leadershipExperience: "", references: ""
     },
     sectorSpecific: {
+      subCategory: "",
       // Embassy
       englishLevel: "", otherLanguages: "", embassyComputerSkills: "", securityClearance: "", typingSkills: "", motivationLetter: "",
       // NGO
@@ -248,7 +256,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
       const finalData = { ...formData, uploadedUrls };
       
       await addPathwayPost({
-        title: `[App] ${formData.personal.fullName} - ${formData.sector} (${formData.status})`,
+        title: `[App] ${formData.personal.fullName} - ${formData.sectorSpecific.subCategory} in ${formData.sector} (${formData.status})`,
         description: `Phone: ${formData.personal.phone} | Email: ${formData.personal.email}`,
         imageUrl: uploadedUrls.passportPhoto || "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
         authorName: formData.personal.fullName,
@@ -267,7 +275,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
   // Determine what steps can proceed
   let canProceed = false;
   if (step === 1) canProceed = !!formData.status;
-  if (step === 2) canProceed = !!formData.sector;
+  if (step === 2) canProceed = !!formData.sector && !!formData.sectorSpecific.subCategory;
   if (step === 3) canProceed = !!formData.personal.fullName && !!formData.personal.phone && !!formData.personal.email;
   if (step === 4) canProceed = !!formData.education.highestLevel;
   if (step === 5) canProceed = true; // Make sector specific optional to proceed easily, can add strict validation later
@@ -384,28 +392,43 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                     <p className="text-[15px] text-gray-500">Which sector are you most interested in?</p>
                   </div>
 
-                  <div className="space-y-3">
+                  <div className="space-y-4">
                     {SECTORS.map((s) => (
-                      <button
-                        key={s.id}
-                        onClick={() => setFormData((p: any) => ({ ...p, sector: s.id }))}
-                        className={`w-full flex items-center p-4 rounded-[20px] border-2 transition-all ${
-                          formData.sector === s.id ? 'border-blue-500 bg-blue-50 shadow-md shadow-blue-500/10' : 'border-gray-200 bg-white hover:border-gray-300'
-                        }`}
-                      >
-                        <div className="w-14 h-14 rounded-2xl bg-white shadow-sm border border-gray-100 flex items-center justify-center text-2xl shrink-0">
-                          {s.emoji}
-                        </div>
-                        <div className="flex-1 text-left px-4 min-w-0">
-                          <h3 className="text-[15px] font-bold text-gray-900 leading-tight mb-1">{s.title}</h3>
-                          <p className="text-[12px] text-gray-500 leading-relaxed truncate whitespace-normal line-clamp-2">{s.desc}</p>
-                        </div>
-                        <div className={`w-5 h-5 rounded-full border-2 shrink-0 flex items-center justify-center ${
-                          formData.sector === s.id ? 'border-blue-500 bg-blue-500' : 'border-gray-300 bg-white'
-                        }`}>
-                          {formData.sector === s.id && <div className="w-2 h-2 bg-white rounded-full" />}
-                        </div>
-                      </button>
+                      <div key={s.id}>
+                        <button
+                          onClick={() => setFormData((p: any) => ({ ...p, sector: s.id, sectorSpecific: { ...p.sectorSpecific, subCategory: "" } }))}
+                          className={`w-full flex items-center p-4 rounded-[20px] border-2 transition-all ${
+                            formData.sector === s.id ? 'border-blue-500 bg-blue-50 shadow-md shadow-blue-500/10' : 'border-gray-200 bg-white hover:border-gray-300'
+                          }`}
+                        >
+                          <div className="w-14 h-14 rounded-2xl bg-white shadow-sm border border-gray-100 flex items-center justify-center text-2xl shrink-0">
+                            {s.emoji}
+                          </div>
+                          <div className="flex-1 text-left px-4 min-w-0">
+                            <h3 className="text-[15px] font-bold text-gray-900 leading-tight mb-1">{s.title}</h3>
+                            <p className="text-[12px] text-gray-500 leading-relaxed truncate whitespace-normal line-clamp-2">{s.desc}</p>
+                          </div>
+                          <div className={`w-5 h-5 rounded-full border-2 shrink-0 flex items-center justify-center ${
+                            formData.sector === s.id ? 'border-blue-500 bg-blue-500' : 'border-gray-300 bg-white'
+                          }`}>
+                            {formData.sector === s.id && <div className="w-2 h-2 bg-white rounded-full" />}
+                          </div>
+                        </button>
+                        
+                        {formData.sector === s.id && (
+                          <div className="mt-3 ml-6 pl-4 border-l-2 border-blue-200 animate-fadeIn relative z-20">
+                            <InputField 
+                              label={`Select Specific Role/Category`}
+                              section="sectorSpecific"
+                              field="subCategory"
+                              options={SUB_CATEGORIES[s.id]}
+                              required
+                              formData={formData}
+                              updateForm={updateForm}
+                            />
+                          </div>
+                        )}
+                      </div>
                     ))}
                   </div>
                 </div>
