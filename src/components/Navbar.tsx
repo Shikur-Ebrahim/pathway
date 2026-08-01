@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Language, content } from "@/lib/translations";
 import { useAuth } from "@/context/AuthContext";
 import { AuthModal } from "@/components/AuthModal";
-import { Send, Menu, X, Globe, LogOut, User as UserIcon, ChevronDown, Briefcase } from "lucide-react";
+import { Send, Menu, X, Globe, LogOut, User as UserIcon, ChevronDown, Briefcase, FileText } from "lucide-react";
 
 interface NavbarProps {
   lang: Language;
@@ -124,63 +124,86 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
 
           {/* Mobile Controls */}
           <div className="flex md:hidden items-center gap-2">
-            <button
-              onClick={() => setLang(lang === "am" ? "en" : "am")}
-              className="p-2 rounded-lg bg-gray-100 text-gray-600 text-xs font-bold flex items-center gap-1"
-            >
-              <Globe className="w-3.5 h-3.5" />
-              {lang === "am" ? "EN" : "አማ"}
-            </button>
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2.5 rounded-xl border border-gray-200 text-gray-600"
-            >
-              {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+            {user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setUserMenuOpen(!userMenuOpen)}
+                  className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden border-2 border-blue-200 shadow-sm"
+                >
+                  {user.photoURL ? <img src={user.photoURL} alt="avatar" className="w-full h-full object-cover" /> : <UserIcon className="w-5 h-5 text-blue-600" />}
+                </button>
+
+                {userMenuOpen && (
+                  <div className="absolute right-0 mt-3 w-64 bg-white border border-gray-100 rounded-2xl shadow-xl py-2 animate-fadeIn z-50">
+                    <div className="px-4 py-3 border-b border-gray-50 flex items-center gap-3">
+                      <div className="w-11 h-11 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden shrink-0">
+                        {user.photoURL ? <img src={user.photoURL} alt="avatar" className="w-full h-full object-cover" /> : <UserIcon className="w-6 h-6 text-blue-600" />}
+                      </div>
+                      <div className="overflow-hidden">
+                        <p className="text-sm font-bold text-gray-900 truncate">{user.displayName || user.email?.split("@")[0]}</p>
+                        <p className="text-[11px] text-gray-500 truncate">{user.email}</p>
+                      </div>
+                    </div>
+                    <div className="py-2">
+                      <button onClick={() => setLang(lang === "am" ? "en" : "am")} className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3">
+                        <Globe className="w-4 h-4 text-gray-400" />
+                        Language: {lang === "am" ? "አማርኛ" : "English"}
+                      </button>
+                      <a href="#sectors" onClick={() => setUserMenuOpen(false)} className="flex px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 items-center gap-3">
+                        <Briefcase className="w-4 h-4 text-gray-400" /> Job Categories
+                      </a>
+                      <a href="/requirements" onClick={() => setUserMenuOpen(false)} className="flex px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 items-center gap-3">
+                        <Send className="w-4 h-4 text-gray-400" /> Requirements
+                      </a>
+                    </div>
+                    <div className="border-t border-gray-50 pt-2">
+                      <button
+                        onClick={() => { setUserMenuOpen(false); logout(); }}
+                        className="w-full text-left px-4 py-2.5 text-sm text-red-600 hover:bg-red-50 flex items-center gap-3"
+                      >
+                        <LogOut className="w-4 h-4" /> Sign Out
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <>
+                <button
+                  onClick={() => setLang(lang === "am" ? "en" : "am")}
+                  className="p-2 rounded-lg bg-gray-100 text-gray-600 text-xs font-bold flex items-center gap-1"
+                >
+                  <Globe className="w-3.5 h-3.5" />
+                  {lang === "am" ? "EN" : "አማ"}
+                </button>
+                <button
+                  onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                  className="p-2.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50"
+                >
+                  {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                </button>
+              </>
+            )}
           </div>
         </div>
 
-        {/* Mobile Drawer */}
-        {mobileMenuOpen && (
+        {/* Mobile Drawer (Only for Non-Logged In Users) */}
+        {!user && mobileMenuOpen && (
           <div className="md:hidden bg-white border-t border-gray-100 p-4 space-y-3 animate-fadeIn shadow-lg">
-            {user ? (
-              <>
-                <div className="flex items-center gap-3 p-3 rounded-xl bg-blue-50 border border-blue-100">
-                  <div className="w-9 h-9 rounded-full bg-blue-200 flex items-center justify-center overflow-hidden">
-                    {user.photoURL ? <img src={user.photoURL} alt="avatar" className="w-full h-full object-cover" /> : <UserIcon className="w-5 h-5 text-blue-600" />}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="text-sm font-bold text-gray-800 truncate">{user.displayName || user.email?.split("@")[0]}</p>
-                    <p className="text-xs text-gray-500 truncate">{user.email}</p>
-                  </div>
-                  <button onClick={() => { setMobileMenuOpen(false); logout(); }} className="p-1.5 rounded-lg text-red-400 hover:bg-red-50">
-                    <LogOut className="w-4 h-4" />
-                  </button>
-                </div>
-                <button
-                  onClick={() => { setMobileMenuOpen(false); onApplyClick(); }}
-                  className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-sm flex items-center justify-center gap-2 shadow-md"
-                >
-                  <Briefcase className="w-4 h-4" />
-                  Apply for Job
-                </button>
-              </>
-            ) : (
-              <div className="grid grid-cols-2 gap-2">
-                <button
-                  onClick={() => { setMobileMenuOpen(false); setIsAuthOpen(true); }}
-                  className="py-3 rounded-xl border border-blue-200 text-blue-700 font-bold text-sm"
-                >
-                  Sign In
-                </button>
-                <button
-                  onClick={() => { setMobileMenuOpen(false); setIsAuthOpen(true); }}
-                  className="py-3 rounded-xl bg-blue-600 text-white font-bold text-sm shadow-md"
-                >
-                  Register Free
-                </button>
-              </div>
-            )}
+            <div className="grid grid-cols-2 gap-2 mb-4">
+              <button
+                onClick={() => { setMobileMenuOpen(false); setIsAuthOpen(true); }}
+                className="py-3 rounded-xl border border-blue-200 text-blue-700 font-bold text-sm"
+              >
+                Sign In
+              </button>
+              <button
+                onClick={() => { setMobileMenuOpen(false); setIsAuthOpen(true); }}
+                className="py-3 rounded-xl bg-blue-600 text-white font-bold text-sm shadow-md"
+              >
+                Register Free
+              </button>
+            </div>
             <div className="flex flex-col gap-1 pt-2 border-t border-gray-100">
               <a href="#sectors" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-2 text-sm text-gray-600 font-medium">Job Categories</a>
               <a href="/requirements" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-2 text-sm text-gray-600 font-medium">Requirements</a>
