@@ -36,13 +36,6 @@ export const NewsletterSection = () => {
         subscribedAt: serverTimestamp(),
       });
 
-      // Send welcome email
-      await fetch("/api/send-newsletter-welcome", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ toEmail: email.toLowerCase().trim() }),
-      });
-
       setStatus("success");
       setEmail("");
     } catch (err: any) {
