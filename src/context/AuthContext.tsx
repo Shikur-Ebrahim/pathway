@@ -9,7 +9,10 @@ import {
   signOut,
   signInWithPopup,
 } from "firebase/auth";
-import { auth, googleProvider, isFirebaseConfigured } from "@/lib/firebase";
+import { doc, setDoc, getDoc, serverTimestamp } from "firebase/firestore";
+import { auth, googleProvider, isFirebaseConfigured, db } from "@/lib/firebase";
+
+const ADMIN_EMAIL = "shikurebrahim3828@gmail.com";
 
 export interface DemoUser {
   uid: string;
@@ -22,9 +25,10 @@ interface AuthContextType {
   user: User | DemoUser | null;
   loading: boolean;
   isConfigured: boolean;
+  isAdmin: boolean;
   loginWithEmail: (email: string, pass: string) => Promise<void>;
   signUpWithEmail: (email: string, pass: string, name?: string) => Promise<void>;
-  loginWithGoogle: () => Promise<void>;
+  loginWithGoogle: () => Promise<{ isAdmin: boolean }>;
   logout: () => Promise<void>;
 }
 
@@ -32,19 +36,49 @@ const AuthContext = createContext<AuthContextType>({
   user: null,
   loading: true,
   isConfigured: false,
+  isAdmin: false,
   loginWithEmail: async () => {},
   signUpWithEmail: async () => {},
-  loginWithGoogle: async () => {},
+  loginWithGoogle: async () => ({ isAdmin: false }),
   logout: async () => {},
 });
+
+async function upsertUserInFirestore(user: User) {
+  if (!isFirebaseConfigured || !db?.app) return;
+  try {
+    const ref = doc(db, "users", user.uid);
+    const snap = await getDoc(ref);
+    const isAdmin = user.email === ADMIN_EMAIL;
+    if (!snap.exists()) {
+      await setDoc(ref, {
+        uid: user.uid,
+        email: user.email,
+        displayName: user.displayName,
+        photoURL: user.photoURL,
+        role: isAdmin ? "admin" : "user",
+        createdAt: serverTimestamp(),
+      });
+    } else if (isAdmin && snap.data()?.role !== "admin") {
+      // Ensure admin role is always set
+      await setDoc(ref, { role: "admin" }, { merge: true });
+    }
+  } catch (e) {
+    console.warn("Could not upsert user:", e);
+  }
+}
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | DemoUser | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
+  const isAdmin = user?.email === ADMIN_EMAIL;
+
   useEffect(() => {
     if (isFirebaseConfigured && auth?.app) {
-      const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+        if (currentUser) {
+          await upsertUserInFirestore(currentUser);
+        }
         setUser(currentUser);
         setLoading(false);
       });
@@ -67,7 +101,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (isFirebaseConfigured && auth?.app) {
       await signInWithEmailAndPassword(auth, email, pass);
     } else {
-      // Local Demo User Auth simulation
       const mockUser: DemoUser = {
         uid: "demo_uid_" + Date.now(),
         email: email,
@@ -94,9 +127,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
   };
 
-  const loginWithGoogle = async () => {
+  const loginWithGoogle = async (): Promise<{ isAdmin: boolean }> => {
     if (isFirebaseConfigured && auth?.app) {
-      await signInWithPopup(auth, googleProvider);
+      const result = await signInWithPopup(auth, googleProvider);
+      const signedInEmail = result.user.email;
+      return { isAdmin: signedInEmail === ADMIN_EMAIL };
     } else {
       const mockUser: DemoUser = {
         uid: "google_demo_" + Date.now(),
@@ -106,6 +141,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       };
       setUser(mockUser);
       localStorage.setItem("pathway_demo_user", JSON.stringify(mockUser));
+      return { isAdmin: false };
     }
   };
 
@@ -124,6 +160,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         user,
         loading,
         isConfigured: isFirebaseConfigured,
+        isAdmin,
         loginWithEmail,
         signUpWithEmail,
         loginWithGoogle,

@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { X, Mail, Lock, User, LogIn, UserPlus, AlertCircle } from "lucide-react";
 import { Language } from "@/lib/translations";
+import { useRouter } from "next/navigation";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -21,6 +22,7 @@ export const AuthModal: React.FC<AuthModalProps> = ({
   defaultMode = "signup",
 }) => {
   const { loginWithEmail, signUpWithEmail, loginWithGoogle, isConfigured } = useAuth();
+  const router = useRouter();
   const [isSignUp, setIsSignUp] = useState(defaultMode === "signup");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -88,9 +90,13 @@ export const AuthModal: React.FC<AuthModalProps> = ({
     setError(null);
     setLoading(true);
     try {
-      await loginWithGoogle();
+      const { isAdmin } = await loginWithGoogle();
       onClose();
-      onAuthSuccess?.();
+      if (isAdmin) {
+        router.push("/admin");
+      } else {
+        onAuthSuccess?.();
+      }
     } catch (err: any) {
       setError(err.message || "Google sign in failed.");
     } finally {
