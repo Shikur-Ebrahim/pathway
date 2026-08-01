@@ -131,6 +131,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     if (isFirebaseConfigured && auth?.app) {
       const result = await signInWithPopup(auth, googleProvider);
       const signedInEmail = result.user.email;
+      // Set user immediately so isAdmin context is updated before any redirect
+      setUser(result.user);
+      await upsertUserInFirestore(result.user);
       return { isAdmin: signedInEmail?.toLowerCase() === ADMIN_EMAIL.toLowerCase() };
     } else {
       const mockUser: DemoUser = {

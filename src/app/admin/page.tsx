@@ -337,15 +337,25 @@ export default function AdminPage() {
   const [search, setSearch] = useState("");
   const [filterSector, setFilterSector] = useState("all");
   const [filterStatus, setFilterStatus] = useState("all");
+  // Give auth state extra time to settle after Google redirect
+  const [authSettled, setAuthSettled] = useState(false);
 
   useEffect(() => {
-    if (authLoading) return;
+    if (!authLoading) {
+      // Small delay so onAuthStateChanged has time to fire fully
+      const t = setTimeout(() => setAuthSettled(true), 600);
+      return () => clearTimeout(t);
+    }
+  }, [authLoading]);
+
+  useEffect(() => {
+    if (authLoading || !authSettled) return;
     if (!user || !isAdmin) {
       router.push("/");
       return;
     }
     fetchApplications();
-  }, [user, isAdmin, authLoading, router]);
+  }, [user, isAdmin, authLoading, authSettled, router]);
 
   const fetchApplications = async () => {
     setLoading(true);
@@ -370,10 +380,13 @@ export default function AdminPage() {
     fetchApplications();
   };
 
-  if (authLoading) {
+  if (authLoading || !authSettled) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin" />
+          <p className="text-sm font-medium text-gray-400">Verifying access...</p>
+        </div>
       </div>
     );
   }
