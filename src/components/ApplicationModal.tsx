@@ -720,20 +720,20 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                       <div className="p-5 space-y-4">
                         <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-2">Select Payment Method</p>
                         
-                        <div className="relative">
-                          <select 
-                            value={selectedBank}
-                            onChange={(e) => setSelectedBank(e.target.value)}
-                            className="w-full px-4 py-3.5 bg-gray-50 border border-gray-200 rounded-xl text-[15px] font-bold text-gray-900 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all appearance-none cursor-pointer"
-                          >
-                            {paymentConfig.cbe.active && <option value="cbe">CBE (Commercial Bank of Ethiopia)</option>}
-                            {paymentConfig.telebirr.active && <option value="telebirr">Telebirr</option>}
-                            {paymentConfig.boa.active && <option value="boa">BOA (Bank of Abyssinia)</option>}
-                            {paymentConfig.awash.active && <option value="awash">Awash Bank</option>}
-                          </select>
-                          <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400 pointer-events-none" />
+                        <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-1">
+                          {paymentConfig.cbe.active && (
+                            <button onClick={() => setSelectedBank('cbe')} className={`px-4 py-2.5 rounded-xl text-[14px] font-bold whitespace-nowrap transition-all border-2 ${selectedBank === 'cbe' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-300'}`}>CBE</button>
+                          )}
+                          {paymentConfig.telebirr.active && (
+                            <button onClick={() => setSelectedBank('telebirr')} className={`px-4 py-2.5 rounded-xl text-[14px] font-bold whitespace-nowrap transition-all border-2 ${selectedBank === 'telebirr' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-300'}`}>Telebirr</button>
+                          )}
+                          {paymentConfig.boa.active && (
+                            <button onClick={() => setSelectedBank('boa')} className={`px-4 py-2.5 rounded-xl text-[14px] font-bold whitespace-nowrap transition-all border-2 ${selectedBank === 'boa' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-300'}`}>BOA</button>
+                          )}
+                          {paymentConfig.awash.active && (
+                            <button onClick={() => setSelectedBank('awash')} className={`px-4 py-2.5 rounded-xl text-[14px] font-bold whitespace-nowrap transition-all border-2 ${selectedBank === 'awash' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-300'}`}>Awash</button>
+                          )}
                         </div>
-
                         {selectedBank && paymentConfig[selectedBank as keyof Omit<PaymentConfig, 'feeAmount'>] && (
                           <div className="p-4 border-2 border-gray-100 rounded-xl bg-gray-50 flex items-center justify-between">
                             <div>
