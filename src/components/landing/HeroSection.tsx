@@ -7,7 +7,7 @@ import { ArrowRight, Search, Briefcase, Globe2, Star, ShieldCheck } from "lucide
 
 export const HeroSection = ({ onApplyClick, onBrowseJobs }: { onApplyClick: () => void; onBrowseJobs: () => void }) => {
   return (
-    <section className="relative w-full min-h-[90vh] flex flex-col justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-24 pb-16 lg:pt-32 lg:pb-24">
+    <section className="relative w-full min-h-[90vh] flex flex-col justify-center overflow-hidden bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-12 pb-16 md:pt-20 lg:pt-32 lg:pb-24">
       {/* Animated Background Shapes */}
       <motion.div 
         animate={{ y: [0, -30, 0], opacity: [0.4, 0.7, 0.4] }}
