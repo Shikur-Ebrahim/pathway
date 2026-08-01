@@ -23,6 +23,8 @@ const STATUS_LABELS: Record<string, string> = {
 
 function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; onClose: () => void; onUpdate: (id: string, status: 'accepted' | 'rejected' | 'interview') => Promise<void>; onDelete: (id: string) => Promise<void>; }) {
   const fd = app.formData;
+  // Status can be at top-level (Firebase/updated) or inside formData (legacy)
+  const appStatus = app.applicationStatus || fd?.applicationStatus;
   const [processing, setProcessing] = useState(false);
 
   const handleAccept = async () => {
@@ -80,11 +82,11 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
 
         {/* Body */}
         <div className="overflow-y-auto flex-1 px-5 py-5 space-y-6">
-          {fd?.applicationStatus && (
-            <div className={`p-4 rounded-xl border ${fd.applicationStatus === 'accepted' ? 'bg-green-50 border-green-200 text-green-700' : fd.applicationStatus === 'interview' ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-red-50 border-red-200 text-red-700'} flex items-center gap-3`}>
+          {appStatus && (
+            <div className={`p-4 rounded-xl border ${appStatus === 'accepted' ? 'bg-green-50 border-green-200 text-green-700' : appStatus === 'interview' ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-red-50 border-red-200 text-red-700'} flex items-center gap-3`}>
               <CheckCircle2 className="w-6 h-6" />
               <div>
-                <p className="text-sm font-bold">Application {fd.applicationStatus.toUpperCase()}</p>
+                <p className="text-sm font-bold">Application {appStatus.toUpperCase()}</p>
               </div>
             </div>
           )}
@@ -157,7 +159,7 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
         </div>
 
         {/* Actions Footer */}
-        {fd?.applicationStatus === 'accepted' ? (
+        {appStatus === 'accepted' ? (
           <div className="px-5 py-4 border-t border-gray-100 grid grid-cols-2 gap-3 shrink-0">
             <button onClick={handleReject} disabled={processing} className="w-full py-3 rounded-xl bg-red-50 text-red-600 font-bold text-[14px] hover:bg-red-100 flex items-center justify-center gap-2">
               <Trash2 className="w-4 h-4" /> {processing ? "Processing..." : "Delete"}
@@ -165,6 +167,15 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
             <button onClick={handleInterview} disabled={processing} className="w-full py-3 rounded-xl bg-blue-600 text-white font-bold text-[14px] hover:bg-blue-700 flex items-center justify-center gap-2">
               <CheckCircle2 className="w-4 h-4" /> {processing ? "Processing..." : "Interview Appt."}
             </button>
+          </div>
+        ) : appStatus === 'interview' ? (
+          <div className="px-5 py-4 border-t border-gray-100 grid grid-cols-2 gap-3 shrink-0">
+            <button onClick={handleReject} disabled={processing} className="w-full py-3 rounded-xl bg-red-50 text-red-600 font-bold text-[14px] hover:bg-red-100 flex items-center justify-center gap-2">
+              <Trash2 className="w-4 h-4" /> {processing ? "Processing..." : "Delete"}
+            </button>
+            <div className="w-full py-3 rounded-xl bg-blue-50 text-blue-700 font-bold text-[14px] flex items-center justify-center gap-2">
+              <CheckCircle2 className="w-4 h-4" /> Interview Scheduled
+            </div>
           </div>
         ) : (
           <div className="px-5 py-4 border-t border-gray-100 grid grid-cols-2 gap-3 shrink-0">
@@ -475,8 +486,9 @@ export default function AdminPage() {
                       ? app.createdAt.toDate().toLocaleDateString('en-ET')
                       : app.createdAt ? new Date(app.createdAt).toLocaleDateString('en-ET') : "";
                     const hasFiles = fd?.uploadedUrls && Object.keys(fd.uploadedUrls).length > 0;
-                    const isAccepted = fd?.applicationStatus === 'accepted';
-                    const isInterview = fd?.applicationStatus === 'interview';
+                    const appStatus = app.applicationStatus || fd?.applicationStatus;
+                    const isAccepted = appStatus === 'accepted';
+                    const isInterview = appStatus === 'interview';
                     const isViewed = app.isViewed || fd?.isViewed;
 
                     return (

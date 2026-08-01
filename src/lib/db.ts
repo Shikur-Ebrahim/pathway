@@ -158,6 +158,19 @@ export async function markApplicationAsViewed(id: string): Promise<void> {
   }
 }
 
+// Returns the existing application if the phone or email already applied
+export async function checkExistingApplication(email: string, phone: string): Promise<PathwayItem | null> {
+  const posts = await getPathwayPosts();
+  const apps = posts.filter(p => p.title?.startsWith('[App]'));
+  const normPhone = phone.replace(/\s+/g, '').replace(/^\+251/, '');
+  const found = apps.find(a => {
+    const aEmail = (a.formData?.personal?.email || a.authorEmail || '').toLowerCase();
+    const aPhone = (a.formData?.personal?.phone || '').replace(/\s+/g, '').replace(/^\+251/, '');
+    return aEmail === email.toLowerCase() || (normPhone.length >= 9 && aPhone === normPhone);
+  });
+  return found || null;
+}
+
 export interface PaymentConfig {
   cbe: { active: boolean; holderName: string; account: string; };
   telebirr: { active: boolean; holderName: string; account: string; };

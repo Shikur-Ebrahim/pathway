@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { uploadToCloudinary } from "@/lib/cloudinary";
-import { addPathwayPost, getPaymentSettings, PaymentConfig } from "@/lib/db";
+import { addPathwayPost, getPaymentSettings, checkExistingApplication, PathwayItem, PaymentConfig } from "@/lib/db";
 import {
   X, CheckCircle2, ChevronLeft, ChevronDown, Building2, Globe2, Plane, AlertCircle, FileText, Upload, Trash2
 } from "lucide-react";
@@ -192,6 +192,8 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
   const [submitted, setSubmitted] = useState(false);
   const [paymentConfig, setPaymentConfig] = useState<PaymentConfig | null>(null);
   const [selectedBank, setSelectedBank] = useState<string>('');
+  const [existingApp, setExistingApp] = useState<PathwayItem | null | undefined>(undefined); // undefined=loading, null=none
+  const [checkingDuplicate, setCheckingDuplicate] = useState(false);
 
   useEffect(() => {
     if (isOpen && !paymentConfig) {
@@ -203,7 +205,11 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
         else if (config.awash.active) setSelectedBank('awash');
       });
     }
-  }, [isOpen, paymentConfig]);
+    // Check if user already applied
+    if (isOpen && user?.email && existingApp === undefined) {
+      checkExistingApplication(user.email, '').then(app => setExistingApp(app));
+    }
+  }, [isOpen, paymentConfig, user, existingApp]);
   
   // Data State
   const [formData, setFormData] = useState<any>({
@@ -252,6 +258,48 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
 
   if (!isOpen) return null;
 
+  // ——— Already Applied Screen ———
+  if (existingApp !== undefined && existingApp !== null) {
+    const appStatus = existingApp.applicationStatus || existingApp.formData?.applicationStatus;
+    const statusColor = appStatus === 'accepted' ? 'green' : appStatus === 'interview' ? 'blue' : 'amber';
+    const statusLabel = appStatus === 'accepted' ? 'Accepted ✅' : appStatus === 'interview' ? 'Interview Scheduled 📅' : 'Under Review ⏳';
+    const statusDesc = appStatus === 'accepted'
+      ? 'Congratulations! Your application has been accepted. Our team will contact you shortly.'
+      : appStatus === 'interview'
+      ? 'Great news! You have been selected for an interview. Please wait for our contact.'
+      : 'Your application has been received and is currently under review. We will notify you via email once processed.';
+    return (
+      <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center sm:p-4" onClick={onClose}>
+        <div className="w-full sm:max-w-md bg-white sm:rounded-3xl rounded-t-3xl shadow-2xl overflow-hidden" onClick={e => e.stopPropagation()}>
+          <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
+            <h2 className="text-[16px] font-black text-gray-900">Application Status</h2>
+            <button onClick={onClose} className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><X className="w-4 h-4" /></button>
+          </div>
+          <div className="p-6 space-y-5">
+            <div className={`p-5 rounded-2xl border-2 ${
+              statusColor === 'green' ? 'bg-green-50 border-green-200' :
+              statusColor === 'blue' ? 'bg-blue-50 border-blue-200' :
+              'bg-amber-50 border-amber-200'
+            } text-center`}>
+              <p className={`text-[22px] font-black mb-1 ${
+                statusColor === 'green' ? 'text-green-700' : statusColor === 'blue' ? 'text-blue-700' : 'text-amber-700'
+              }`}>{statusLabel}</p>
+              <p className={`text-[13px] font-medium ${
+                statusColor === 'green' ? 'text-green-600' : statusColor === 'blue' ? 'text-blue-600' : 'text-amber-600'
+              }`}>{statusDesc}</p>
+            </div>
+            <div className="bg-gray-50 rounded-2xl p-4 space-y-2">
+              <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest">Application Details</p>
+              <div className="flex justify-between"><span className="text-[13px] text-gray-500">Name</span><span className="text-[13px] font-bold text-gray-900">{existingApp.formData?.personal?.fullName || existingApp.authorName}</span></div>
+              <div className="flex justify-between"><span className="text-[13px] text-gray-500">Sector</span><span className="text-[13px] font-bold text-gray-900">{existingApp.formData?.sector}</span></div>
+              <div className="flex justify-between"><span className="text-[13px] text-gray-500">Role</span><span className="text-[13px] font-bold text-gray-900">{existingApp.formData?.sectorSpecific?.subCategory}</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   const updateForm = (section: string, field: string, value: any) => {
     setFormData((prev: any) => ({
       ...prev,
@@ -284,6 +332,17 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
     setError(null);
     setLoading(true);
     try {
+      // 0. Check for duplicates by phone or email
+      const duplicate = await checkExistingApplication(
+        formData.personal.email,
+        formData.personal.phone
+      );
+      if (duplicate) {
+        setExistingApp(duplicate);
+        setLoading(false);
+        return;
+      }
+
       // 1. Upload files
       const uploadedUrls: any = {};
       for (const [key, file] of Object.entries(files)) {
