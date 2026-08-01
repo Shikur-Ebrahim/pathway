@@ -233,7 +233,7 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
               <a href="#sectors" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-2 text-sm text-gray-600 font-medium">Job Categories</a>
               <a href="/requirements" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-2 text-sm text-gray-600 font-medium">Requirements</a>
               <a href="https://t.me/pathway_agency" target="_blank" rel="noopener noreferrer" className="py-2.5 px-2 text-sm text-blue-600 font-medium flex items-center gap-1.5">
-                <Send className="w-3.5 h-3.5" /> @pathway_agency
+                <Send className="w-3.5 h-3.5" /> Telegram
               </a>
             </div>
           </div>
