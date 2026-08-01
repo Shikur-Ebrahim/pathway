@@ -275,17 +275,21 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
   if (existingApp !== undefined && existingApp !== null) {
     const appStatus = existingApp.applicationStatus || existingApp.formData?.applicationStatus;
     const statusColor = appStatus === 'accepted' ? 'green' : appStatus === 'interview' ? 'blue' : 'amber';
-    const statusLabel = appStatus === 'accepted' ? 'Accepted ✅' : appStatus === 'interview' ? 'Interview Scheduled 📅' : 'Under Review ⏳';
+    const statusLabel = appStatus === 'accepted' 
+      ? (lang === 'am' ? 'ተቀባይነት አግኝቷል ✅' : 'Accepted ✅') 
+      : appStatus === 'interview' 
+      ? (lang === 'am' ? 'ለቃለ መጠይቅ ተመርጠዋል 📅' : 'Interview Scheduled 📅') 
+      : (lang === 'am' ? 'በግምገማ ላይ ⏳' : 'Under Review ⏳');
     const statusDesc = appStatus === 'accepted'
-      ? 'Congratulations! Your application has been accepted. Our team will contact you shortly.'
+      ? (lang === 'am' ? 'እንኳን ደስ አለዎት! ማመልከቻዎ ተቀባይነት አግኝቷል። ቡድናችን በቅርቡ ያነጋግርዎታል።' : 'Congratulations! Your application has been accepted. Our team will contact you shortly.')
       : appStatus === 'interview'
-      ? 'Great news! You have been selected for an interview. Please wait for our contact.'
-      : 'Your application has been received and is currently under review. We will notify you via email once processed.';
+      ? (lang === 'am' ? 'ምርጥ ዜና! ለቃለ መጠይቅ ተመርጠዋል። እባክዎ እስክናነጋግርዎ ይጠብቁ።' : 'Great news! You have been selected for an interview. Please wait for our contact.')
+      : (lang === 'am' ? 'ማመልከቻዎ ደርሶናል እና በአሁኑ ጊዜ በግምገማ ላይ ነው። ሲጠናቀቅ በኢሜል እናሳውቅዎታለን።' : 'Your application has been received and is currently under review. We will notify you via email once processed.');
     return (
       <div className="fixed inset-0 z-[100] bg-black/60 backdrop-blur-sm flex items-end sm:items-center justify-center sm:p-4" onClick={onClose}>
         <div className="w-full sm:max-w-md bg-white sm:rounded-3xl rounded-t-3xl shadow-2xl overflow-hidden" onClick={e => e.stopPropagation()}>
           <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between">
-            <h2 className="text-[16px] font-black text-gray-900">Application Status</h2>
+            <h2 className="text-[16px] font-black text-gray-900">{lang === 'am' ? 'የማመልከቻ ሁኔታ' : 'Application Status'}</h2>
             <button onClick={onClose} className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200"><X className="w-4 h-4" /></button>
           </div>
           <div className="p-6 space-y-5">
@@ -302,10 +306,10 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
               }`}>{statusDesc}</p>
             </div>
             <div className="bg-gray-50 rounded-2xl p-4 space-y-2">
-              <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest">Application Details</p>
-              <div className="flex justify-between"><span className="text-[13px] text-gray-500">Name</span><span className="text-[13px] font-bold text-gray-900">{existingApp.formData?.personal?.fullName || existingApp.authorName}</span></div>
-              <div className="flex justify-between"><span className="text-[13px] text-gray-500">Sector</span><span className="text-[13px] font-bold text-gray-900">{existingApp.formData?.sector}</span></div>
-              <div className="flex justify-between"><span className="text-[13px] text-gray-500">Role</span><span className="text-[13px] font-bold text-gray-900">{existingApp.formData?.sectorSpecific?.subCategory}</span></div>
+              <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest">{lang === 'am' ? 'የማመልከቻ ዝርዝሮች' : 'Application Details'}</p>
+              <div className="flex justify-between"><span className="text-[13px] text-gray-500">{lang === 'am' ? 'ስም' : 'Name'}</span><span className="text-[13px] font-bold text-gray-900">{existingApp.formData?.personal?.fullName || existingApp.authorName}</span></div>
+              <div className="flex justify-between"><span className="text-[13px] text-gray-500">{lang === 'am' ? 'ዘርፍ' : 'Sector'}</span><span className="text-[13px] font-bold text-gray-900">{existingApp.formData?.sector}</span></div>
+              <div className="flex justify-between"><span className="text-[13px] text-gray-500">{lang === 'am' ? 'የስራ ድርሻ' : 'Role'}</span><span className="text-[13px] font-bold text-gray-900">{existingApp.formData?.sectorSpecific?.subCategory}</span></div>
             </div>
           </div>
         </div>
@@ -427,8 +431,8 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                </button>
              )}
              <div>
-               <h2 className="text-[16px] font-bold text-gray-900 leading-tight">Job Application</h2>
-               <p className="text-[12px] font-medium text-gray-400">Step {step} of 7</p>
+               <h2 className="text-[16px] font-bold text-gray-900 leading-tight">{lang === 'am' ? 'የስራ ማመልከቻ' : 'Job Application'}</h2>
+               <p className="text-[12px] font-medium text-gray-400">{lang === 'am' ? `ደረጃ ${step} ከ 7` : `Step ${step} of 7`}</p>
              </div>
           </div>
           <button onClick={onClose} className="w-10 h-10 rounded-full bg-gray-50 flex items-center justify-center text-gray-400 hover:text-gray-700 hover:bg-gray-100">
@@ -458,9 +462,9 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                 <CheckCircle2 className="w-12 h-12 text-green-500" />
               </div>
               <div className="space-y-2">
-                 <h2 className="text-2xl font-black text-gray-900">Application Submitted! 🎉</h2>
+                 <h2 className="text-2xl font-black text-gray-900">{lang === 'am' ? 'ማመልከቻ ገብቷል! 🎉' : 'Application Submitted! 🎉'}</h2>
                  <p className="text-[15px] text-gray-500 leading-relaxed">
-                   Your profile has been created successfully. Our team will review your application soon.
+                   {lang === 'am' ? 'መገለጫዎ በተሳካ ሁኔታ ተፈጥሯል። ቡድናችን ማመልከቻዎን በቅርቡ ይገመግማል።' : 'Your profile has been created successfully. Our team will review your application soon.'}
                  </p>
               </div>
 
@@ -470,15 +474,23 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                   <div className="w-8 h-8 rounded-xl bg-blue-100 flex items-center justify-center">
                     <span className="text-base">📧</span>
                   </div>
-                  <p className="text-[13px] font-bold text-blue-800 uppercase tracking-wide">What Happens Next?</p>
+                  <p className="text-[13px] font-bold text-blue-800 uppercase tracking-wide">{lang === 'am' ? 'ቀጣዩ ምንድነው?' : 'What Happens Next?'}</p>
                 </div>
                 <p className="text-[14px] text-gray-600 leading-relaxed">
-                  After our team reviews and <strong>accepts</strong> your application, you will receive an <strong>email notification</strong> directly from <span className="text-blue-700 font-semibold">Pathway Agency Ethiopia</span>.
+                  {lang === 'am' ? (
+                    <>ቡድናችን ማመልከቻዎን ከገመገመ እና <strong>ከተቀበለ</strong> በኋላ፣ በቀጥታ ከ <span className="text-blue-700 font-semibold">Pathway Agency Ethiopia</span> <strong>የኢሜል ማሳወቂያ</strong> ይደርስዎታል።</>
+                  ) : (
+                    <>After our team reviews and <strong>accepts</strong> your application, you will receive an <strong>email notification</strong> directly from <span className="text-blue-700 font-semibold">Pathway Agency Ethiopia</span>.</>
+                  )}
                 </p>
                 <div className="bg-white/70 rounded-xl p-3 flex items-start gap-2.5 border border-blue-100">
                   <span className="text-lg mt-0.5">🍀</span>
                   <p className="text-[13px] text-gray-700 font-medium leading-relaxed">
-                    <strong>Good Luck!</strong> We look forward to helping you secure your dream career opportunity.
+                    {lang === 'am' ? (
+                      <><strong>መልካም ዕድል!</strong> የህልምዎን የስራ እድል እንዲያገኙ ለመርዳት እንጠባበቃለን።</>
+                    ) : (
+                      <><strong>Good Luck!</strong> We look forward to helping you secure your dream career opportunity.</>
+                    )}
                   </p>
                 </div>
               </div>
@@ -490,8 +502,8 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
               {step === 1 && (
                 <div className="space-y-6 animate-fadeIn">
                   <div className="mb-6">
-                    <h1 className="text-2xl font-black text-gray-900 mb-2">Welcome to Pathway!</h1>
-                    <p className="text-[15px] text-gray-500 leading-relaxed">Let's get you started. First, tell us about your current career status so we can tailor your application.</p>
+                    <h1 className="text-2xl font-black text-gray-900 mb-2">{lang === 'am' ? 'እንኳን ወደ Pathway በደህና መጡ!' : 'Welcome to Pathway!'}</h1>
+                    <p className="text-[15px] text-gray-500 leading-relaxed">{lang === 'am' ? 'እንጀምር። መጀመሪያ ማመልከቻዎን ለማስተካከል እንዲረዳን ስለአሁኑ የስራ ሁኔታዎ ይንገሩን።' : 'Let\'s get you started. First, tell us about your current career status so we can tailor your application.'}</p>
                   </div>
 
                   <div className="space-y-4">
@@ -509,10 +521,10 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                           {formData.status === 'fresh' && <CheckCircle2 className="w-4 h-4 text-white" />}
                         </div>
                       </div>
-                      <h3 className="text-[17px] font-bold text-gray-900 mb-1">Fresh Graduate</h3>
-                      <p className="text-[13px] text-gray-500 leading-relaxed">Recently graduated (2015–2018 E.C.) and looking for your first professional opportunity.</p>
+                      <h3 className="text-[17px] font-bold text-gray-900 mb-1">{lang === 'am' ? 'አዲስ ተመራቂ' : 'Fresh Graduate'}</h3>
+                      <p className="text-[13px] text-gray-500 leading-relaxed">{lang === 'am' ? 'በቅርቡ የተመረቁ (2015-2018 ዓ.ም) እና የመጀመሪያ ሙያዊ እድልዎን የሚፈልጉ።' : 'Recently graduated (2015–2018 E.C.) and looking for your first professional opportunity.'}</p>
                       <div className="mt-3 flex flex-wrap gap-2">
-                        {['0 Years Exp', 'Any Sector', 'No Work History Needed'].map(tag => (
+                        {(lang === 'am' ? ['የ0 ዓመት ልምድ', 'ማንኛውም ዘርፍ', 'የስራ ታሪክ አያስፈልግም'] : ['0 Years Exp', 'Any Sector', 'No Work History Needed']).map(tag => (
                           <span key={tag} className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${ formData.status === 'fresh' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500' }`}>{tag}</span>
                         ))}
                       </div>
@@ -532,10 +544,10 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                           {formData.status === 'experienced' && <CheckCircle2 className="w-4 h-4 text-white" />}
                         </div>
                       </div>
-                      <h3 className="text-[17px] font-bold text-gray-900 mb-1">Experienced Professional</h3>
-                      <p className="text-[13px] text-gray-500 leading-relaxed">Currently working or graduated before 2015 E.C. with prior work experience.</p>
+                      <h3 className="text-[17px] font-bold text-gray-900 mb-1">{lang === 'am' ? 'ልምድ ያለው ባለሙያ' : 'Experienced Professional'}</h3>
+                      <p className="text-[13px] text-gray-500 leading-relaxed">{lang === 'am' ? 'በአሁኑ ጊዜ የሚሰሩ ወይም ከ2015 ዓ.ም በፊት የተመረቁ እና የስራ ልምድ ያላቸው።' : 'Currently working or graduated before 2015 E.C. with prior work experience.'}</p>
                       <div className="mt-3 flex flex-wrap gap-2">
-                        {['1+ Years Exp', 'Career Change', 'Professionals Welcome'].map(tag => (
+                        {(lang === 'am' ? ['የ1+ ዓመት ልምድ', 'የሙያ ለውጥ', 'ባለሙያዎች እንቀበላለን'] : ['1+ Years Exp', 'Career Change', 'Professionals Welcome']).map(tag => (
                           <span key={tag} className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${ formData.status === 'experienced' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500' }`}>{tag}</span>
                         ))}
                       </div>
@@ -548,8 +560,8 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
               {step === 2 && (
                 <div className="space-y-6 animate-fadeIn">
                   <div className="mb-8">
-                    <h1 className="text-2xl font-black text-gray-900 mb-2">Job Category</h1>
-                    <p className="text-[15px] text-gray-500">Which sector are you most interested in?</p>
+                    <h1 className="text-2xl font-black text-gray-900 mb-2">{lang === 'am' ? 'የስራ ዘርፍ' : 'Job Category'}</h1>
+                    <p className="text-[15px] text-gray-500">{lang === 'am' ? 'በየትኛው ዘርፍ ላይ ነው የበለጠ ፍላጎት ያለዎት?' : 'Which sector are you most interested in?'}</p>
                   </div>
 
                   <div className="space-y-4">
@@ -565,8 +577,18 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                             {s.emoji}
                           </div>
                           <div className="flex-1 text-left px-4 min-w-0">
-                            <h3 className="text-[15px] font-bold text-gray-900 leading-tight mb-1">{s.title}</h3>
-                            <p className="text-[12px] text-gray-500 leading-relaxed truncate whitespace-normal line-clamp-2">{s.desc}</p>
+                            <h3 className="text-[15px] font-bold text-gray-900 leading-tight mb-1">
+                              {lang === 'am' && s.id === 'embassy' ? 'ኤምባሲ እና ዲፕሎማቲክ ተልዕኮዎች' :
+                               lang === 'am' && s.id === 'ngo' ? 'ዓ.ድ.ት.ሀ እና የ UN ኤጀንሲዎች' :
+                               lang === 'am' && s.id === 'airport' ? 'አውሮፕላን ማረፊያ እና አቪዬሽን' :
+                               lang === 'am' && s.id === 'foreign' ? 'የውጭ ሀገር ስራ' : s.title}
+                            </h3>
+                            <p className="text-[12px] text-gray-500 leading-relaxed truncate whitespace-normal line-clamp-2">
+                              {lang === 'am' && s.id === 'embassy' ? 'አስተዳደራዊ፣ ጸሐፊነት፣ ፋይናንስ፣ አይቲ እና ቴክኒካዊ ቦታዎች።' :
+                               lang === 'am' && s.id === 'ngo' ? 'ልማት፣ ሰብአዊነት፣ የፕሮጀክት አስተዳደር እና አስተዳደር።' :
+                               lang === 'am' && s.id === 'airport' ? 'የአውሮፕላን ማረፊያ ስራዎች፣ የደንበኞች አገልግሎት፣ የመሬት አገልግሎት፣ ካርጎ እና ሎጂስቲክስ።' :
+                               lang === 'am' && s.id === 'foreign' ? 'የተረጋገጡ ዓለም አቀፍ የስራ እድሎች።' : s.desc}
+                            </p>
                           </div>
                           <div className={`w-5 h-5 rounded-full border-2 shrink-0 flex items-center justify-center ${
                             formData.sector === s.id ? 'border-blue-500 bg-blue-500' : 'border-gray-300 bg-white'
@@ -578,7 +600,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                         {formData.sector === s.id && (
                           <div className="mt-3 ml-6 pl-4 border-l-2 border-blue-200 animate-fadeIn relative z-20">
                             <InputField 
-                              label={`Select Specific Role/Category`}
+                              label={lang === 'am' ? 'የተለየ ሚና/ምድብ ይምረጡ' : 'Select Specific Role/Category'}
                               section="sectorSpecific"
                               field="subCategory"
                               options={SUB_CATEGORIES[s.id]}
@@ -598,20 +620,20 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
               {step === 3 && (
                 <div className="space-y-5 animate-fadeIn">
                   <div className="mb-5">
-                    <h1 className="text-2xl font-black text-gray-900 mb-2">Personal Info</h1>
-                    <p className="text-[15px] text-gray-500">Tell us a bit about yourself.</p>
+                    <h1 className="text-2xl font-black text-gray-900 mb-2">{lang === 'am' ? 'የግል መረጃ' : 'Personal Info'}</h1>
+                    <p className="text-[15px] text-gray-500">{lang === 'am' ? 'ስለ እርስዎ ጥቂት ይንገሩን።' : 'Tell us a bit about yourself.'}</p>
                   </div>
 
-                  <InputField label="Full Name" section="personal" field="fullName" required formData={formData} updateForm={updateForm} />
+                  <InputField label={lang === 'am' ? 'ሙሉ ስም' : 'Full Name'} section="personal" field="fullName" required formData={formData} updateForm={updateForm} />
                   <div className="grid grid-cols-2 gap-4">
-                    <InputField label="Gender" section="personal" field="gender" options={["Male", "Female"]} required formData={formData} updateForm={updateForm} />
-                    <InputField label="Date of Birth" section="personal" field="dob" type="date" required formData={formData} updateForm={updateForm} />
+                    <InputField label={lang === 'am' ? 'ፆታ' : 'Gender'} section="personal" field="gender" options={lang === 'am' ? ["ወንድ", "ሴት"] : ["Male", "Female"]} required formData={formData} updateForm={updateForm} />
+                    <InputField label={lang === 'am' ? 'የትውልድ ቀን' : 'Date of Birth'} section="personal" field="dob" type="date" required formData={formData} updateForm={updateForm} />
                   </div>
-                  <InputField label="Phone Number" section="personal" field="phone" type="tel" required formData={formData} updateForm={updateForm} />
-                  <InputField label="Email Address" section="personal" field="email" type="email" required formData={formData} updateForm={updateForm} />
+                  <InputField label={lang === 'am' ? 'ስልክ ቁጥር' : 'Phone Number'} section="personal" field="phone" type="tel" required formData={formData} updateForm={updateForm} />
+                  <InputField label={lang === 'am' ? 'የኢሜል አድራሻ' : 'Email Address'} section="personal" field="email" type="email" required formData={formData} updateForm={updateForm} />
                   <div className="grid grid-cols-2 gap-4">
-                    <InputField label="Region" section="personal" field="region" required formData={formData} updateForm={updateForm} />
-                    <InputField label="City / Sub-City" section="personal" field="city" required formData={formData} updateForm={updateForm} />
+                    <InputField label={lang === 'am' ? 'ክልል' : 'Region'} section="personal" field="region" required formData={formData} updateForm={updateForm} />
+                    <InputField label={lang === 'am' ? 'ከተማ / ክፍለ ከተማ' : 'City / Sub-City'} section="personal" field="city" required formData={formData} updateForm={updateForm} />
                   </div>
                 </div>
               )}
@@ -621,17 +643,17 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                 <div className="space-y-8 animate-fadeIn">
                   {/* Education Section */}
                   <div>
-                    <h1 className="text-2xl font-black text-gray-900 mb-2">Education</h1>
-                    <p className="text-[15px] text-gray-500 mb-6">Your academic background.</p>
-                    <InputField label="Highest Education" section="education" field="highestLevel" options={["Diploma / TVET", "Bachelor's Degree", "Master's Degree", "PhD"]} required formData={formData} updateForm={updateForm} />
+                    <h1 className="text-2xl font-black text-gray-900 mb-2">{lang === 'am' ? 'ትምህርት' : 'Education'}</h1>
+                    <p className="text-[15px] text-gray-500 mb-6">{lang === 'am' ? 'የትምህርት ታሪክዎ።' : 'Your academic background.'}</p>
+                    <InputField label={lang === 'am' ? 'የትምህርት ደረጃ' : 'Highest Education'} section="education" field="highestLevel" options={lang === 'am' ? ["ዲፕሎማ / TVET", "የባችለር ዲግሪ", "የማስተርስ ዲግሪ", "ፒኤችዲ (PhD)"] : ["Diploma / TVET", "Bachelor's Degree", "Master's Degree", "PhD"]} required formData={formData} updateForm={updateForm} />
                     
                     {formData.education.highestLevel && (
                       <>
-                        <InputField label="University / College / Institution" section="education" field="university" required formData={formData} updateForm={updateForm} />
-                        <InputField label="Field of Study" section="education" field="field" required formData={formData} updateForm={updateForm} />
+                        <InputField label={lang === 'am' ? 'ዩኒቨርሲቲ / ኮሌጅ / ተቋም' : 'University / College / Institution'} section="education" field="university" required formData={formData} updateForm={updateForm} />
+                        <InputField label={lang === 'am' ? 'የተማሩት መስክ (Field of Study)' : 'Field of Study'} section="education" field="field" required formData={formData} updateForm={updateForm} />
                         <div className="grid grid-cols-2 gap-4">
-                          <InputField label="Graduation Year" section="education" field="gradYear" type="number" min="1950" max={new Date().getFullYear() + 5} required formData={formData} updateForm={updateForm} />
-                          <InputField label="CGPA (Optional)" section="education" field="cgpa" type="number" min="0" max="4" step="0.01" formData={formData} updateForm={updateForm} />
+                          <InputField label={lang === 'am' ? 'የተመረቁበት ዓመት' : 'Graduation Year'} section="education" field="gradYear" type="number" min="1950" max={new Date().getFullYear() + 5} required formData={formData} updateForm={updateForm} />
+                          <InputField label={lang === 'am' ? 'ውጤት (CGPA) (አማራጭ)' : 'CGPA (Optional)'} section="education" field="cgpa" type="number" min="0" max="4" step="0.01" formData={formData} updateForm={updateForm} />
                         </div>
                       </>
                     )}
@@ -642,21 +664,21 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                   {/* Experience Section - based on career status */}
                   {formData.status === 'fresh' ? (
                     <div>
-                      <h1 className="text-2xl font-black text-gray-900 mb-2">Background</h1>
-                      <p className="text-[15px] text-gray-500 mb-6">Even without full-time work, share what you've done.</p>
-                      <InputField label="Internship / Volunteer Experience (Optional)" section="experience" field="internship" type="textarea" formData={formData} updateForm={updateForm} />
-                      <InputField label="Key Skills (e.g. Communication, MS Office, Design)" section="experience" field="skills" type="textarea" formData={formData} updateForm={updateForm} />
-                      <InputField label="Languages Spoken (e.g. Amharic, English, Arabic)" section="experience" field="languages" type="textarea" formData={formData} updateForm={updateForm} />
+                      <h1 className="text-2xl font-black text-gray-900 mb-2">{lang === 'am' ? 'ልምድ' : 'Background'}</h1>
+                      <p className="text-[15px] text-gray-500 mb-6">{lang === 'am' ? 'ያለዎትን ማንኛውንም ልምድ ያጋሩ።' : 'Even without full-time work, share what you\'ve done.'}</p>
+                      <InputField label={lang === 'am' ? 'የበጎ ፈቃድ / የተለማማጅነት ልምድ (አማራጭ)' : 'Internship / Volunteer Experience (Optional)'} section="experience" field="internship" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'ዋና ክህሎቶች (ለምሳሌ፡ ኮምፒውተር፣ ዲዛይን)' : 'Key Skills (e.g. Communication, MS Office, Design)'} section="experience" field="skills" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የሚችሉት ቋንቋዎች (ለምሳሌ፡ አማርኛ፣ እንግሊዝኛ)' : 'Languages Spoken (e.g. Amharic, English, Arabic)'} section="experience" field="languages" type="textarea" formData={formData} updateForm={updateForm} />
                     </div>
                   ) : (
                     <div>
-                      <h1 className="text-2xl font-black text-gray-900 mb-2">Work Experience</h1>
-                      <p className="text-[15px] text-gray-500 mb-6">Your professional background.</p>
-                      <InputField label="Years of Experience" section="experience" field="yearsOfExperience" options={["Less than 1 year", "1-2 years", "3-5 years", "5-10 years", "10+ years"]} required formData={formData} updateForm={updateForm} />
-                      <InputField label="Current / Latest Employer" section="experience" field="currentEmployer" required formData={formData} updateForm={updateForm} />
-                      <InputField label="Current / Latest Position" section="experience" field="currentPosition" required formData={formData} updateForm={updateForm} />
-                      <InputField label="Employment Type" section="experience" field="employmentType" options={["Full-time", "Part-time", "Contract", "Freelance", "Self-employed"]} required formData={formData} updateForm={updateForm} />
-                      <InputField label="Key Professional Skills" section="experience" field="professionalSkills" type="textarea" formData={formData} updateForm={updateForm} />
+                      <h1 className="text-2xl font-black text-gray-900 mb-2">{lang === 'am' ? 'የስራ ልምድ' : 'Work Experience'}</h1>
+                      <p className="text-[15px] text-gray-500 mb-6">{lang === 'am' ? 'የሙያ ታሪክዎ።' : 'Your professional background.'}</p>
+                      <InputField label={lang === 'am' ? 'የስራ ልምድ (በዓመታት)' : 'Years of Experience'} section="experience" field="yearsOfExperience" options={lang === 'am' ? ["ከ 1 ዓመት በታች", "1-2 ዓመታት", "3-5 ዓመታት", "5-10 ዓመታት", "10+ ዓመታት"] : ["Less than 1 year", "1-2 years", "3-5 years", "5-10 years", "10+ years"]} required formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የአሁኑ / የቅርብ ጊዜ አሰሪ' : 'Current / Latest Employer'} section="experience" field="currentEmployer" required formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የአሁኑ / የቅርብ ጊዜ የስራ መደብ' : 'Current / Latest Position'} section="experience" field="currentPosition" required formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የስራ ዓይነት' : 'Employment Type'} section="experience" field="employmentType" options={lang === 'am' ? ["የሙሉ ሰዓት", "የትርፍ ሰዓት", "ኮንትራት", "ፍሪላንስ (Freelance)", "የግል ስራ"] : ["Full-time", "Part-time", "Contract", "Freelance", "Self-employed"]} required formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'ዋና የሙያ ክህሎቶች' : 'Key Professional Skills'} section="experience" field="professionalSkills" type="textarea" formData={formData} updateForm={updateForm} />
                     </div>
                   )}
                 </div>
@@ -668,58 +690,58 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                 <div className="space-y-6 animate-fadeIn">
                   <div className="mb-6">
                     <div className="inline-flex items-center gap-2 bg-blue-50 px-3 py-1.5 rounded-full mb-3">
-                      <span className="text-[13px] font-bold text-blue-700">{SECTORS.find(s=>s.id===formData.sector)?.emoji} {SECTORS.find(s=>s.id===formData.sector)?.title}</span>
+                      <span className="text-[13px] font-bold text-blue-700">{SECTORS.find(s=>s.id===formData.sector)?.emoji} {lang === 'am' ? (formData.sector === 'embassy' ? 'ኤምባሲ እና ዲፕሎማቲክ ተልዕኮዎች' : formData.sector === 'ngo' ? 'ዓ.ድ.ት.ሀ እና የ UN ኤጀንሲዎች' : formData.sector === 'airport' ? 'አውሮፕላን ማረፊያ እና አቪዬሽን' : formData.sector === 'foreign' ? 'የውጭ ሀገር ስራ' : SECTORS.find(s=>s.id===formData.sector)?.title) : SECTORS.find(s=>s.id===formData.sector)?.title}</span>
                     </div>
-                    <h1 className="text-2xl font-black text-gray-900 mb-2">Sector Requirements</h1>
-                    <p className="text-[15px] text-gray-500">Please fill in the specific information required for this sector.</p>
+                    <h1 className="text-2xl font-black text-gray-900 mb-2">{lang === 'am' ? 'የዘርፍ መስፈርቶች' : 'Sector Requirements'}</h1>
+                    <p className="text-[15px] text-gray-500">{lang === 'am' ? 'እባክዎ ለዚህ ዘርፍ የሚፈለገውን የተለየ መረጃ ይሙሉ ፡' : 'Please fill in the specific information required for this sector.'}</p>
                   </div>
 
                   {formData.sector === 'embassy' && (
                     <>
-                      <InputField label="English Proficiency Level" section="sectorSpecific" field="englishLevel" options={["Basic", "Intermediate", "Advanced", "Fluent / Native"]} required formData={formData} updateForm={updateForm} />
-                      <InputField label="Other Languages Spoken (Optional)" section="sectorSpecific" field="otherLanguages" formData={formData} updateForm={updateForm} />
-                      <InputField label="Computer & Software Skills" section="sectorSpecific" field="embassyComputerSkills" type="textarea" formData={formData} updateForm={updateForm} />
-                      <InputField label="Typing Speed (words per minute, Optional)" section="sectorSpecific" field="typingSkills" formData={formData} updateForm={updateForm} />
-                      <InputField label="Do you have Security Clearance?" section="sectorSpecific" field="securityClearance" options={["Yes", "No", "Can Obtain"]} formData={formData} updateForm={updateForm} />
-                      <InputField label="Motivation Statement (Why do you want this role?)" section="sectorSpecific" field="motivationLetter" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የእንግሊዝኛ ቋንቋ ችሎታ ደረጃ' : 'English Proficiency Level'} section="sectorSpecific" field="englishLevel" options={lang === 'am' ? ["መሰረታዊ", "መካከለኛ", "ከፍተኛ", "አቀላጥፎ የሚናገር / የአፍ መፍቻ ቋንቋ"] : ["Basic", "Intermediate", "Advanced", "Fluent / Native"]} required formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የሚችሏቸው ሌሎች ቋንቋዎች (አማራጭ)' : 'Other Languages Spoken (Optional)'} section="sectorSpecific" field="otherLanguages" formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የኮምፒውተር እና ሶፍትዌር ክህሎቶች' : 'Computer & Software Skills'} section="sectorSpecific" field="embassyComputerSkills" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የመተየብ ፍጥነት (ቃላት በደቂቃ፣ አማራጭ)' : 'Typing Speed (words per minute, Optional)'} section="sectorSpecific" field="typingSkills" formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የደህንነት ማረጋገጫ (Security Clearance) አለዎት?' : 'Do you have Security Clearance?'} section="sectorSpecific" field="securityClearance" options={lang === 'am' ? ["አዎ", "የለኝም", "ማግኘት እችላለሁ"] : ["Yes", "No", "Can Obtain"]} formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የማነሳሳት ደብዳቤ (ለምን ይህን ስራ ፈለጉ?)' : 'Motivation Statement (Why do you want this role?)'} section="sectorSpecific" field="motivationLetter" type="textarea" formData={formData} updateForm={updateForm} />
                     </>
                   )}
 
                   {formData.sector === 'ngo' && (
                     <>
-                      <InputField label="Years of NGO / Development Work Experience" section="sectorSpecific" field="ngoExperience" options={["None", "Less than 1 year", "1-3 years", "3-5 years", "5+ years"]} required formData={formData} updateForm={updateForm} />
-                      <InputField label="Project Management Experience" section="sectorSpecific" field="projectManagement" type="textarea" formData={formData} updateForm={updateForm} />
-                      <InputField label="Community Development Experience" section="sectorSpecific" field="communityDevelopment" type="textarea" formData={formData} updateForm={updateForm} />
-                      <InputField label="Can you write Proposals?" section="sectorSpecific" field="proposalWriting" options={["Yes – Independently", "Yes – With Support", "No"]} formData={formData} updateForm={updateForm} />
-                      <InputField label="Can you write Reports?" section="sectorSpecific" field="reportWriting" options={["Yes – Independently", "Yes – With Support", "No"]} formData={formData} updateForm={updateForm} />
-                      <InputField label="Donor / Partner Experience (USAID, UNICEF, EU, etc.)" section="sectorSpecific" field="donorExperience" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የ NGO / የልማት ስራ ልምድ በዓመታት' : 'Years of NGO / Development Work Experience'} section="sectorSpecific" field="ngoExperience" options={lang === 'am' ? ["ምንም", "ከ 1 ዓመት በታች", "1-3 ዓመታት", "3-5 ዓመታት", "5+ ዓመታት"] : ["None", "Less than 1 year", "1-3 years", "3-5 years", "5+ years"]} required formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የፕሮጀክት አስተዳደር ልምድ' : 'Project Management Experience'} section="sectorSpecific" field="projectManagement" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የማህበረሰብ ልማት ልምድ' : 'Community Development Experience'} section="sectorSpecific" field="communityDevelopment" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የፕሮጀክት ጥያቄዎችን (Proposals) መፃፍ ይችላሉ?' : 'Can you write Proposals?'} section="sectorSpecific" field="proposalWriting" options={lang === 'am' ? ["አዎ - ራሴን ችዬ", "አዎ - በድጋፍ", "አልችልም"] : ["Yes – Independently", "Yes – With Support", "No"]} formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'ሪፖርቶችን መፃፍ ይችላሉ?' : 'Can you write Reports?'} section="sectorSpecific" field="reportWriting" options={lang === 'am' ? ["አዎ - ራሴን ችዬ", "አዎ - በድጋፍ", "አልችልም"] : ["Yes – Independently", "Yes – With Support", "No"]} formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'ለጋሽ / አጋር ድርጅቶች ጋር የመስራት ልምድ (USAID, UNICEF, EU, ወዘተ)' : 'Donor / Partner Experience (USAID, UNICEF, EU, etc.)'} section="sectorSpecific" field="donorExperience" type="textarea" formData={formData} updateForm={updateForm} />
                     </>
                   )}
 
                   {formData.sector === 'airport' && (
                     <>
-                      <InputField label="Preferred Airport Role" section="sectorSpecific" field="customerService" options={["Customer Service Agent", "Ground Handling", "Cargo & Logistics", "Airport Operations", "Check-in Agent", "Other"]} required formData={formData} updateForm={updateForm} />
-                      <InputField label="Do you have Ground Handling experience?" section="sectorSpecific" field="groundHandling" options={["Yes", "No"]} formData={formData} updateForm={updateForm} />
-                      <InputField label="Cargo / Freight Experience (Optional)" section="sectorSpecific" field="cargoExperience" type="textarea" formData={formData} updateForm={updateForm} />
-                      <InputField label="Shift Preference" section="sectorSpecific" field="shiftAvailability" options={["Day Shift Only", "Night Shift Only", "Any Shift"]} required formData={formData} updateForm={updateForm} />
-                      <InputField label="Physical Fitness Level" section="sectorSpecific" field="physicalFitness" options={["Excellent", "Good", "Average"]} formData={formData} updateForm={updateForm} />
-                      <InputField label="Available to Travel / Work Different Locations?" section="sectorSpecific" field="travelAvailability" options={["Yes", "No"]} formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'ተመራጭ የአውሮፕላን ማረፊያ የስራ ድርሻ' : 'Preferred Airport Role'} section="sectorSpecific" field="customerService" options={lang === 'am' ? ["የደንበኞች አገልግሎት ወኪል", "የመሬት አገልግሎት", "ካርጎ እና ሎጂስቲክስ", "የአውሮፕላን ማረፊያ ስራዎች", "የቼክ-ኢን ወኪል", "ሌላ"] : ["Customer Service Agent", "Ground Handling", "Cargo & Logistics", "Airport Operations", "Check-in Agent", "Other"]} required formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የመሬት አገልግሎት (Ground Handling) ልምድ አለዎት?' : 'Do you have Ground Handling experience?'} section="sectorSpecific" field="groundHandling" options={lang === 'am' ? ["አዎ", "የለኝም"] : ["Yes", "No"]} formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የካርጎ / ጭነት ልምድ (አማራጭ)' : 'Cargo / Freight Experience (Optional)'} section="sectorSpecific" field="cargoExperience" type="textarea" formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የስራ ፈረቃ (Shift) ምርጫ' : 'Shift Preference'} section="sectorSpecific" field="shiftAvailability" options={lang === 'am' ? ["የቀን ፈረቃ ብቻ", "የማታ ፈረቃ ብቻ", "ማንኛውም ፈረቃ"] : ["Day Shift Only", "Night Shift Only", "Any Shift"]} required formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የአካል ብቃት ደረጃ' : 'Physical Fitness Level'} section="sectorSpecific" field="physicalFitness" options={lang === 'am' ? ["በጣም ጥሩ", "ጥሩ", "መካከለኛ"] : ["Excellent", "Good", "Average"]} formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'ወደተለያዩ ቦታዎች ለመጓዝ / ለመስራት ዝግጁ ነዎት?' : 'Available to Travel / Work Different Locations?'} section="sectorSpecific" field="travelAvailability" options={lang === 'am' ? ["አዎ", "አይ"] : ["Yes", "No"]} formData={formData} updateForm={updateForm} />
                     </>
                   )}
 
                   {formData.sector === 'foreign' && (
                     <>
-                      <InputField label="Preferred Destination Country" section="sectorSpecific" field="preferredCountry" options={["Saudi Arabia", "UAE", "Qatar", "Kuwait", "Oman", "Bahrain", "Jordan", "Lebanon", "Other"]} required formData={formData} updateForm={updateForm} />
-                      <InputField label="Do you have a valid Passport?" section="sectorSpecific" field="passportAvailable" options={["Yes", "No – Can Apply"]} required formData={formData} updateForm={updateForm} />
-                      {formData.sectorSpecific.passportAvailable === 'Yes' && (
+                      <InputField label={lang === 'am' ? 'ተመራጭ መዳረሻ ሀገር' : 'Preferred Destination Country'} section="sectorSpecific" field="preferredCountry" options={lang === 'am' ? ["ሳዑዲ አረቢያ", "የተባበሩት አረብ ኢሚሬትስ (UAE)", "ኳታር", "ኩዌት", "ኦማን", "ባህሬን", "ዮርዳኖስ", "ሊባኖስ", "ሌላ"] : ["Saudi Arabia", "UAE", "Qatar", "Kuwait", "Oman", "Bahrain", "Jordan", "Lebanon", "Other"]} required formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'ትክክለኛ ፓስፖርት አለዎት?' : 'Do you have a valid Passport?'} section="sectorSpecific" field="passportAvailable" options={lang === 'am' ? ["አዎ", "የለኝም - ማውጣት እችላለሁ"] : ["Yes", "No – Can Apply"]} required formData={formData} updateForm={updateForm} />
+                      {formData.sectorSpecific.passportAvailable === (lang === 'am' ? 'አዎ' : 'Yes') && (
                         <>
-                          <InputField label="Passport Number" section="sectorSpecific" field="passportNumber" formData={formData} updateForm={updateForm} />
-                          <InputField label="Passport Expiry Date" section="sectorSpecific" field="passportExpiry" type="date" formData={formData} updateForm={updateForm} />
+                          <InputField label={lang === 'am' ? 'የፓስፖርት ቁጥር' : 'Passport Number'} section="sectorSpecific" field="passportNumber" formData={formData} updateForm={updateForm} />
+                          <InputField label={lang === 'am' ? 'ፓስፖርቱ የሚያበቃበት ቀን' : 'Passport Expiry Date'} section="sectorSpecific" field="passportExpiry" type="date" formData={formData} updateForm={updateForm} />
                         </>
                       )}
-                      <InputField label="When can you travel?" section="sectorSpecific" field="readyToRelocate" options={["Immediately", "Within 1 Month", "Within 3 Months", "After 3 Months"]} required formData={formData} updateForm={updateForm} />
-                      <InputField label="Do you have a Medical Certificate?" section="sectorSpecific" field="medicalCertificate" options={["Yes", "No – Can Obtain"]} formData={formData} updateForm={updateForm} />
-                      <InputField label="Do you have a Police Clearance?" section="sectorSpecific" field="policeClearance" options={["Yes", "No – Can Obtain"]} formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'መቼ መጓዝ ይችላሉ?' : 'When can you travel?'} section="sectorSpecific" field="readyToRelocate" options={lang === 'am' ? ["ወዲያውኑ", "በ 1 ወር ውስጥ", "በ 3 ወራት ውስጥ", "ከ 3 ወራት በኋላ"] : ["Immediately", "Within 1 Month", "Within 3 Months", "After 3 Months"]} required formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የህክምና ማረጋገጫ (Medical Certificate) አለዎት?' : 'Do you have a Medical Certificate?'} section="sectorSpecific" field="medicalCertificate" options={lang === 'am' ? ["አዎ", "የለኝም - ማግኘት እችላለሁ"] : ["Yes", "No – Can Obtain"]} formData={formData} updateForm={updateForm} />
+                      <InputField label={lang === 'am' ? 'የፖሊስ ማረጋገጫ (Police Clearance) አለዎት?' : 'Do you have a Police Clearance?'} section="sectorSpecific" field="policeClearance" options={lang === 'am' ? ["አዎ", "የለኝም - ማግኘት እችላለሁ"] : ["Yes", "No – Can Obtain"]} formData={formData} updateForm={updateForm} />
                     </>
                   )}
                 </div>
@@ -729,31 +751,31 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
               {step === 6 && (
                 <div className="space-y-5 animate-fadeIn">
                   <div className="mb-4">
-                    <h1 className="text-2xl font-black text-gray-900 mb-2">Upload Documents</h1>
-                    <p className="text-[15px] text-gray-500">Upload your files. Accepted: PDF, DOC, JPG, PNG.</p>
+                    <h1 className="text-2xl font-black text-gray-900 mb-2">{lang === 'am' ? 'ሰነዶችን ይስቀሉ' : 'Upload Documents'}</h1>
+                    <p className="text-[15px] text-gray-500">{lang === 'am' ? 'ፋይሎችዎን ይስቀሉ። ተቀባይነት ያላቸው ፡ PDF, DOC, JPG, PNG።' : 'Upload your files. Accepted: PDF, DOC, JPG, PNG.'}</p>
                   </div>
 
                   {/* Required for everyone */}
                   <div>
-                    <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-3">Required Documents</p>
-                    <FileUploadCard id="cv" label="CV / Resume" required files={files} handleFileChange={handleFileChange} />
-                    <FileUploadCard id="passportPhoto" label="Passport Size Photo (clear background)" accept="image/*" required files={files} handleFileChange={handleFileChange} />
-                    <FileUploadCard id="educationalCert" label="Highest Educational Certificate" required files={files} handleFileChange={handleFileChange} />
+                    <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-3">{lang === 'am' ? 'የግዴታ ሰነዶች' : 'Required Documents'}</p>
+                    <FileUploadCard id="cv" label={lang === 'am' ? 'ሲቪ / ሪዙም (CV)' : 'CV / Resume'} required files={files} handleFileChange={handleFileChange} />
+                    <FileUploadCard id="passportPhoto" label={lang === 'am' ? 'የፓስፖርት መጠን ፎቶ (ግልጽ የሆነ)' : 'Passport Size Photo (clear background)'} accept="image/*" required files={files} handleFileChange={handleFileChange} />
+                    <FileUploadCard id="educationalCert" label={lang === 'am' ? 'የከፍተኛ ትምህርት ማስረጃ' : 'Highest Educational Certificate'} required files={files} handleFileChange={handleFileChange} />
                   </div>
 
                   <div className="h-px bg-gray-200" />
 
                   {/* Conditional docs */}
                   <div>
-                    <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-3">Additional Documents (Optional)</p>
+                    <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-3">{lang === 'am' ? 'ተጨማሪ ሰነዶች (አማራጭ)' : 'Additional Documents (Optional)'}</p>
                     {formData.status === 'experienced' && (
-                      <FileUploadCard id="experienceCert" label="Work Experience Certificate" files={files} handleFileChange={handleFileChange} />
+                      <FileUploadCard id="experienceCert" label={lang === 'am' ? 'የስራ ልምድ ማስረጃ' : 'Work Experience Certificate'} files={files} handleFileChange={handleFileChange} />
                     )}
                     {formData.sector === 'foreign' && (
-                      <FileUploadCard id="passport" label="Passport Copy" files={files} handleFileChange={handleFileChange} />
+                      <FileUploadCard id="passport" label={lang === 'am' ? 'የፓስፖርት ኮፒ' : 'Passport Copy'} files={files} handleFileChange={handleFileChange} />
                     )}
                     {formData.sector !== 'foreign' && (
-                      <FileUploadCard id="passport" label="National ID / Fayda Card Copy" files={files} handleFileChange={handleFileChange} />
+                      <FileUploadCard id="passport" label={lang === 'am' ? 'የብሔራዊ መታወቂያ / ፋይዳ ካርድ ኮፒ' : 'National ID / Fayda Card Copy'} files={files} handleFileChange={handleFileChange} />
                     )}
                   </div>
                 </div>
@@ -763,8 +785,8 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
               {step === 7 && (
                 <div className="space-y-5 animate-fadeIn">
                   <div className="mb-4">
-                    <h1 className="text-2xl font-black text-gray-900 mb-2">Review & Submit</h1>
-                    <p className="text-[15px] text-gray-500">Almost done! Review your info and confirm.</p>
+                    <h1 className="text-2xl font-black text-gray-900 mb-2">{lang === 'am' ? 'ገምግም እና አስገባ' : 'Review & Submit'}</h1>
+                    <p className="text-[15px] text-gray-500">{lang === 'am' ? 'ተቃርቧል! መረጃዎን ይገምግሙ እና ያረጋግጡ።' : 'Almost done! Review your info and confirm.'}</p>
                   </div>
 
                   {/* Summary Card */}
@@ -775,28 +797,28 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                     </div>
                     <div className="divide-y divide-gray-50">
                       <div className="px-5 py-3 flex justify-between items-center">
-                        <span className="text-[13px] text-gray-400 font-semibold">Status</span>
-                        <span className="text-[13px] font-bold text-gray-900">{formData.status === 'fresh' ? '🎓 Fresh Graduate' : '💼 Experienced'}</span>
+                        <span className="text-[13px] text-gray-400 font-semibold">{lang === 'am' ? 'ሁኔታ' : 'Status'}</span>
+                        <span className="text-[13px] font-bold text-gray-900">{formData.status === 'fresh' ? (lang === 'am' ? '🎓 አዲስ ተመራቂ' : '🎓 Fresh Graduate') : (lang === 'am' ? '💼 ልምድ ያለው' : '💼 Experienced')}</span>
                       </div>
                       <div className="px-5 py-3 flex justify-between items-center">
-                        <span className="text-[13px] text-gray-400 font-semibold">Sector</span>
-                        <span className="text-[13px] font-bold text-gray-900">{SECTORS.find(s=>s.id===formData.sector)?.emoji} {SECTORS.find(s=>s.id===formData.sector)?.title}</span>
+                        <span className="text-[13px] text-gray-400 font-semibold">{lang === 'am' ? 'ዘርፍ' : 'Sector'}</span>
+                        <span className="text-[13px] font-bold text-gray-900">{SECTORS.find(s=>s.id===formData.sector)?.emoji} {lang === 'am' ? (formData.sector === 'embassy' ? 'ኤምባሲ እና ዲፕሎማቲክ ተልዕኮዎች' : formData.sector === 'ngo' ? 'ዓ.ድ.ት.ሀ እና የ UN ኤጀንሲዎች' : formData.sector === 'airport' ? 'አውሮፕላን ማረፊያ እና አቪዬሽን' : formData.sector === 'foreign' ? 'የውጭ ሀገር ስራ' : SECTORS.find(s=>s.id===formData.sector)?.title) : SECTORS.find(s=>s.id===formData.sector)?.title}</span>
                       </div>
                       <div className="px-5 py-3 flex justify-between items-center">
-                        <span className="text-[13px] text-gray-400 font-semibold">Role</span>
+                        <span className="text-[13px] text-gray-400 font-semibold">{lang === 'am' ? 'የስራ ድርሻ' : 'Role'}</span>
                         <span className="text-[13px] font-bold text-gray-900">{formData.sectorSpecific.subCategory}</span>
                       </div>
                       <div className="px-5 py-3 flex justify-between items-center">
-                        <span className="text-[13px] text-gray-400 font-semibold">Education</span>
+                        <span className="text-[13px] text-gray-400 font-semibold">{lang === 'am' ? 'ትምህርት' : 'Education'}</span>
                         <span className="text-[13px] font-bold text-gray-900">{formData.education.highestLevel}</span>
                       </div>
                       <div className="px-5 py-3 flex justify-between items-center">
-                        <span className="text-[13px] text-gray-400 font-semibold">City</span>
+                        <span className="text-[13px] text-gray-400 font-semibold">{lang === 'am' ? 'ከተማ' : 'City'}</span>
                         <span className="text-[13px] font-bold text-gray-900">{formData.personal.city || formData.personal.region || '—'}</span>
                       </div>
                       <div className="px-5 py-3 flex justify-between items-center">
-                        <span className="text-[13px] text-gray-400 font-semibold">Documents</span>
-                        <span className="text-[13px] font-bold text-green-600">{Object.values(files).filter(Boolean).length} uploaded</span>
+                        <span className="text-[13px] text-gray-400 font-semibold">{lang === 'am' ? 'ሰነዶች' : 'Documents'}</span>
+                        <span className="text-[13px] font-bold text-green-600">{Object.values(files).filter(Boolean).length} {lang === 'am' ? 'ተሰቅለዋል' : 'uploaded'}</span>
                       </div>
                     </div>
                   </div>
@@ -805,11 +827,11 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                   {paymentConfig && (
                     <div className="bg-white rounded-2xl border-2 border-blue-100 overflow-hidden shadow-sm">
                       <div className="bg-blue-50 px-5 py-4 border-b border-blue-100">
-                        <h3 className="font-black text-blue-900 text-[16px]">Application Fee: {paymentConfig.feeAmount} ETB</h3>
-                        <p className="text-[13px] text-blue-700 mt-1 font-medium">Please pay the {paymentConfig.feeAmount} ETB fee for your application to proceed. We will notify you via email for interviews once processed.</p>
+                        <h3 className="font-black text-blue-900 text-[16px]">{lang === 'am' ? 'የማመልከቻ ክፍያ ፡' : 'Application Fee:'} {paymentConfig.feeAmount} ETB</h3>
+                        <p className="text-[13px] text-blue-700 mt-1 font-medium">{lang === 'am' ? `እባክዎ ማመልከቻዎ እንዲስተናገድ የ ${paymentConfig.feeAmount} ብር ክፍያ ይክፈሉ። ክፍያው ሲጠናቀቅ ለቃለ መጠይቅ በኢሜል እናሳውቅዎታለን።` : `Please pay the ${paymentConfig.feeAmount} ETB fee for your application to proceed. We will notify you via email for interviews once processed.`}</p>
                       </div>
                       <div className="p-5 space-y-4">
-                        <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-2">Select Payment Method</p>
+                        <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-2">{lang === 'am' ? 'የመክፈያ ዘዴ ይምረጡ' : 'Select Payment Method'}</p>
                         
                         <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-1">
                           {paymentConfig.cbe.active && (
@@ -828,20 +850,20 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                         {selectedBank && paymentConfig[selectedBank as keyof Omit<PaymentConfig, 'feeAmount'>] && (
                           <div className="p-4 border-2 border-gray-100 rounded-xl bg-gray-50 flex items-center justify-between">
                             <div>
-                              <p className="text-[12px] font-bold text-gray-400 mb-1">Account Holder</p>
+                              <p className="text-[12px] font-bold text-gray-400 mb-1">{lang === 'am' ? 'የሂሳብ ባለቤት' : 'Account Holder'}</p>
                               <p className="font-bold text-gray-900 text-[15px] mb-2">{(paymentConfig[selectedBank as keyof Omit<PaymentConfig, 'feeAmount'>] as any).holderName}</p>
-                              <p className="text-[12px] font-bold text-gray-400 mb-1">Account / Phone Number</p>
+                              <p className="text-[12px] font-bold text-gray-400 mb-1">{lang === 'am' ? 'የሂሳብ / ስልክ ቁጥር' : 'Account / Phone Number'}</p>
                               <p className="text-[17px] font-black font-mono text-blue-600">{(paymentConfig[selectedBank as keyof Omit<PaymentConfig, 'feeAmount'>] as any).account}</p>
                             </div>
                             <button onClick={() => handleCopy((paymentConfig[selectedBank as keyof Omit<PaymentConfig, 'feeAmount'>] as any).account)} className="p-3 bg-white rounded-xl border border-gray-200 text-gray-500 hover:text-blue-600 hover:border-blue-300 shadow-sm transition-colors flex flex-col items-center gap-1 shrink-0">
                               <FileText className="w-5 h-5" />
-                              <span className="text-[10px] font-bold">Copy</span>
+                              <span className="text-[10px] font-bold">{lang === 'am' ? 'ቅዳ' : 'Copy'}</span>
                             </button>
                           </div>
                         )}
 
                         <div className="mt-4 pt-4 border-t border-gray-100">
-                          <FileUploadCard id="paymentScreenshot" label="Upload Payment Screenshot / Receipt" accept="image/*" required files={files} handleFileChange={handleFileChange} />
+                          <FileUploadCard id="paymentScreenshot" label={lang === 'am' ? 'የክፍያ ማረጋገጫ (Screenshot / ደረሰኝ) ይስቀሉ' : 'Upload Payment Screenshot / Receipt'} accept="image/*" required files={files} handleFileChange={handleFileChange} />
                         </div>
                       </div>
                     </div>
@@ -849,7 +871,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
 
                   {/* Declarations */}
                   <div className="space-y-3 border border-gray-100 p-5 rounded-[20px] bg-white shadow-sm">
-                    <p className="text-[13px] font-bold text-gray-500 uppercase tracking-wide mb-3">Declarations</p>
+                    <p className="text-[13px] font-bold text-gray-500 uppercase tracking-wide mb-3">{lang === 'am' ? 'ማረጋገጫዎች' : 'Declarations'}</p>
                     <label className="flex items-start gap-4 cursor-pointer group">
                       <input
                         type="checkbox"
@@ -858,7 +880,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                         className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mt-0.5 cursor-pointer shrink-0"
                       />
                       <span className="text-[14px] font-medium text-gray-700 leading-relaxed select-none">
-                        I confirm that all information I have provided is true and accurate.
+                        {lang === 'am' ? 'ያቀረብኩት መረጃ ሁሉ እውነት እና ትክክል መሆኑን አረጋግጣለሁ።' : 'I confirm that all information I have provided is true and accurate.'}
                       </span>
                     </label>
                     <div className="h-px bg-gray-100" />
@@ -870,7 +892,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                         className="w-5 h-5 rounded border-gray-300 text-blue-600 focus:ring-blue-500 mt-0.5 cursor-pointer shrink-0"
                       />
                       <span className="text-[14px] font-medium text-gray-700 leading-relaxed select-none">
-                        I agree that Pathway Agency may share my profile and documents with prospective employers.
+                        {lang === 'am' ? 'Pathway Agency መገለጫዬን እና ሰነዶቼን ለቀጣሪ ድርጅቶች እንዲያጋራ እስማማለሁ።' : 'I agree that Pathway Agency may share my profile and documents with prospective employers.'}
                       </span>
                     </label>
                   </div>
@@ -890,7 +912,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                    onClick={handleBack}
                    className="py-4 px-6 rounded-2xl bg-gray-100 hover:bg-gray-200 active:scale-[0.98] text-gray-700 font-bold text-[16px] transition-all flex items-center justify-center"
                  >
-                   Back
+                   {lang === 'am' ? 'ተመለስ' : 'Back'}
                  </button>
                )}
                <button
@@ -901,10 +923,10 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                   {loading ? (
                     <span className="flex items-center gap-2">
                       <span className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                      Processing...
+                      {lang === 'am' ? 'በማስኬድ ላይ...' : 'Processing...'}
                     </span>
                   ) : (
-                    step === 7 ? "Submit Application" : "Continue"
+                    step === 7 ? (lang === 'am' ? 'ማመልከቻ አስገባ' : 'Submit Application') : (lang === 'am' ? 'ቀጥል' : 'Continue')
                   )}
                 </button>
              </div>
