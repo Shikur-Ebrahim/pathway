@@ -4,6 +4,7 @@ import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, CheckCircle2, ChevronRight } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { CULTURE_DATA } from "@/lib/cultureData";
 import { useParams, notFound } from "next/navigation";
 import { Language } from "@/lib/translations";
@@ -11,6 +12,7 @@ import { Language } from "@/lib/translations";
 export default function CulturePage() {
   const params = useParams();
   const slug = params?.slug as string;
+  const router = useRouter();
   const [lang, setLang] = React.useState<Language>("en");
 
   React.useEffect(() => {
@@ -38,13 +40,13 @@ export default function CulturePage() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
 
         {/* Back Button */}
-        <Link 
-          href="/#culture"
+        <button 
+          onClick={() => router.back()}
           className="absolute top-12 left-5 flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white text-[14px] font-bold px-4 py-2 rounded-full hover:bg-white/30 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           {lang === "am" ? "ተመለስ" : "Back"}
-        </Link>
+        </button>
 
         <div className="absolute bottom-6 left-5 right-5">
           <div className="text-[40px] mb-2">{data.icon}</div>
@@ -117,10 +119,10 @@ export default function CulturePage() {
 
       {/* Sticky CTA */}
       <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-[430px] bg-white border-t border-gray-100 px-5 py-4 shadow-[0_-10px_40px_-15px_rgba(0,0,0,0.1)] z-50">
-        <Link href="/#culture" className={`w-full py-4 rounded-2xl bg-gradient-to-r ${data.gradient} text-white font-black text-[16px] flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all active:scale-[0.98]`}>
+        <button onClick={() => router.back()} className={`w-full py-4 rounded-2xl bg-gradient-to-r ${data.gradient} text-white font-black text-[16px] flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all active:scale-[0.98]`}>
           {lang === "am" ? "የሕልምዎን ሥራ ያግኙ" : "Find Your Dream Job"}
           <ChevronRight className="w-5 h-5" />
-        </Link>
+        </button>
       </div>
     </div>
   );

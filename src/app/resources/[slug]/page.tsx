@@ -5,12 +5,13 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowLeft, Clock, Tag } from "lucide-react";
 import { RESOURCES_DATA } from "@/lib/resourcesData";
-import { useParams, notFound } from "next/navigation";
+import { useParams, notFound, useRouter } from "next/navigation";
 import { Language } from "@/lib/translations";
 
 export default function ResourceArticlePage() {
   const params = useParams();
   const slug = params?.slug as string;
+  const router = useRouter();
   const [lang, setLang] = React.useState<Language>("en");
 
   React.useEffect(() => {
@@ -38,13 +39,13 @@ export default function ResourceArticlePage() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/25 to-transparent" />
 
         {/* Back Button */}
-        <Link 
-          href="/#resources"
+        <button 
+          onClick={() => router.back()}
           className="absolute top-12 left-5 flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white text-[14px] font-bold px-4 py-2 rounded-full hover:bg-white/30 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
           {lang === "am" ? "ተመለስ" : "Back"}
-        </Link>
+        </button>
 
         {/* Article Meta */}
         <div className="absolute bottom-6 left-5 right-5">
