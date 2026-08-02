@@ -11,7 +11,7 @@ import { Language } from "@/lib/translations";
 export default function CulturePage() {
   const params = useParams();
   const slug = params?.slug as string;
-  const [lang, setLang] = React.useState<Language>("am");
+  const [lang, setLang] = React.useState<Language>("en");
 
   React.useEffect(() => {
     const saved = localStorage.getItem("pathway_lang") as Language;

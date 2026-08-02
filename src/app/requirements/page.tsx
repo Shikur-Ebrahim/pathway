@@ -58,7 +58,7 @@ const GALLERY_IMAGES = [
 ];
 
 export default function RequirementsPage() {
-  const [lang, setLang] = useState<Language>("am");
+  const [lang, setLang] = useState<Language>("en");
 
   useEffect(() => {
     const saved = localStorage.getItem("pathway_lang") as Language;

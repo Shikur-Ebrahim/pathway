@@ -19,6 +19,14 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [langMenuOpen, setLangMenuOpen] = useState(false);
+  const [mobileLangMenuOpen, setMobileLangMenuOpen] = useState(false);
+
+  const getAvatarSrc = () => {
+    if (user?.photoURL) return user.photoURL;
+    const name = user?.displayName || user?.email || 'User';
+    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=EBF5FF&color=1D4ED8`;
+  };
 
   return (
     <>
@@ -48,26 +56,23 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
 
           {/* Desktop Right Actions */}
           <div className="hidden md:flex items-center gap-3">
-            {/* Language Toggle */}
-            <div className="flex items-center bg-gray-100 rounded-lg p-0.5">
+            {/* Language Dropdown */}
+            <div className="relative">
               <button
-                onClick={() => setLang("am")}
-                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${lang === "am" ? "bg-white text-blue-700 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
+                onClick={() => setLangMenuOpen(!langMenuOpen)}
+                className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-gray-200 bg-white hover:bg-gray-50 text-xs font-semibold text-gray-700 transition-colors shadow-sm"
               >
-                አማርኛ
+                <Globe className="w-3.5 h-3.5 text-blue-600" />
+                {lang === "en" ? "English" : lang === "am" ? "አማርኛ" : "Afaan Oromoo"}
+                <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
               </button>
-              <button
-                onClick={() => setLang("or")}
-                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${lang === "or" ? "bg-white text-blue-700 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
-              >
-                Afaan Oromoo
-              </button>
-              <button
-                onClick={() => setLang("en")}
-                className={`px-3 py-1.5 rounded-md text-xs font-semibold transition-all ${lang === "en" ? "bg-white text-blue-700 shadow-sm" : "text-gray-500 hover:text-gray-700"}`}
-              >
-                EN
-              </button>
+              {langMenuOpen && (
+                <div className="absolute right-0 mt-1 w-36 bg-white border border-gray-100 rounded-xl shadow-lg py-1.5 z-50 animate-fadeIn">
+                  <button onClick={() => { setLang("en"); setLangMenuOpen(false); }} className={`w-full text-left px-4 py-2 text-xs transition-colors ${lang === "en" ? "font-bold text-blue-700 bg-blue-50" : "text-gray-700 hover:bg-gray-50"}`}>English</button>
+                  <button onClick={() => { setLang("am"); setLangMenuOpen(false); }} className={`w-full text-left px-4 py-2 text-xs transition-colors ${lang === "am" ? "font-bold text-blue-700 bg-blue-50" : "text-gray-700 hover:bg-gray-50"}`}>አማርኛ</button>
+                  <button onClick={() => { setLang("or"); setLangMenuOpen(false); }} className={`w-full text-left px-4 py-2 text-xs transition-colors ${lang === "or" ? "font-bold text-blue-700 bg-blue-50" : "text-gray-700 hover:bg-gray-50"}`}>Afaan Oromoo</button>
+                </div>
+              )}
             </div>
 
             {user ? (
@@ -76,10 +81,8 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   className="flex items-center gap-2 pl-2 pr-3 py-1.5 rounded-xl border border-gray-200 hover:border-blue-300 bg-white hover:bg-blue-50 transition-all"
                 >
-                  <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden">
-                    {user.photoURL
-                      ? <img src={user.photoURL} alt="avatar" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = "/default-avatar.jpg"; e.currentTarget.onerror = null; }} />
-                      : <UserIcon className="w-4 h-4 text-blue-600" />}
+                  <div className="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden border border-blue-200 shadow-sm">
+                    <img src={getAvatarSrc()} alt="avatar" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = "/default-avatar.jpg"; e.currentTarget.onerror = null; }} />
                   </div>
                   <span className="text-sm font-semibold text-gray-700 max-w-[100px] truncate">
                     {user.displayName || user.email?.split("@")[0]}
@@ -146,14 +149,14 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
                   onClick={() => setUserMenuOpen(!userMenuOpen)}
                   className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden border-2 border-blue-200 shadow-sm"
                 >
-                  {user.photoURL ? <img src={user.photoURL} alt="avatar" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = "/default-avatar.jpg"; e.currentTarget.onerror = null; }} /> : <UserIcon className="w-5 h-5 text-blue-600" />}
+                  <img src={getAvatarSrc()} alt="avatar" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = "/default-avatar.jpg"; e.currentTarget.onerror = null; }} />
                 </button>
 
                 {userMenuOpen && (
                   <div className="absolute right-0 mt-3 w-64 bg-white border border-gray-100 rounded-2xl shadow-xl py-2 animate-fadeIn z-50">
                     <div className="px-4 py-3 border-b border-gray-50 flex items-center gap-3">
-                      <div className="w-11 h-11 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden shrink-0">
-                        {user.photoURL ? <img src={user.photoURL} alt="avatar" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = "/default-avatar.jpg"; e.currentTarget.onerror = null; }} /> : <UserIcon className="w-6 h-6 text-blue-600" />}
+                      <div className="w-11 h-11 rounded-full bg-blue-100 flex items-center justify-center overflow-hidden shrink-0 border border-blue-200">
+                        <img src={getAvatarSrc()} alt="avatar" className="w-full h-full object-cover" onError={(e) => { e.currentTarget.src = "/default-avatar.jpg"; e.currentTarget.onerror = null; }} />
                       </div>
                       <div className="overflow-hidden">
                         <p className="text-sm font-bold text-gray-900 truncate">{user.displayName || user.email?.split("@")[0]}</p>
@@ -161,10 +164,22 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
                       </div>
                     </div>
                     <div className="py-2">
-                      <button onClick={() => setLang(lang === "am" ? "or" : lang === "or" ? "en" : "am")} className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 flex items-center gap-3">
-                        <Globe className="w-4 h-4 text-gray-400" />
-                        Language: {lang === "am" ? "አማርኛ" : lang === "or" ? "Afaan Oromoo" : "English"}
-                      </button>
+                      <div className="relative">
+                        <button onClick={() => setMobileLangMenuOpen(!mobileLangMenuOpen)} className="w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <Globe className="w-4 h-4 text-gray-400" />
+                            Language: <span className="font-semibold">{lang === "en" ? "English" : lang === "am" ? "አማርኛ" : "Afaan Oromoo"}</span>
+                          </div>
+                          <ChevronDown className={`w-4 h-4 text-gray-400 transition-transform ${mobileLangMenuOpen ? "rotate-180" : ""}`} />
+                        </button>
+                        {mobileLangMenuOpen && (
+                          <div className="bg-gray-50 border-y border-gray-100 py-1">
+                            <button onClick={() => { setLang("en"); setMobileLangMenuOpen(false); setUserMenuOpen(false); }} className={`w-full text-left px-11 py-2 text-sm ${lang === "en" ? "font-bold text-blue-700" : "text-gray-600"}`}>English</button>
+                            <button onClick={() => { setLang("am"); setMobileLangMenuOpen(false); setUserMenuOpen(false); }} className={`w-full text-left px-11 py-2 text-sm ${lang === "am" ? "font-bold text-blue-700" : "text-gray-600"}`}>አማርኛ</button>
+                            <button onClick={() => { setLang("or"); setMobileLangMenuOpen(false); setUserMenuOpen(false); }} className={`w-full text-left px-11 py-2 text-sm ${lang === "or" ? "font-bold text-blue-700" : "text-gray-600"}`}>Afaan Oromoo</button>
+                          </div>
+                        )}
+                      </div>
                       <a href="#sectors" onClick={() => setUserMenuOpen(false)} className="flex px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 items-center gap-3">
                         <Briefcase className="w-4 h-4 text-gray-400" /> Job Categories
                       </a>
@@ -200,13 +215,23 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
               </div>
             ) : (
               <>
-                <button
-                  onClick={() => setLang(lang === "am" ? "or" : lang === "or" ? "en" : "am")}
-                  className="p-2 rounded-lg bg-gray-100 text-gray-600 text-xs font-bold flex items-center gap-1"
-                >
-                  <Globe className="w-3.5 h-3.5" />
-                  {lang === "am" ? "አማ" : lang === "or" ? "OR" : "EN"}
-                </button>
+                <div className="relative">
+                  <button
+                    onClick={() => setMobileLangMenuOpen(!mobileLangMenuOpen)}
+                    className="p-2 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-700 text-xs font-bold flex items-center gap-1.5 transition-colors"
+                  >
+                    <Globe className="w-4 h-4 text-blue-600" />
+                    {lang === "en" ? "EN" : lang === "am" ? "አማ" : "OR"}
+                    <ChevronDown className="w-3.5 h-3.5" />
+                  </button>
+                  {mobileLangMenuOpen && (
+                    <div className="absolute right-0 mt-2 w-32 bg-white border border-gray-100 rounded-xl shadow-lg py-1.5 z-50 animate-fadeIn">
+                      <button onClick={() => { setLang("en"); setMobileLangMenuOpen(false); }} className={`w-full text-left px-4 py-2 text-xs transition-colors ${lang === "en" ? "font-bold text-blue-700 bg-blue-50" : "text-gray-700 hover:bg-gray-50"}`}>English</button>
+                      <button onClick={() => { setLang("am"); setMobileLangMenuOpen(false); }} className={`w-full text-left px-4 py-2 text-xs transition-colors ${lang === "am" ? "font-bold text-blue-700 bg-blue-50" : "text-gray-700 hover:bg-gray-50"}`}>አማርኛ</button>
+                      <button onClick={() => { setLang("or"); setMobileLangMenuOpen(false); }} className={`w-full text-left px-4 py-2 text-xs transition-colors ${lang === "or" ? "font-bold text-blue-700 bg-blue-50" : "text-gray-700 hover:bg-gray-50"}`}>Afaan Oromoo</button>
+                    </div>
+                  )}
+                </div>
                 <button
                   onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                   className="p-2.5 rounded-xl border border-gray-200 text-gray-600 hover:bg-gray-50"

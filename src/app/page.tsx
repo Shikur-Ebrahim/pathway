@@ -22,7 +22,7 @@ import { NewsletterSection } from "@/components/landing/NewsletterSection";
 import { Footer } from "@/components/landing/Footer";
 
 export default function Home() {
-  const [lang, setLangState] = useState<Language>("am");
+  const [lang, setLangState] = useState<Language>("en");
 
   React.useEffect(() => {
     const saved = localStorage.getItem("pathway_lang") as Language;
