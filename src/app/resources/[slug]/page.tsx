@@ -39,7 +39,7 @@ export default function ResourceArticlePage() {
 
         {/* Back Button */}
         <Link 
-          href="/"
+          href="/#resources"
           className="absolute top-12 left-5 flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white text-[14px] font-bold px-4 py-2 rounded-full hover:bg-white/30 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
