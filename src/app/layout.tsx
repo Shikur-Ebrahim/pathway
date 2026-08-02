@@ -3,13 +3,56 @@ import "./globals.css";
 import { AuthProvider } from "@/context/AuthContext";
 
 export const metadata: Metadata = {
-  title: "Pathway Agency Ethiopia — Find Your Career: Embassy, NGO, Aviation & International Jobs",
-  description: "Ethiopia's leading career placement agency connecting 10,000 graduates and professionals with Embassy, NGO, Aviation, and International job opportunities.",
+  metadataBase: new URL("https://pathwayet.com"),
+  title: {
+    default: "Pathway Agency Ethiopia — Embassy, NGO, Aviation & International Jobs",
+    template: "%s | Pathway Agency Ethiopia",
+  },
+  description:
+    "Ethiopia's #1 career placement agency. Connect with Embassy, NGO, Airport, and International jobs in Addis Ababa. 10,000+ job opportunities for fresh graduates and professionals.",
+  keywords: [
+    "jobs in Ethiopia",
+    "embassy jobs Ethiopia",
+    "NGO jobs Addis Ababa",
+    "aviation jobs Ethiopia",
+    "international jobs Ethiopia",
+    "Pathway Agency Ethiopia",
+    "employment agency Ethiopia",
+    "career Ethiopia",
+    "pathwayet.com",
+    "fresh graduate jobs Ethiopia",
+  ],
+  authors: [{ name: "Pathway Agency Ethiopia", url: "https://pathwayet.com" }],
+  creator: "Pathway Agency Ethiopia",
+  publisher: "Pathway Agency Ethiopia",
   manifest: "/manifest.json",
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
     title: "Pathway",
+  },
+  openGraph: {
+    type: "website",
+    locale: "en_ET",
+    url: "https://pathwayet.com",
+    siteName: "Pathway Agency Ethiopia",
+    title: "Pathway Agency Ethiopia — Find Your Dream Job",
+    description:
+      "Ethiopia's leading career placement agency. Embassy, NGO, Aviation & International jobs for graduates and professionals in Addis Ababa.",
+    images: [
+      {
+        url: "/icons/icon-512x512.png",
+        width: 512,
+        height: 512,
+        alt: "Pathway Agency Ethiopia Logo",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary",
+    title: "Pathway Agency Ethiopia — Embassy, NGO & International Jobs",
+    description: "Ethiopia's #1 job placement agency. 10,000+ career opportunities.",
+    images: ["/icons/icon-512x512.png"],
   },
   icons: {
     icon: [
@@ -20,6 +63,9 @@ export const metadata: Metadata = {
       { url: "/icons/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
     ],
     shortcut: "/icons/icon-192x192.png",
+  },
+  alternates: {
+    canonical: "https://pathwayet.com",
   },
 };
 
