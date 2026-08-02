@@ -24,8 +24,7 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
 
   const getAvatarSrc = () => {
     if (user?.photoURL) return user.photoURL;
-    const name = user?.displayName || user?.email || 'User';
-    return `https://ui-avatars.com/api/?name=${encodeURIComponent(name)}&background=EBF5FF&color=1D4ED8`;
+    return "/default-avatar.jpg";
   };
 
   return (
