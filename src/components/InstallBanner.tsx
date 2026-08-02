@@ -53,23 +53,23 @@ export function InstallBanner() {
     <div
       style={{
         position: "fixed",
-        bottom: 0,
+        top: 64,
         left: 0,
         right: 0,
         zIndex: 9999,
-        padding: "12px 16px",
+        padding: "10px 14px",
         background: "linear-gradient(135deg, #1d4ed8 0%, #4f46e5 100%)",
-        boxShadow: "0 -4px 24px rgba(0,0,0,0.18)",
+        boxShadow: "0 4px 20px rgba(0,0,0,0.18)",
         display: "flex",
         alignItems: "center",
         gap: "12px",
-        animation: "slideUp 0.35s ease",
+        animation: "slideDown 0.35s ease",
       }}
     >
       <style>{`
-        @keyframes slideUp {
-          from { transform: translateY(100%); opacity: 0; }
-          to   { transform: translateY(0);    opacity: 1; }
+        @keyframes slideDown {
+          from { transform: translateY(-100%); opacity: 0; }
+          to   { transform: translateY(0);     opacity: 1; }
         }
       `}</style>
 
