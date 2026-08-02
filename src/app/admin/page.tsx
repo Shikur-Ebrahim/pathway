@@ -292,24 +292,78 @@ function SettingsTab() {
 
   if (!config) return <div className="py-20 text-center"><div className="w-8 h-8 border-2 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto" /></div>;
 
+  const updateField = (
+    field: keyof Omit<PaymentConfig, 'feeAmount'>,
+    key: 'holderName' | 'account' | 'active',
+    value: string | boolean
+  ) => {
+    setConfig(prev => prev ? {
+      ...prev,
+      [field]: { ...prev[field], [key]: value }
+    } : prev);
+  };
+
   const PaymentMethodEditor = ({ title, field }: { title: string, field: keyof Omit<PaymentConfig, 'feeAmount'> }) => (
     <div className="bg-white p-5 rounded-2xl border border-gray-100 shadow-sm space-y-4">
       <div className="flex items-center justify-between">
         <h4 className="font-bold text-gray-900">{title}</h4>
         <label className="flex items-center cursor-pointer">
-          <input type="checkbox" checked={config[field].active} onChange={e => setConfig({ ...config, [field]: { ...config[field], active: e.target.checked } })} className="sr-only peer" />
-          <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
+          <input
+            type="checkbox"
+            checked={!!config[field]?.active}
+            onChange={e => updateField(field, 'active', e.target.checked)}
+            className="sr-only peer"
+          />
+          <div className="relative w-11 h-6 bg-gray-200 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600" />
         </label>
       </div>
-      {config[field].active && (
+      {config[field]?.active && (
         <div className="space-y-3 pt-2">
+          {/* Holder Name */}
           <div>
             <label className="block text-xs font-bold text-gray-500 mb-1">Holder Name</label>
-            <input type="text" value={config[field].holderName} onChange={e => setConfig({ ...config, [field]: { ...config[field], holderName: e.target.value } })} className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500" />
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={config[field]?.holderName ?? ''}
+                onChange={e => updateField(field, 'holderName', e.target.value)}
+                placeholder="e.g. Pathway Agency"
+                className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500"
+              />
+              {config[field]?.holderName && (
+                <button
+                  type="button"
+                  onClick={() => updateField(field, 'holderName', '')}
+                  className="px-3 py-2 bg-red-50 text-red-500 hover:bg-red-100 rounded-lg text-xs font-bold transition-colors"
+                  title="Clear"
+                >
+                  ✕ Clear
+                </button>
+              )}
+            </div>
           </div>
+          {/* Account / Phone */}
           <div>
             <label className="block text-xs font-bold text-gray-500 mb-1">Account / Phone Number</label>
-            <input type="text" value={config[field].account} onChange={e => setConfig({ ...config, [field]: { ...config[field], account: e.target.value } })} className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500" />
+            <div className="flex gap-2">
+              <input
+                type="text"
+                value={config[field]?.account ?? ''}
+                onChange={e => updateField(field, 'account', e.target.value)}
+                placeholder="e.g. 1000123456789"
+                className="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm focus:outline-none focus:border-blue-500"
+              />
+              {config[field]?.account && (
+                <button
+                  type="button"
+                  onClick={() => updateField(field, 'account', '')}
+                  className="px-3 py-2 bg-red-50 text-red-500 hover:bg-red-100 rounded-lg text-xs font-bold transition-colors"
+                  title="Clear"
+                >
+                  ✕ Clear
+                </button>
+              )}
+            </div>
           </div>
         </div>
       )}
