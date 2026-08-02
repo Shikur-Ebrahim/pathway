@@ -184,6 +184,9 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
                       <a href="/requirements" onClick={() => setUserMenuOpen(false)} className="flex px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-50 items-center gap-3">
                         <Send className="w-4 h-4 text-gray-400" /> Requirements
                       </a>
+                      <a href="https://t.me/pathway_agency" target="_blank" rel="noopener noreferrer" onClick={() => setUserMenuOpen(false)} className="flex px-4 py-2.5 text-sm text-blue-600 font-bold hover:bg-gray-50 items-center gap-3">
+                        <Send className="w-4 h-4 text-blue-500" /> Telegram
+                      </a>
                     </div>
                     <div className="border-t border-gray-50 pt-2">
                       {isAdmin && (
