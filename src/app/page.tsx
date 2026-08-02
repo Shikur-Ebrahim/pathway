@@ -20,6 +20,7 @@ import { TrustedCompaniesSection } from "@/components/landing/TrustedCompaniesSe
 import { FAQSection } from "@/components/landing/FAQSection";
 import { NewsletterSection } from "@/components/landing/NewsletterSection";
 import { Footer } from "@/components/landing/Footer";
+import { InstallBanner } from "@/components/InstallBanner";
 
 export default function Home() {
   const [lang, setLangState] = useState<Language>("en");
@@ -126,6 +127,9 @@ export default function Home() {
         onClose={() => setIsAppModalOpen(false)} 
         lang={lang} 
       />
+
+      {/* PWA Install Banner */}
+      <InstallBanner />
     </div>
   );
 }
