@@ -23,7 +23,6 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
   const [mobileLangMenuOpen, setMobileLangMenuOpen] = useState(false);
 
   const getAvatarSrc = () => {
-    if (user?.photoURL) return user.photoURL;
     return "/default-avatar.jpg";
   };
 
