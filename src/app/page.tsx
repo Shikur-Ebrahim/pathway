@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Navbar } from "@/components/Navbar";
 import { ApplicationModal } from "@/components/ApplicationModal";
 import { AuthModal } from "@/components/AuthModal";
@@ -24,10 +24,32 @@ import { Footer } from "@/components/landing/Footer";
 export default function Home() {
   const [lang, setLangState] = useState<Language>("en");
 
-  React.useEffect(() => {
+  useEffect(() => {
     const saved = localStorage.getItem("pathway_lang") as Language;
     if (saved) setLangState(saved);
   }, []);
+
+  // ── Scroll Save / Restore ──────────────────────────────────────────
+  // On mount: if we stored a scroll position before navigating away, restore it
+  useEffect(() => {
+    const savedY = sessionStorage.getItem("pathway_scroll");
+    if (savedY) {
+      const y = parseInt(savedY, 10);
+      // Small delay so the page has fully rendered before scrolling
+      setTimeout(() => window.scrollTo({ top: y, behavior: "instant" }), 80);
+      sessionStorage.removeItem("pathway_scroll");
+    }
+  }, []);
+
+  // On scroll: continuously save position so router.back() can restore it
+  useEffect(() => {
+    const saveScroll = () => {
+      sessionStorage.setItem("pathway_scroll", String(window.scrollY));
+    };
+    window.addEventListener("scroll", saveScroll, { passive: true });
+    return () => window.removeEventListener("scroll", saveScroll);
+  }, []);
+  // ──────────────────────────────────────────────────────────────────
 
   const setLang = (newLang: Language) => {
     setLangState(newLang);
@@ -68,7 +90,6 @@ export default function Home() {
       <Navbar lang={lang} setLang={setLang} onApplyClick={handleApplyClick} />
 
       <main className="flex-1 w-full flex flex-col overflow-x-hidden">
-        {/* We pass handleApplyClick to sections that need to trigger the modal */}
         <HeroSection onApplyClick={handleApplyClick} onBrowseJobs={handleBrowseJobs} lang={lang} />
         <ImageBannerSection lang={lang} />
         <CategoriesSection onSelectCategory={handleCategorySelect} lang={lang} />
