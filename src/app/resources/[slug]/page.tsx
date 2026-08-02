@@ -21,7 +21,7 @@ export default function ResourceArticlePage() {
   const rawArticle = RESOURCES_DATA[slug];
   if (!rawArticle) return notFound();
 
-  const articleLang = (lang === "or" ? "en" : lang) as "en" | "am";
+  const articleLang = lang;
   const article = rawArticle[articleLang];
 
   return (

@@ -21,7 +21,7 @@ export default function CategoryPage() {
   const rawCat = CATEGORY_DATA[slug];
   if (!rawCat) return notFound();
 
-  const catLang = (lang === "or" ? "en" : lang) as "en" | "am";
+  const catLang = lang;
   const cat = rawCat[catLang];
 
   return (

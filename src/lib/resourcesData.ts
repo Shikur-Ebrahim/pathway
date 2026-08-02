@@ -1,6 +1,7 @@
 export const RESOURCES_DATA: Record<string, {
   en: any;
   am: any;
+  or?: any;
 }> = {
   "resume-tips": {
     en: {
@@ -94,6 +95,53 @@ export const RESOURCES_DATA: Record<string, {
       author: {
         name: "ሄለን ታደሰ",
         role: "ከፍተኛ የሰው ሀይል አማካሪ",
+        avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=100&q=80"
+      }
+    },
+    or: {
+      slug: "resume-tips",
+      title: "Akkaataa CV Hojii Isin Qaxarsiisu Qopheessan",
+      subtitle: "Dhaabbilee Mit-Mootummaa gurguddoo, Imbaasiiwwan, fi Dhaabbilee Idil-Addunyaa Itoophiyaa keessa jiran biratti adda ta'aati mul'adhaa.",
+      category: "Gorsa Ogummaa",
+      readTime: "Dubbisa Daqiiqaa 5",
+      heroImage: "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=800&q=80",
+      gradient: "from-orange-500 to-red-700",
+      images: [
+        "https://images.unsplash.com/photo-1586281380349-632531db7ed4?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80"
+      ],
+      content: {
+        introduction: "Gabaa hojii Itoophiyaa keessatti dorgommii guddaa qabu keessatti, keessattuu gaheewwan olaanoo Imbaasiiwwan, eejansiilee UN, fi korporeeshinoota idil-addunyaa keessatti, CVn keessan carraa jalqabaa—yeroo tokko tokkos carraa qofaa—of beeksisuu keessaniiti. CVn idilee fi hundaaf ta'u kana booda gahaa miti.",
+        sections: [
+          {
+            heading: "1. Ogummaa calaqqisuu fi Gabaabaa Godhaa",
+            body: "Qaxartoonni idil-addunyaa CVwwan qulqulluu, dubbisuuf salphaa fi guutummaatti ogummaa calaqqisan filatu. Muuxannoo hoggansaa olaanaa waggaa 10 ol kan hin qabne yoo ta'e, baayyinaan fuula 2 qofatti daangessaa. Ulaagaalee sirrii ta'an irraa xiyyeeffannoo kan hatu, unkaalee halluu baayyee qaban ykn giraafiksii barbaachisaa hin taane irraa fagaadhaa."
+          },
+          {
+            heading: "2. Iyyannoo Hundaaf CV Keessan Sirreessaa",
+            body: "CV tokko Imbaasii fi dhaabbata Aviyeeshiniif gonkumaa hin ergin. Ibsa hojii sanaa of eeggannoodhaan dubbisaa, jechoonni furtuu qaxaraadhaan fayyadaman sun gabaabaa fi kutaalee muuxannoo CV keessanii keessatti mul'achuu isaanii mirkaneessaa.",
+            bulletPoints: [
+              "Gabaabaa keessatti maqaa hojii sirrii ta'e fayyadamaa.",
+              "Dandeettiiwwan beeksisa hojii keessatti addatti gaafataman ifa godhaa.",
+              "Muuxannoowwan iddoo guban kan walitti dhufeenya hin qabne balleessaa."
+            ]
+          },
+          {
+            heading: "3. Dirqama Qofa Osoo Hin Taane Milkaa'ina Irratti Xiyyeeffadhaa",
+            body: "Akka 'miidiyaa hawaasaa nan bulcha ture' jechuu mannaa, 'tarsiimoo qabiyyee haaraa hojiirra oolchuun hirmaannaa miidiyaa hawaasaa ji'oota 6 keessatti dhibbeentaa 45n guddiseera' jedhaa. Lakkoofsota, dhibbeentawwan fi bu'aawwan qabatamaa fayyadamaa.",
+            bulletPoints: [
+              "Gochoo cimoo fayyadamaa (Qajeelcheera, Uumeera, Guddiseera).",
+              "Yeroo danda'amutti bu'aa keessan lakkoofsaan ibsaa.",
+              "Badhaasota ykn beekkamtiilee addaa ifa godhaa."
+            ]
+          }
+        ],
+        conclusion: "Hubadhaa, CVn keessan sanada gabaati, oomishtichi immoo ISINI. Yeroo fudhachuun akka bareedu godhaa, dogoggora qubeessuu fi seerlugaaf (keessattuu dhaabbilee idil-addunyaaf) sirriitti ilaalaa, jechi tokkoon tokkoon isaa faayidaa akka qabaatu godhaa."
+      },
+      author: {
+        name: "Heleen Taaddasaa",
+        role: "Gorsituu Qabeenya Namaa Olaantuu",
         avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&w=100&q=80"
       }
     }
@@ -194,6 +242,54 @@ export const RESOURCES_DATA: Record<string, {
         role: "የዲፕሎማሲያዊ ቅጥር ስፔሻሊስት",
         avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=100&q=80"
       }
+    },
+    or: {
+      slug: "interview-prep",
+      title: "Qormaata Afaanii Imbaasii ykn NGO Itti Aanu Milkaa'inaan Darbuu",
+      subtitle: "Qormaata afaanii idil-addunyaa ulfaataa ta'e darbuuf qajeelfama isa dhumaa.",
+      category: "Qajeelfama Qormaata Afaanii",
+      readTime: "Dubbisa Daqiiqaa 7",
+      heroImage: "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=800&q=80",
+      gradient: "from-blue-600 to-indigo-800",
+      images: [
+        "https://images.unsplash.com/photo-1565688534245-05d6b5be184a?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1551836022-d5d88e9218df?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80"
+      ],
+      content: {
+        introduction: "Finfinnee keessatti Imbaasii, eejansii UN, ykn dhaabbata idil-addunyaa guddaa tokkoof qormaata afaanii kennuun baayyee ulfaataadha. Dhaabbileen kun talentii hunda caalu filachuu isaanii mirkaneessuuf qormaata afaanii gurmaa'aa fi gahumsa irratti hundaa'e fayyadamu. Akkamitti akka qophooftanii fi milkooftan armaan gaditti ibsameera.",
+        sections: [
+          {
+            heading: "1. Mala STAR Sirriitti To'achuu",
+            body: "Dhaabbileen idil-addunyaa irra caalaa gaaffiilee amala irratti xiyyeeffatan (fakkeenyaaf, 'Yeroo... waa'ee itti raawwattan naaf himi') fayyadamu. Deebiin keessan gurmaa'aa fi dhiibbaa kan qabu akka ta'uuf mala STAR fayyadamtan deebisuu qabdu.",
+            bulletPoints: [
+              "Haala (Situation): Haalichaa fi dhimmicha ibsaa.",
+              "Hojii (Task): Itti gaafatamummaan keessan addatti maal akka ture ibsaa.",
+              "Tarkaanfii (Action): Isin maal akka gootan sirriitti ibsaa ('Nuti' osoo hin ta'in 'Ani').",
+              "Bu'aa (Result): Bu'aa milkaa'aa ta'e, yoo danda'ame lakkoofsaan qoodaa."
+            ]
+          },
+          {
+            heading: "2. Dhaabbaticha Gadfageenyaan Qorachuu",
+            body: "Maqaa dhaabbatichaa beekuun qofti gahaa miti. Imbaasiitti qormaata yoo fudhattan, ambaasaaddara isaanii ammaa fi hojiiwwan dippilomaasii ijoo Itoophiyaa keessatti hojjetan beekaa. NGO yoo ta'e, gabaasa isaanii waggaa isa dhumaa dubbisaa, naannoowwan xiyyeeffannoo isaanii ijoo beekaa."
+          },
+          {
+            heading: "3. Ogummaa fi Hubannoo Aadaa",
+            body: "Korporeeshinoonni idil-addunyaa fi ergamoonni dippilomaasii bakka aadaawwan adda addaa itti walitti makamanidha. Haala waliin kan of jijjiirtan, garaagarummaa kan kabajtan, fi dandeettii quunnamtii aadaa-qaxxaamuraa cimaa akka qabdan agarsiisaa.",
+            bulletPoints: [
+              "Uffata ogummaa daldalaa (professional business attire) qofa uffadhaa.",
+              "Teessuma gaarii fi quunnamtii ijaa ofitti amanamummaa qabu eegaa.",
+              "Keessattuu afaan lammaffaatiin qormaata afaanii yoo fudhattan, ifatti fi saffisa giddugaleessaan dubbadhaa."
+            ]
+          }
+        ],
+        conclusion: "Qormaanni afaanii daandii kallattii lamaati. Yeroo hunda xumura qormaata afaanii irratti gaaffiilee hubannoo cimaa qaban 2 ykn 3 paanalicha gaafachuuf qopheessaa. Kunis gahee hojichaa fi dhaabbaticha irratti fedhii dhugaa qabaachuu keessan agarsiisa."
+      },
+      author: {
+        name: "Dr. Saamu'eel Baqqalaa",
+        role: "Ogeessa Qaxarii Dippilomaasii",
+        avatar: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=100&q=80"
+      }
     }
   },
   "scholarships": {
@@ -290,6 +386,54 @@ export const RESOURCES_DATA: Record<string, {
       author: {
         name: "አቤል ዮናስ",
         role: "የትምህርት እና የሙያ አማካሪ",
+        avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=100&q=80"
+      }
+    },
+    or: {
+      slug: "scholarships",
+      title: "Iskoolaarshiippii Idil-Addunyaa Barbaaduu fi Mo'achuu",
+      subtitle: "Carraawwan Itoophiyaanonni biyya alaa deemuun akka baratanii fi hojjetan.",
+      category: "Carraawwan Idil-Addunyaa",
+      readTime: "Dubbisa Daqiiqaa 6",
+      heroImage: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=800&q=80",
+      gradient: "from-emerald-500 to-teal-700",
+      images: [
+        "https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1513258496099-48168024aec0?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=600&q=80"
+      ],
+      content: {
+        introduction: "Barnoota olaanaa biyya alaatti hordofuun abjuu ogeeyyii Itoophiyaa hedduuti. Digriin idil-addunyaa beekamaan carraa hojii keessan NGO, Imbaasiiwwan fi korporeeshinoota addunyaa keessatti saffisiisuu danda'a. Carraa gaariidhaan, iskoolaarshiippiiwwan guutummaatti kaffalaman hedduun Itoophiyaanota kennaa qaban addatti fayyadan jiru.",
+        sections: [
+          {
+            heading: "1. Iskoolaarshiippiiwwan Olaanoo Itoophiyaanotaaf",
+            body: "Sagantaaleen mootummaatiin deeggaraman hedduun carraa Maastarii fi PhD guutummaatti kaffalamu lammiilee Itoophiyaatiif ni dhiyeessu.",
+            bulletPoints: [
+              "Chevening Scholarships (UK): Hogganootaa fi dhiibbaa uumtoota gara fuulduraatiif.",
+              "Erasmus Mundus (Awurooppaa): Digrii Maastarii waliinii biyyoota Awurooppaa adda addaa keessatti.",
+              "Fulbright Program (USA): Sagantaa waljijjiirraa akadaamii beekamaa.",
+              "DAAD Scholarships (Jarmanii): Barnoota injinariingii fi guddinaaf baayyee gaarii."
+            ]
+          },
+          {
+            heading: "2. Adeemsa Iyyannoo",
+            body: "Iskoolaarshiippii mo'achuun qophii ji'oota hedduu gaafata. Ariifachuu hin dandeessan. Daangaawwan yeroo baayyeen isaanii waggaa barnootaa itti aanuuf Fulbaana hanga Muddee gidduutti ta'u.",
+            bulletPoints: [
+              "Qormaata gahumsa Afaan Ingilizii (IELTS/TOEFL) dursee qopheessaa.",
+              "Xalayawwan deeggarsaa (recommendation letters) cimoo piroofeesaroota ykn hooggantoota olaanoo irraa argadhaa.",
+              "Ibsa dhuunfaa (Personal Statement) hawwataa muuxannoo keessan kanaan duraa guddina Itoophiyaa gara fuulduraa waliin walqabsiisu barreessaa."
+            ]
+          },
+          {
+            heading: "3. Iskoolaarshiippii Keessan Hojiif Fayyadamuu",
+            body: "Digriin idil-addunyaa qaxartoota Itoophiyaa keessa jiraniif baayyee hawwataa isin godha. Fayyadamtoonni Pathway hedduun barnoota isaanii biyya alaa irraa yommuu deebi'an, yeruma sana eejansiilee UN fi korporeeshinoota idil-addunyaa keessatti gaheewwan hoggansa olaanaatti qaxaramu."
+          }
+        ],
+        conclusion: "Adeemsi iyyannoo ulfaataan sun akka isin abdii hin kutachiisne. Sagantaalee hedduuf iyyadhaa, barreeffamoota keessan fooyyessaa, fi iskoolaarshiippii idil-addunyaa guutummaatti kaffalamu mo'achuuf ciminni furtuu ta'uu isaa yaadadhaa."
+      },
+      author: {
+        name: "Abeel Yonaas",
+        role: "Gorsaa Barnootaa fi Ogummaa",
         avatar: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?auto=format&fit=crop&w=100&q=80"
       }
     }

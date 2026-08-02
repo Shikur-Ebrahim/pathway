@@ -21,7 +21,7 @@ export default function CulturePage() {
   const rawData = CULTURE_DATA[slug];
   if (!rawData) return notFound();
 
-  const dataLang = (lang === "or" ? "en" : lang) as "en" | "am";
+  const dataLang = lang;
   const data = rawData[dataLang];
 
   return (

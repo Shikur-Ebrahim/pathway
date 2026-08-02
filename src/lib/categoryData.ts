@@ -1,6 +1,7 @@
 export const CATEGORY_DATA: Record<string, {
   en: any;
   am: any;
+  or?: any;
 }> = {
   embassy: {
     en: {
@@ -80,6 +81,48 @@ export const CATEGORY_DATA: Record<string, {
         "የፈረንሳይ ኤምባሲ አዲስ አበባ", "የኖርዌይ ኤምባሲ አዲስ አበባ",
         "የስዊድን ኤምባሲ አዲስ አበባ", "የአውሮፓ ህብረት ልዑክ ኢትዮጵያ",
         "የጃፓን ኤምባሲ አዲስ አበባ", "የአውስትራሊያ ኤምባሲ አዲስ አበባ"
+      ],
+      images: [
+        "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=600&q=80",
+      ]
+    },
+    or: {
+      slug: "embassy",
+      title: "Imbaasiiwwanii fi Ergamoota Dippilomaasii",
+      subtitle: "Finfinnee keessatti wiirtuu dippilomaasii idil-addunyaa keessatti hojjedhaa",
+      emoji: "🏛️",
+      heroImage: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=800&q=80",
+      gradient: "from-blue-600 to-indigo-700",
+      description: "Finfinneen magaalaa guddoo dippilomaasii Afrikaati, imbaasiiwwan, qoonsilaawwanii fi ergamoota dippilomaasii 100 ol ta'aniif iddoo jireenyaati. Imbaasii keessatti hojjechuun wiirtuu hariiroo idil-addunyaa, waljijjiirraa aadaa fi walta'iinsa addunyaa keessa ta'uu jechuudha. Hojiin kun mindaa dorgomaa ta'e, guddina ogummaa, fi naannoo sadarkaa addunyaa keessatti hojjechuu kabaja qabu dhiyeessa.",
+      whyJoin: [
+        "Mindaa fi faayidaalee sadarkaa idil-addunyaatti dorgomaa ta'an",
+        "Ogeeyyii guutummaa addunyaa irraa dhufan waliin hojjechuu",
+        "Dippilomaasii fi dhimmoota idil-addunyaa keessatti guddina ogummaa",
+        "Hojii tasgabbaa'aa fi wabii yeroo dheeraa qabu",
+        "Sagantaalee leenjii fi guddina idil-addunyaa argachuu",
+        "Naannoo hojii kabajamaa fi neetworkii ogummaa"
+      ],
+      roles: [
+        "Barreessaa Viza Hojjatu", "Gargaaraa Qoonsilaa", "Afaan Hiikaa / Turjumaana",
+        "Gargaaraa Bulchiinsaa", "Ogeessa Pirootookoolii", "Too'ataa Nageenyaa",
+        "Gargaaraa Dhimmoota Aadaa", "Ogeessa Dhimmoota Hawaasaa", "Ogeessa Deeggarsa IT",
+        "Gargaaraa Faayinaansii", "Ogeessa Bittaa", "Konkolaachisaa", "Keessummeessaa"
+      ],
+      requirements: [
+        "Digrii jalqabaa dirree walqabatuun",
+        "Dandeettii waliin dubbachuu afaan Ingilizii baayyee gaarii",
+        "Duubee qulqulluu fi mirkaneessa nageenyaa",
+        "Haala fi amala ogummaa qabu",
+        "Muuxannoo bulchiinsaa ykn dirree walqabatu keessatti (gaheewwan olaanoof)"
+      ],
+      companies: [
+        "Imbaasii Ameerikaa Finfinnee", "Imbaasii Ingilizii Finfinnee",
+        "Imbaasii Kaanaadaa Finfinnee", "Imbaasii Jarmanii Finfinnee",
+        "Imbaasii Faransaay Finfinnee", "Imbaasii Noorwey Finfinnee",
+        "Imbaasii Iswiidin Finfinnee", "Ergamaa Gamtaa Awurooppaa Itoophiyaa",
+        "Imbaasii Jaappaan Finfinnee", "Imbaasii Awustiraaliyaa Finfinnee"
       ],
       images: [
         "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=600&q=80",
@@ -166,6 +209,48 @@ export const CATEGORY_DATA: Record<string, {
         "የዓለም ምግብ ፕሮግራም ኢትዮጵያ", "UNHCR ኢትዮጵያ", "ሴቭ ዘ ችልድረን ኢትዮጵያ",
         "ወርልድ ቪዥን ኢትዮጵያ", "ኬር ኢትዮጵያ", "ኦክስፋም ኢትዮጵያ",
         "ICRC ቀይ መስቀል", "መርሲ ኮርፕስ ኢትዮጵያ", "MSF ድንበር የለሽ ሀኪሞች"
+      ],
+      images: [
+        "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1573164713988-8665fc963095?auto=format&fit=crop&w=600&q=80",
+      ]
+    },
+    or: {
+      slug: "ngo",
+      title: "Dhaabbilee Mit-Mootummaa (NGO) fi Eejansiilee UN",
+      subtitle: "Dhaabbilee gargaarsaa gurguddoo addunyaa waliin dhiibbaa bu'a-qabeessa uumaa",
+      emoji: "🌍",
+      heroImage: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=800&q=80",
+      gradient: "from-emerald-600 to-teal-700",
+      description: "Itoophiyaan waajjira muummee Gamtaa Afrikaa fi Komishinii Dinagdee UN kan Afrikaa (UNECA) waan keessummeessituuf, Finfinneen wiirtuuwwan guddina idil-addunyaa keessaa ishee murteessituudha. Dhaabbileen Mit-Mootummaa fi Eejansiileen UN hojiiwwan ogummaa kan hojiin keessan kallattiin hawaasota guutummaa Itoophiyaa fi ardichaa irratti dhiibbaa gaarii uumu dhiyeessu. Fayyaa fi barnoota irraa eegalee hanga wabii nyaataa fi deebii balaatti, dhaabbileen kun hojii gargaarsaa addunyaa isa barbaachisaa ta'e hoogganu.",
+      whyJoin: [
+        "Jireenya namootaa keessatti jijjiirama dhugaa fi safaramuu danda'u fidaa",
+        "Sagantaalee fi qophiiwwan sadarkaa addunyaatti hojjedhaa",
+        "Muuxannoo idil-addunyaa fi carraa walquunnamtii argachuu",
+        "Hojiiwwan olaanoof mindaa doolaraan kaffalamu",
+        "Fayyaa fi soorama dabalatee faayidaalee bal'aa ta'an",
+        "Gara ramaddii idil-addunyaatti tarkaanfachuuf carraa"
+      ],
+      roles: [
+        "Ogeessa Pirojektii", "Ogeessa M&E", "Qindeessaa Dirree",
+        "Hogganaa Maallaqa Deeggarsaa (Grant)", "Ogeessa Fayyaa", "Ogeessa WASH",
+        "Ogeessa Eegumsa Daa'immanii", "Ogeessa Sirna Nyaataa", "Hogganaa Lojistikii",
+        "Ogeessa Faayinaansii", "Ogeessa Qabeenya Namaa", "Ogeessa Quunnamtii",
+        "Hogganaa Sagantaa", "Daayirektara Biyyaa"
+      ],
+      requirements: [
+        "Digrii jalqabaa ykn Maastarii dirree walqabatuun",
+        "Damee guddinaa keessatti muuxannoo (carraan sadarkaa jalqabaa ni jira)",
+        "Dandeettii gabaasa barreessuu fi xiinxaluu cimaa",
+        "Gara iddoowwan dirreetti imaluuf fedhii qabaachuu",
+        "Afaan Ingilizii dandeettii gaarii qabaachuu; Afaan Amaaraa dandeettii dabalataati"
+      ],
+      companies: [
+        "UNICEF Itoophiyaa", "UNDP Itoophiyaa", "WHO Itoophiyaa",
+        "WFP Itoophiyaa", "UNHCR Itoophiyaa", "Save the Children Itoophiyaa",
+        "World Vision Itoophiyaa", "CARE Itoophiyaa", "Oxfam Itoophiyaa",
+        "ICRC Fannoo Diimaa", "Mercy Corps Itoophiyaa", "MSF Doctors Without Borders"
       ],
       images: [
         "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80",
@@ -260,6 +345,49 @@ export const CATEGORY_DATA: Record<string, {
         "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=600&q=80",
         "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=600&q=80",
       ]
+    },
+    or: {
+      slug: "aviation",
+      title: "Aviyeeshinii fi Daandiiwwan Qilleensaa",
+      subtitle: "Indastirii aviyeeshinii sadarkaa addunyaa Itoophiyaa waliin gara sadarkaa haaraatti balali'aa",
+      emoji: "✈️",
+      heroImage: "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=800&q=80",
+      gradient: "from-sky-500 to-blue-700",
+      description: "Daandiin Qilleensa Itoophiyaa daandii qilleensaa guutummaa Afrikaa keessatti guddaa fi bu'aa guddaa argamsiisudha, iddoowwan addunyaa 125 ol tajaajila. Buufanni Xiyyaaraa Idil-Addunyaa Boolee wiirtuu aviyeeshinii Afrikaa keessatti baayyee hojiin itti baayyatudha, tajaajiltoota idil-addunyaa hedduu fi ogeeyyii aviyeeshinii kumaatamaan lakkaa'aman keessummeessa. Aviyeeshinii keessatti ogummaan gammachuu, carraa imalaa fi naannoowwan hojii addunyaa keessatti baayyee saffisaan jijjiiraman keessaa tokko dhiyeessa.",
+      whyJoin: [
+        "Tikeetiiwwan balalii idil-addunyaa bilisa ykn hir'ina guddaa qaban",
+        "Naannoo hojii ifa, saffisaa fi nama hawwatu",
+        "Addunyaa naanna'anii ilaaluuf carraa",
+        "Damee saffisaan guddachaa jiru keessatti guddina ogummaa",
+        "Akadaamii Aviyeeshinii Itoophiyaatti sagantaalee leenjii sadarkaa addunyaa",
+        "Paakeejiiwwan mindaa fi faayidaalee addaa (premium)"
+      ],
+      roles: [
+        "Bakka Bu'aa Tajaajila Maamiltootaa", "Keessummeessaa Balalii / Cabin Crew",
+        "Bakka Bu'aa Tajaajila Lafaa", "Ogeessa Kaargoo", "Bakka Bu'aa Tikeetii",
+        "Makaanika Aviyeeshinii", "Qindeessaa Xiyyaaraa", "Bakka Bu'aa Ramp",
+        "Keessummeessaa Lounge", "Nageenya Buufata Xiyyaaraa", "Itti Gaafatamaa Shandhaa",
+        "Bakka Bu'aa Check-in", "Bakka Bu'aa Bakka Qabsiisuu"
+      ],
+      requirements: [
+        "Gaheewwan sadarkaa jalqabaaf yoo xiqqaate barnoota sadarkaa lammaffaa (Kutaa 12ffaa)",
+        "Gaheewwan teeknikaa fi bulchiinsaaf digrii jalqabaa",
+        "Gaheewwan keessummeessaa balaliif ulaagaa hojjaa",
+        "Dandeettii waliin dubbachuu fi tajaajila maamiltootaa baayyee gaarii",
+        "Dilbataa fi Sanbata dabalatee yeroo jijjiiramaa hojjechuuf dandeettii"
+      ],
+      companies: [
+        "Daandii Qilleensa Itoophiyaa", "Dhaabbata Buufataalee Xiyyaaraa Itoophiyaa",
+        "Buufata Xiyyaaraa Idil-Addunyaa Boolee", "DHL Aviyeeshinii Itoophiyaa",
+        "FedEx Itoophiyaa", "Waajjira Emirates Finfinnee",
+        "Waajjira Qatar Airways Finfinnee", "Waajjira Turkish Airlines Finfinnee",
+        "Waajjira Kenya Airways Finfinnee", "Waajjira Lufthansa Finfinnee"
+      ],
+      images: [
+        "https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1569154941061-e231b4725ef1?auto=format&fit=crop&w=600&q=80",
+      ]
     }
   },
   international: {
@@ -346,6 +474,51 @@ export const CATEGORY_DATA: Record<string, {
         "ኮካ ኮላ ቤቨሬጅስ ኢትዮጵያ", "BGI ኢትዮጵያ (ቅዱስ ጊዮርጊስ)",
         "ቶዮታ ኢትዮጵያ", "ቶታል ኢነርጂ ኢትዮጵያ",
         "ዩኒሊቨር ኢትዮጵያ", "PwC ኢትዮጵያ"
+      ],
+      images: [
+        "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=600&q=80",
+        "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=600&q=80",
+      ]
+    },
+    or: {
+      slug: "international",
+      title: "Dhaabbilee Idil-Addunyaa",
+      subtitle: "Dhaabbilee idil-addunyaa gurguddoo Itoophiyaa keessa jiran waliin ogummaa idil-addunyaa ijaaraa",
+      emoji: "🌐",
+      heroImage: "https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&w=800&q=80",
+      gradient: "from-purple-600 to-violet-700",
+      description: "Dinagdeen Itoophiyaa guddachaa yommuu deemu, korporeeshinoonni idil-addunyaa gurguddoon Finfinnee keessatti hundeeffamaa fi babal'achaa jiru. Hoteelota qaalii kanneen akka Hilton, Sheraton, fi Radisson Blu irraa eegalee, hanga warshaalee biiraa idil-addunyaa kanneen akka Heineken fi Diageo, fi dhaabbilee teeknooloojii kanneen akka Safaricom - qaxartoonni idil-addunyaa haalawwan hojii sadarkaa addunyaa, paakeejiiwwan dorgomatoo ta'an, fi gaheewwan naannoo fi idil-addunyaatti guddachuuf carraa dhiyeessu.",
+      whyJoin: [
+        "Ulaagaalee idil-addunyaa fi hojimaata gaggaariin hojjechuu",
+        "Hojiiwwan fi tarsiimoo daldalaa idil-addunyaaf saaxilamuu",
+        "Paakeejiiwwan kaffaltii fi faayidaa baayyee gaarii",
+        "Sagantaalee leenjii idil-addunyaa argachuu",
+        "Guutummaa Afrikaatti gara gaheewwan naannootti guddachuuf carraa",
+        "Finfinnee keessatti naannoowwan biiroo ammayyaa fi qaalii ta'an"
+      ],
+      roles: [
+        "Hogganaa Hojiiwwanii", "Ogeessa Misooma Daldalaa",
+        "Bakka Bu'aa Biyyaa", "Hogganaa Gurgurtaa Naannoo",
+        "Hogganaa Faayinaansii", "Hogganaa Qabeenya Namaa", "Hogganaa Gabaa",
+        "Hogganaa IT", "Hogganaa Bittaa", "Ogeessa Dhiyeessii (Supply Chain)",
+        "Hogganaa Waliigalaa", "Hogganaa Bulchiinsaa",
+        "Ogeessa Hariiroo Maamiltootaa", "Ambaasaaddara Biraandii"
+      ],
+      requirements: [
+        "Daldala ykn dirree walqabatuun digrii jalqabaa ykn Maastarii",
+        "Muuxannoo indastirii sirrii ta'e waggaa 2-10",
+        "Dandeettii waliin dubbachuu fi dhiyeessuu Afaan Ingilizii cimaa",
+        "Muuxannoo hoggansaa fi bulchiinsaa mirkanaa'e",
+        "Naannoo idil-addunyaa keessatti muuxannoo qabaachuun faayidaa dabalataati"
+      ],
+      companies: [
+        "Safaricom Itoophiyaa", "Hilton Finfinnee",
+        "Sheraton Finfinnee", "Radisson Blu Finfinnee",
+        "Hyatt Regency Finfinnee", "Heineken Meta Biiraa",
+        "Coca-Cola Beverages Itoophiyaa", "BGI Itoophiyaa (Qulqulluu Giyoorgis)",
+        "Toyota Itoophiyaa", "TotalEnergies Itoophiyaa",
+        "Unilever Itoophiyaa", "PwC Itoophiyaa"
       ],
       images: [
         "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&w=600&q=80",

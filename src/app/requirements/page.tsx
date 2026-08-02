@@ -18,6 +18,12 @@ const FRESH_GRAD_DOCS = {
     { icon: BookOpen, label: "የተጠራቀመ ውጤት (GPA)", desc: "ከዩኒቨርሲቲዎ ወይም ኮሌጅዎ ቢያንስ 2.1 እና ከዚያ በላይ የሆነ ውጤት።" },
     { icon: FileText, label: "መደበኛ ሲቪ (CV)", desc: "በሙያዊ ሁኔታ የተፃፈ እና ግልጽ የሆነ ሲቪ።" },
     { icon: Camera, label: "የፓስፖርት መጠን ፎቶ", desc: "የቅርብ ጊዜ ሙያዊ የፓስፖርት መጠን ፎቶ።" },
+  ],
+  or: [
+    { icon: Shield, label: "Waraqaa Eenyummaa Biyyaalessaa", desc: "Waraqaa eenyummaa biyyaalessaa mootummaan kenname seera qabeessa ta'e." },
+    { icon: BookOpen, label: "Qabxii Waligalaa (GPA)", desc: "Yuunivarsiitii ykn kolleejjii irraa qabxii xiqqaatti 2.1 fi isaa ol ta'e." },
+    { icon: FileText, label: "CV Idilee (Resume)", desc: "CV haala ogummaa qabuun barreeffame fi ifa ta'e." },
+    { icon: Camera, label: "Suuraa Guddina Paaspoortii", desc: "Suuraa haaraa guddina paaspoortii qabu kan ogummaa calaqqisu." },
   ]
 };
 
@@ -33,6 +39,12 @@ const EXPERIENCED_DOCS = {
     { icon: Briefcase, label: "የስራ ልምድ ሰነዶች", desc: "የቀድሞ የስራ ቅጥር ማረጋገጫ፣ የማጣቀሻ ደብዳቤዎች ወይም የልምድ የምስክር ወረቀቶች።" },
     { icon: FileText, label: "ሙያዊ ሲቪ (CV)", desc: "ዋና ክህሎቶችዎን እና ስኬቶችዎን የሚያጎላ ወቅታዊ ሲቪ።" },
     { icon: Camera, label: "የፓስፖርት መጠን ፎቶ", desc: "የቅርብ ጊዜ ሙያዊ የፓስፖርት መጠን ፎቶ።" },
+  ],
+  or: [
+    { icon: Shield, label: "Waraqaa Eenyummaa Biyyaalessaa", desc: "Waraqaa eenyummaa biyyaalessaa mootummaan kenname seera qabeessa ta'e." },
+    { icon: Briefcase, label: "Sanadoota Muuxannoo Hojii", desc: "Ragaa qaxarii kanaan duraa, xalayaa deeggarsaa ykn waraqaa ragaa muuxannoo." },
+    { icon: FileText, label: "CV Ogummaa (Resume)", desc: "CV haaraa dandeettiiwwan ijoo fi milkaa'ina keessan agarsiisu." },
+    { icon: Camera, label: "Suuraa Guddina Paaspoortii", desc: "Suuraa haaraa guddina paaspoortii qabu kan ogummaa calaqqisu." },
   ]
 };
 
@@ -70,15 +82,15 @@ export default function RequirementsPage() {
           className="absolute top-12 left-5 flex items-center gap-2 bg-white/20 backdrop-blur-md border border-white/30 text-white text-[14px] font-bold px-4 py-2 rounded-full"
         >
           <ArrowLeft className="w-4 h-4" />
-          {lang === "am" ? "ተመለስ" : "Back"}
+          {lang === "am" ? "ተመለስ" : lang === "or" ? "Duuba" : "Back"}
         </Link>
 
         <div className="absolute bottom-6 left-5 right-5">
           <h1 className="text-[28px] sm:text-[32px] font-black text-white leading-tight tracking-tight">
-            {lang === "am" ? "የማመልከቻ መስፈርቶች" : "Application Requirements"}
+            {lang === "am" ? "የማመልከቻ መስፈርቶች" : lang === "or" ? "Ulaagaalee Iyyannoo" : "Application Requirements"}
           </h1>
           <p className="text-[14px] text-white/85 mt-2 font-medium">
-            {lang === "am" ? "በPathway ኤጀንሲ በኩል ለህልምዎ ሥራ ለማመልከት የሚፈልጉት ነገር ሁሉ።" : "Everything you need to apply for your dream job through Pathway Agency."}
+            {lang === "am" ? "በPathway ኤጀንሲ በኩል ለህልምዎ ሥራ ለማመልከት የሚፈልጉት ነገር ሁሉ።" : lang === "or" ? "Hojii abjuu keessanii Eejansii Pathway tiin iyyachuuf wantoota isin barbaachisan hundi." : "Everything you need to apply for your dream job through Pathway Agency."}
           </p>
         </div>
       </div>
@@ -89,23 +101,27 @@ export default function RequirementsPage() {
         animate={{ opacity: 1, y: 0 }}
         className="px-5 py-8 border-b border-gray-100"
       >
-        <h2 className="text-[22px] font-black text-gray-900 mb-2">{lang === "am" ? "ማን ማመልከት ይችላል?" : "Who Can Apply?"}</h2>
+        <h2 className="text-[22px] font-black text-gray-900 mb-2">{lang === "am" ? "ማን ማመልከት ይችላል?" : lang === "or" ? "Eenyutu Iyyachuu Danda'a?" : "Who Can Apply?"}</h2>
         <p className="text-[15px] text-gray-600 leading-relaxed mb-6">
           {lang === "am" 
             ? "Pathway ኤጀንሲ አመልካቾችን ከሁለት ዋና ዋና ምድቦች ይቀበላል። አዲስ ተመራቂም ሆኑ ልምድ ያለው ባለሙያ፣ ለእርስዎ የተረጋገጠ እድል አለ።"
+            : lang === "or"
+            ? "Eejansiin Pathway iyyattoota kutaalee gurguddoo lama irraa ni simata. Eebbifamaa haaraas ta'e ogeessa muuxannoo qabu, carraan mirkanaa'e isin eegaa jira."
             : "Pathway Agency welcomes applicants from two main categories. Whether you are a fresh graduate or an experienced professional, there is a verified opportunity waiting for you."}
         </p>
 
         {/* Fresh Graduates Card */}
         <div className="rounded-3xl overflow-hidden mb-5 shadow-sm border border-blue-100">
           <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-4">
-            <h3 className="text-[18px] font-black text-white">{lang === "am" ? "1. አዲስ ተመራቂዎች" : "1. Fresh Graduates"}</h3>
-            <p className="text-[13px] text-blue-100 mt-1">{lang === "am" ? "የ0 ዓመት የስራ ልምድ እድሎች" : "0 Years Experience Opportunities"}</p>
+            <h3 className="text-[18px] font-black text-white">{lang === "am" ? "1. አዲስ ተመራቂዎች" : lang === "or" ? "1. Eebbifamtoota Haaraa" : "1. Fresh Graduates"}</h3>
+            <p className="text-[13px] text-blue-100 mt-1">{lang === "am" ? "የ0 ዓመት የስራ ልምድ እድሎች" : lang === "or" ? "Carraawwan Muuxannoo Waggaa 0" : "0 Years Experience Opportunities"}</p>
           </div>
           <div className="bg-blue-50 px-5 py-5">
             <p className="text-[14px] text-gray-700 leading-relaxed">
               {lang === "am" 
                 ? "ከ2015 – 2018 ዓ.ም የተመረቁ ከሆነ እና በአሁኑ ጊዜ ተቀጥረው የማይሰሩ ከሆነ፣ ለ 0-ዓመት የስራ ልምድ እድሎቻችን ለማመልከት ብቁ ነዎት።"
+                : lang === "or"
+                ? "Bara 2015 – 2018 B.A gidduutti kan eebbifamtan fi yeroo ammaa kan hin qaxaramne yoo ta'e, carraa hojii muuxannoo waggaa 0 keenyaaf iyyachuuf ulaagaa ni guuttu."
                 : "If you graduated between 2015 – 2018 E.C. and are not currently employed, you are eligible to apply for our 0-year experience job opportunities."}
             </p>
           </div>
@@ -114,13 +130,15 @@ export default function RequirementsPage() {
         {/* Experienced Card */}
         <div className="rounded-3xl overflow-hidden shadow-sm border border-emerald-100">
           <div className="bg-gradient-to-r from-emerald-600 to-teal-600 px-5 py-4">
-            <h3 className="text-[18px] font-black text-white">{lang === "am" ? "2. ልምድ ያላቸው ባለሙያዎች" : "2. Experienced Professionals"}</h3>
-            <p className="text-[13px] text-emerald-100 mt-1">{lang === "am" ? "በአሁኑ ጊዜ የሚሰሩ ወይም ከ2015 ዓ.ም በፊት የተመረቁ" : "Currently Employed or Graduated Before 2015 E.C."}</p>
+            <h3 className="text-[18px] font-black text-white">{lang === "am" ? "2. ልምድ ያላቸው ባለሙያዎች" : lang === "or" ? "2. Ogeeyyii Muuxannoo Qaban" : "2. Experienced Professionals"}</h3>
+            <p className="text-[13px] text-emerald-100 mt-1">{lang === "am" ? "በአሁኑ ጊዜ የሚሰሩ ወይም ከ2015 ዓ.ም በፊት የተመረቁ" : lang === "or" ? "Amma Hojjechaa Kan Jiran ykn Bara 2015 Dura Kan Eebbifaman" : "Currently Employed or Graduated Before 2015 E.C."}</p>
           </div>
           <div className="bg-emerald-50 px-5 py-5">
             <p className="text-[14px] text-gray-700 leading-relaxed">
               {lang === "am" 
                 ? "በአሁኑ ጊዜ ተቀጥረው የሚሰሩ ወይም ከ2015 ዓ.ም በፊት የተመረቁ ከሆነ፣ ምንም ችግር የለም — እንዲያመለክቱ ሙሉ በሙሉ እንጋብዛለን። ከሙያዊ ዳራዎ ጋር የሚዛመዱ ሰፊ የመካከለኛ እና ከፍተኛ ደረጃ ቦታዎች አሉን።"
+                : lang === "or"
+                ? "Yeroo ammaa qaxaramtanii kan hojjettan ykn bara 2015 dura kan eebbifamtan yoo ta'e, rakkoon hin jiru — akka iyyattan guutummaatti isin simanna. Sadarkaa giddugaleessaa fi olaanaa duubee ogummaa keessanii waliin walsimu bal'aa qabna."
                 : "If you are currently employed or graduated before 2015 E.C., no problem at all — you are fully welcome to apply. We have a wide range of mid-level and senior positions that match your professional background."}
             </p>
           </div>
@@ -134,12 +152,12 @@ export default function RequirementsPage() {
         transition={{ delay: 0.1 }}
         className="px-5 py-8 border-b border-gray-100 bg-gray-50"
       >
-        <h2 className="text-[22px] font-black text-gray-900 mb-6">{lang === "am" ? "የሚያስፈልጉ ሰነዶች" : "Required Documents"}</h2>
+        <h2 className="text-[22px] font-black text-gray-900 mb-6">{lang === "am" ? "የሚያስፈልጉ ሰነዶች" : lang === "or" ? "Sanadoota Barbaachisan" : "Required Documents"}</h2>
 
         {/* Fresh Grad Docs */}
-        <h3 className="text-[16px] font-black text-blue-700 mb-4">{lang === "am" ? "ለአዲስ ተመራቂዎች (የ0 ዓመት ልምድ)" : "For Fresh Graduates (0 Year Experience)"}</h3>
+        <h3 className="text-[16px] font-black text-blue-700 mb-4">{lang === "am" ? "ለአዲስ ተመራቂዎች (የ0 ዓመት ልምድ)" : lang === "or" ? "Eebbifamtoota Haaraaf (Muuxannoo Waggaa 0)" : "For Fresh Graduates (0 Year Experience)"}</h3>
         <div className="grid gap-3 mb-8">
-          {FRESH_GRAD_DOCS[(lang === "or" ? "en" : lang) as "en" | "am"].map((doc, i) => (
+          {FRESH_GRAD_DOCS[lang].map((doc, i) => (
             <div key={i} className="flex gap-4 bg-white p-4 rounded-2xl shadow-sm border border-blue-50">
               <div className="w-10 h-10 rounded-xl bg-blue-100 flex items-center justify-center shrink-0">
                 <doc.icon className="w-5 h-5 text-blue-600" />
@@ -155,7 +173,7 @@ export default function RequirementsPage() {
         {/* Experienced Docs */}
         <h3 className="text-[16px] font-black text-emerald-700 mb-4">{lang === "am" ? "ልምድ ላላቸው ባለሙያዎች" : "For Experienced Professionals"}</h3>
         <div className="grid gap-3">
-          {EXPERIENCED_DOCS[(lang === "or" ? "en" : lang) as "en" | "am"].map((doc, i) => (
+          {EXPERIENCED_DOCS[lang].map((doc, i) => (
             <div key={i} className="flex gap-4 bg-white p-4 rounded-2xl shadow-sm border border-emerald-50">
               <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center shrink-0">
                 <doc.icon className="w-5 h-5 text-emerald-600" />
@@ -176,10 +194,12 @@ export default function RequirementsPage() {
         transition={{ delay: 0.2 }}
         className="mx-5 my-8 rounded-3xl bg-gradient-to-br from-amber-50 to-orange-50 border border-amber-200 p-6"
       >
-        <h3 className="text-[17px] font-black text-amber-800 mb-3">{lang === "am" ? "አስፈላጊ ማሳሰቢያ" : "Important Note"}</h3>
+        <h3 className="text-[17px] font-black text-amber-800 mb-3">{lang === "am" ? "አስፈላጊ ማሳሰቢያ" : lang === "or" ? "Hubannoo Barbaachisaa" : "Important Note"}</h3>
         <p className="text-[14px] text-amber-900 leading-relaxed">
           {lang === "am" 
             ? "ሁሉም ሰነዶች ግልጽ በሆነ ዲጂታል ቅርጸት (PDF ወይም JPEG) መቅረብ አለባቸው። Pathway ኤጀንሲ እያንዳንዱን ማመልከቻ ወደ አጋር አሰሪዎች ከማስተላለፉ በፊት ያረጋግጣል። ያልተሟሉ ማመልከቻዎች አይስተናገዱም።"
+            : lang === "or"
+            ? "Sanadoonni hundi bifaa dijitaalaa ifa ta'een (PDF ykn JPEG) dhiyaachuu qabu. Eejansiin Pathway iyyannoo hunda gara qaxartoota michootaatti erguun dura ni mirkaneessa. Iyyannoowwan guutuu hin taane hin keessummeeffaman."
             : "All documents must be submitted in clear, legible digital format (PDF or JPEG). Pathway Agency verifies every application before forwarding to partner employers. Incomplete applications will not be processed."}
         </p>
       </motion.div>
@@ -191,7 +211,7 @@ export default function RequirementsPage() {
         transition={{ delay: 0.3 }}
         className="px-5 pb-8"
       >
-        <h2 className="text-[22px] font-black text-gray-900 mb-5">{lang === "am" ? "እጩዎቻችን በስራ ላይ" : "Our Candidates at Work"}</h2>
+        <h2 className="text-[22px] font-black text-gray-900 mb-5">{lang === "am" ? "እጩዎቻችን በስራ ላይ" : lang === "or" ? "Kaadhimamtoota Keenya Hojii Irratti" : "Our Candidates at Work"}</h2>
         <div className="grid grid-cols-2 gap-3">
           {GALLERY_IMAGES.map((img, i) => (
             <div
@@ -214,7 +234,7 @@ export default function RequirementsPage() {
           href="/"
           className="w-full py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-700 text-white font-black text-[16px] flex items-center justify-center gap-2 shadow-lg hover:shadow-xl transition-all active:scale-[0.98]"
         >
-          {lang === "am" ? "ያሉትን ሥራዎች ያስሱ" : "Browse Available Jobs"}
+          {lang === "am" ? "ያሉትን ሥራዎች ያስሱ" : lang === "or" ? "Hojiiwwan Jiran Barbaadaa" : "Browse Available Jobs"}
           <CheckCircle2 className="w-5 h-5" />
         </Link>
       </div>
