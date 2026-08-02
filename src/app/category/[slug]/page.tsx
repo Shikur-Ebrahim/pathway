@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft, CheckCircle2, ChevronRight, Briefcase } from "lucide-react";
+import { ArrowLeft, CheckCircle2, ChevronRight, Briefcase, MapPin } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { CATEGORY_DATA } from "@/lib/categoryData";
 import { useParams, notFound } from "next/navigation";
