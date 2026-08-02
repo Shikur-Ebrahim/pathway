@@ -204,7 +204,8 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [paymentConfig, setPaymentConfig] = useState<PaymentConfig | null>(null);
-  const [selectedBank, setSelectedBank] = useState<string>('');
+  const [selectedBank, setSelectedBank] = useState<string | null>(null);
+  const [copied, setCopied] = useState(false);
   const [existingApp, setExistingApp] = useState<PathwayItem | null | undefined>(undefined); // undefined=loading, null=none
   const [checkingDuplicate, setCheckingDuplicate] = useState(false);
 
@@ -414,7 +415,8 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
-    alert(`Copied: ${text}`);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
   };
 
   return (
@@ -863,9 +865,14 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                               <p className="text-[12px] font-bold text-gray-400 mb-1">{lang === 'am' ? 'የሂሳብ / ስልክ ቁጥር' : lang === 'or' ? 'Lakkoofsa Herregaa / Bilbilaa' : 'Account / Phone Number'}</p>
                               <p className="text-[17px] font-black font-mono text-blue-600">{(paymentConfig[selectedBank as keyof Omit<PaymentConfig, 'feeAmount'>] as any).account}</p>
                             </div>
-                            <button onClick={() => handleCopy((paymentConfig[selectedBank as keyof Omit<PaymentConfig, 'feeAmount'>] as any).account)} className="p-3 bg-white rounded-xl border border-gray-200 text-gray-500 hover:text-blue-600 hover:border-blue-300 shadow-sm transition-colors flex flex-col items-center gap-1 shrink-0">
-                              <FileText className="w-5 h-5" />
-                              <span className="text-[10px] font-bold">{lang === 'am' ? 'ቅዳ' : lang === 'or' ? 'Koppii' : 'Copy'}</span>
+                            <button 
+                              onClick={() => handleCopy((paymentConfig[selectedBank as keyof Omit<PaymentConfig, 'feeAmount'>] as any).account)} 
+                              className={`p-3 rounded-xl border shadow-sm transition-colors flex flex-col items-center gap-1 shrink-0 ${copied ? 'bg-green-50 border-green-200 text-green-600' : 'bg-white border-gray-200 text-gray-500 hover:text-blue-600 hover:border-blue-300'}`}
+                            >
+                              {copied ? <CheckCircle2 className="w-5 h-5" /> : <FileText className="w-5 h-5" />}
+                              <span className="text-[10px] font-bold">
+                                {copied ? (lang === 'am' ? 'ተቀድቷል' : lang === 'or' ? 'Koppii Ta\'ee' : 'Copied!') : (lang === 'am' ? 'ቅዳ' : lang === 'or' ? 'Koppii' : 'Copy')}
+                              </span>
                             </button>
                           </div>
                         )}
