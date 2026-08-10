@@ -209,7 +209,7 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
               <div className="grid grid-cols-2 gap-3">
                 {Object.entries(app.formData.uploadedUrls).map(([key, url]: any) => (
                   key !== 'paymentScreenshot' && (
-                    <a key={key} href={url.endsWith('.pdf') ? `https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(url.includes('/upload/') ? url.replace('/upload/', '/upload/fl_attachment/') : url)}` : url} target="_blank" rel="noopener noreferrer"
+                    <a key={key} href={url.endsWith('.pdf') && url.includes('/upload/') ? url.replace('/upload/', '/upload/fl_attachment/') : url} target="_blank" rel="noopener noreferrer"
                       className="flex items-center gap-2 p-3 bg-blue-50 rounded-xl border border-blue-100 text-blue-700 text-[13px] font-semibold hover:bg-blue-100 transition-colors">
                       <FileText className="w-4 h-4 shrink-0" />
                       {key === 'cv' ? 'CV / Resume' : key === 'passportPhoto' ? 'National ID' : key === 'educationalCert' ? 'Edu. Certificate' : key === 'experienceCert' ? 'Experience Cert.' : key === 'passport' ? 'Passport / ID' : key}
