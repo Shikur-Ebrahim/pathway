@@ -35,9 +35,9 @@ function SectionCard({ icon: Icon, title, children }: { icon: any; title: string
 function Row({ label, value }: { label: string; value?: string }) {
   if (!value) return null;
   return (
-    <div className="flex justify-between items-start gap-3 border-b border-gray-50 pb-2 last:border-0 last:pb-0">
-      <span className="text-[13px] text-gray-500 shrink-0">{label}</span>
-      <span className="text-[13px] font-semibold text-gray-900 text-right break-all">{value}</span>
+    <div className="flex items-start gap-2 border-b border-gray-50 pb-2 last:border-0 last:pb-0">
+      <span className="text-[13px] text-gray-500 shrink-0">{label}:</span>
+      <span className="text-[13px] font-semibold text-gray-900 break-words">{value}</span>
     </div>
   );
 }
@@ -257,11 +257,19 @@ export const StatusTrackerModal: React.FC<Props> = ({ isOpen, onClose, lang }) =
                       </div>
                     )}
                     {d.uploadedUrls.cv && (
-                      <a href={d.uploadedUrls.cv} target="_blank" rel="noopener noreferrer"
-                        className="flex items-center gap-2.5 bg-blue-50 text-blue-700 border border-blue-100 rounded-xl px-4 py-3 text-[13px] font-bold">
-                        <FileCheck className="w-4 h-4 shrink-0" />
-                        {T(lang,"View CV / Resume","ሲቪ ይከፍቱ","CV Bani")}
-                      </a>
+                      <div className="mt-4">
+                        <p className="text-[12px] font-bold text-gray-500 mb-2">{T(lang,"CV / Resume","ሲቪ","CV")}</p>
+                        <iframe 
+                          src={d.uploadedUrls.cv.endsWith('.pdf') ? `https://docs.google.com/gview?url=${encodeURIComponent(d.uploadedUrls.cv)}&embedded=true` : d.uploadedUrls.cv}
+                          className="w-full h-80 rounded-xl border border-gray-200 bg-gray-50"
+                          title="CV Preview"
+                        />
+                        <a href={d.uploadedUrls.cv} target="_blank" rel="noopener noreferrer"
+                          className="flex items-center justify-center gap-2.5 bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors border border-blue-100 rounded-xl px-4 py-3 mt-3 text-[13px] font-bold">
+                          <FileCheck className="w-4 h-4 shrink-0" />
+                          {T(lang,"Open in New Tab","በአዲስ ገጽ ይክፈቱ","Fuula Haaraa irratti Bani")}
+                        </a>
+                      </div>
                     )}
                   </SectionCard>
                 )}
