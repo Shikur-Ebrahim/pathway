@@ -252,8 +252,8 @@ export const StatusTrackerModal: React.FC<Props> = ({ isOpen, onClose, lang }) =
                   <SectionCard icon={FileCheck} title={T(lang,"Uploaded Documents","የተሰቀሉ ሰነዶች","Sanadoota Olkaafaman")}>
                     {d.uploadedUrls.passportPhoto && (
                       <div>
-                        <p className="text-[12px] font-bold text-gray-500 mb-2">{T(lang,"Passport Photo","ፎቶ","Suuraa")}</p>
-                        <img src={d.uploadedUrls.passportPhoto} alt="Passport Photo" className="w-24 h-28 object-cover rounded-xl border border-gray-200 shadow-sm" />
+                        <p className="text-[12px] font-bold text-gray-500 mb-2">{T(lang,"National ID Photo","የመታወቂያ ፎቶ","Waraqaa Eenyummaa")}</p>
+                        <img src={d.uploadedUrls.passportPhoto} alt="National ID" className="w-48 h-32 object-cover rounded-xl border border-gray-200 shadow-sm" />
                       </div>
                     )}
                     {d.uploadedUrls.cv && (

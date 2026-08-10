@@ -826,14 +826,14 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                 <div className="space-y-5 animate-fadeIn">
                   <div className="mb-4">
                     <h1 className="text-2xl font-black text-gray-900 mb-2">{lang === 'am' ? 'ሰነዶችን ይስቀሉ' : lang === 'or' ? 'Sanadoota Olkaasaa (Upload)' : 'Upload Documents'}</h1>
-                    <p className="text-[15px] text-gray-500">{lang === 'am' ? 'ፋይሎችዎን ይስቀሉ። CV: PDF ብቻ | ፎቶ: JPG, PNG።' : lang === 'or' ? 'Faayiloota keessan olkaasaa. CV: PDF qofaa | Suuraa: JPG, PNG.' : 'Upload your files. CV: PDF only | Photo: JPG, PNG.'}</p>
+                    <p className="text-[15px] text-gray-500">{lang === 'am' ? 'ፋይሎችዎን ይስቀሉ። CV: PDF ብቻ | መታወቂያ: JPG, PNG።' : lang === 'or' ? 'Faayiloota keessan olkaasaa. CV: PDF qofaa | Waraqaa Eenyummaa: JPG, PNG.' : 'Upload your files. CV: PDF only | National ID: JPG, PNG.'}</p>
                   </div>
 
                   {/* Required for everyone */}
                   <div>
                     <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-3">{lang === 'am' ? 'የግዴታ ሰነዶች' : lang === 'or' ? 'Sanadoota Dirqamaa' : 'Required Documents'}</p>
                     <FileUploadCard id="cv" label={lang === 'am' ? 'ሲቪ / ሪዙም (CV) — PDF ብቻ' : lang === 'or' ? 'CV / Riizumee — PDF Qofaa' : 'CV / Resume — PDF only'} accept=".pdf" required files={files} handleFileChange={handleFileChange} />
-                    <FileUploadCard id="passportPhoto" label={lang === 'am' ? 'የፓስፖርት መጠን ፎቶ (ግልጽ የሆነ)' : lang === 'or' ? "Suuraa Guddina Paaspoortii qabu (duubee ifa ta'e)" : 'Passport Size Photo (clear background)'} accept="image/*" required files={files} handleFileChange={handleFileChange} />
+                    <FileUploadCard id="passportPhoto" label={lang === 'am' ? 'የመታወቂያ ፎቶ' : lang === 'or' ? "Waraqaa Eenyummaa" : 'National ID Photo'} accept="image/*" required files={files} handleFileChange={handleFileChange} />
                   </div>
                 </div>
               )}

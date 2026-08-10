@@ -212,7 +212,7 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
                     <a key={key} href={url} target="_blank" rel="noopener noreferrer"
                       className="flex items-center gap-2 p-3 bg-blue-50 rounded-xl border border-blue-100 text-blue-700 text-[13px] font-semibold hover:bg-blue-100 transition-colors">
                       <FileText className="w-4 h-4 shrink-0" />
-                      {key === 'cv' ? 'CV / Resume' : key === 'passportPhoto' ? 'Passport Photo' : key === 'educationalCert' ? 'Edu. Certificate' : key === 'experienceCert' ? 'Experience Cert.' : key === 'passport' ? 'Passport / ID' : key}
+                      {key === 'cv' ? 'CV / Resume' : key === 'passportPhoto' ? 'National ID' : key === 'educationalCert' ? 'Edu. Certificate' : key === 'experienceCert' ? 'Experience Cert.' : key === 'passport' ? 'Passport / ID' : key}
                     </a>
                   )
                 ))}
