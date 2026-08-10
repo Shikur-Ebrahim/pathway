@@ -415,7 +415,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
   let canProceed = false;
   if (step === 1) canProceed = !!formData.status;
   if (step === 2) canProceed = !!formData.sector && !!formData.sectorSpecific.subCategory;
-  if (step === 3) canProceed = !!formData.personal.fullName && !!formData.personal.gender && formData.personal.phone?.length === 9 && !!formData.personal.email && !!formData.personal.region && !!formData.personal.city;
+  if (step === 3) canProceed = !!formData.personal.fullName && !!formData.personal.gender && formData.personal.phone?.length === 9 && !!formData.personal.email;
   if (step === 4) {
     const eduDone = formData.status === 'not_graduated'
       ? !!formData.education.highestLevel && !!formData.education.university
@@ -691,10 +691,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                   </div>
                   <InputField label={lang === 'am' ? 'ስልክ ቁጥር' : lang === 'or' ? 'Lakkoofsa Bilbilaa' : 'Phone Number'} section="personal" field="phone" type="tel" required formData={formData} updateForm={updateForm} />
                   <InputField label={lang === 'am' ? 'የኢሜል አድራሻ' : lang === 'or' ? 'Teessoo E-mail' : 'Email Address'} section="personal" field="email" type="email" required formData={formData} updateForm={updateForm} />
-                  <div className="grid grid-cols-2 gap-4">
-                    <InputField label={lang === 'am' ? 'ክልል' : lang === 'or' ? 'Naannoo' : 'Region'} section="personal" field="region" required formData={formData} updateForm={updateForm} />
-                    <InputField label={lang === 'am' ? 'ከተማ / ክፍለ ከተማ' : lang === 'or' ? 'Magaalaa / Kutaa Magaalaa' : 'City / Sub-City'} section="personal" field="city" required formData={formData} updateForm={updateForm} />
-                  </div>
+
                 </div>
               )}
 
