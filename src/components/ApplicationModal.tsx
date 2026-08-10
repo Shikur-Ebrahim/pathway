@@ -818,6 +818,9 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                       <InputField label={lang === 'am' ? 'መቼ መጓዝ ይችላሉ?' : lang === 'or' ? 'Yoom imaluu dandeessu?' : 'When can you travel?'} section="sectorSpecific" field="readyToRelocate" options={lang === 'am' ? ["ወዲያውኑ", "በ 1 ወር ውስጥ", "በ 3 ወራት ውስጥ", "ከ 3 ወራት በኋላ"] : ["Immediately", "Within 1 Month", "Within 3 Months", "After 3 Months"]} required formData={formData} updateForm={updateForm} />
                       <InputField label={lang === 'am' ? 'የህክምና ማረጋገጫ (Medical Certificate) አለዎት?' : lang === 'or' ? 'Ragaa Yaalaa (Medical Certificate) qabduu?' : 'Do you have a Medical Certificate?'} section="sectorSpecific" field="medicalCertificate" options={lang === 'am' ? ["አዎ", "የለኝም - ማግኘት እችላለሁ"] : ["Yes", "No – Can Obtain"]} formData={formData} updateForm={updateForm} />
                       <InputField label={lang === 'am' ? 'የፖሊስ ማረጋገጫ (Police Clearance) አለዎት?' : lang === 'or' ? 'Ragaa Qulqullinaa Poolisii qabduu?' : 'Do you have a Police Clearance?'} section="sectorSpecific" field="policeClearance" options={lang === 'am' ? ["አዎ", "የለኝም - ማግኘት እችላለሁ"] : ["Yes", "No – Can Obtain"]} formData={formData} updateForm={updateForm} />
+                      {formData.sector === 'foreign' && (
+                        <FileUploadCard id="passport" label={lang === 'am' ? 'የፓስፖርት ኮፒ' : lang === 'or' ? 'Koppii Paaspoortii' : 'Passport Copy'} files={files} handleFileChange={handleFileChange} />
+                      )}
                     </>
                   )}
                 </div>
@@ -828,13 +831,13 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                 <div className="space-y-5 animate-fadeIn">
                   <div className="mb-4">
                     <h1 className="text-2xl font-black text-gray-900 mb-2">{lang === 'am' ? 'ሰነዶችን ይስቀሉ' : lang === 'or' ? 'Sanadoota Olkaasaa (Upload)' : 'Upload Documents'}</h1>
-                    <p className="text-[15px] text-gray-500">{lang === 'am' ? 'ፋይሎችዎን ይስቀሉ። ተቀባይነት ያላቸው ፡ PDF, DOC, JPG, PNG።' : lang === 'or' ? 'Faayiloota keessan olkaasaa. Kan fudhatamu: PDF, DOC, JPG, PNG.' : 'Upload your files. Accepted: PDF, DOC, JPG, PNG.'}</p>
+                    <p className="text-[15px] text-gray-500">{lang === 'am' ? 'ፋይሎችዎን ይስቀሉ። CV: PDF ብቻ | ፎቶ: JPG, PNG።' : lang === 'or' ? 'Faayiloota keessan olkaasaa. CV: PDF qofaa | Suuraa: JPG, PNG.' : 'Upload your files. CV: PDF only | Photo: JPG, PNG.'}</p>
                   </div>
 
                   {/* Required for everyone */}
                   <div>
                     <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-3">{lang === 'am' ? 'የግዴታ ሰነዶች' : lang === 'or' ? 'Sanadoota Dirqamaa' : 'Required Documents'}</p>
-                    <FileUploadCard id="cv" label={lang === 'am' ? 'ሲቪ / ሪዙም (CV)' : lang === 'or' ? 'CV / Riizumee' : 'CV / Resume'} required files={files} handleFileChange={handleFileChange} />
+                    <FileUploadCard id="cv" label={lang === 'am' ? 'ሲቪ / ሪዙም (CV) — PDF ብቻ' : lang === 'or' ? 'CV / Riizumee — PDF Qofaa' : 'CV / Resume — PDF only'} accept=".pdf" required files={files} handleFileChange={handleFileChange} />
                     <FileUploadCard id="passportPhoto" label={lang === 'am' ? 'የፓስፖርት መጠን ፎቶ (ግልጽ የሆነ)' : lang === 'or' ? "Suuraa Guddina Paaspoortii qabu (duubee ifa ta'e)" : 'Passport Size Photo (clear background)'} accept="image/*" required files={files} handleFileChange={handleFileChange} />
                     <FileUploadCard id="educationalCert" label={lang === 'am' ? 'የከፍተኛ ትምህርት ማስረጃ' : lang === 'or' ? 'Ragaa Barnootaa Olaanaa' : 'Highest Educational Certificate'} required files={files} handleFileChange={handleFileChange} />
                   </div>
@@ -849,9 +852,6 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                     )}
                     {formData.sector === 'foreign' && (
                       <FileUploadCard id="passport" label={lang === 'am' ? 'የፓስፖርት ኮፒ' : lang === 'or' ? 'Koppii Paaspoortii' : 'Passport Copy'} files={files} handleFileChange={handleFileChange} />
-                    )}
-                    {formData.sector !== 'foreign' && (
-                      <FileUploadCard id="passport" label={lang === 'am' ? 'የብሔራዊ መታወቂያ / ፋይዳ ካርድ ኮፒ' : lang === 'or' ? 'Koppii Waraqaa Eenyummaa / Kaardii Faydaa' : 'National ID / Fayda Card Copy'} files={files} handleFileChange={handleFileChange} />
                     )}
                   </div>
                 </div>
