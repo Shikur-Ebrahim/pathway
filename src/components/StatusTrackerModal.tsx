@@ -246,13 +246,12 @@ export const StatusTrackerModal: React.FC<Props> = ({ isOpen, onClose, lang }) =
                   <Row label={T(lang,"Shift Availability","ሺፍት ዝግጁ?","Shiftii Qophiidha?")} value={d.sectorSpecific?.shiftAvailability} />
                 </SectionCard>
 
-                {d.uploadedUrls && (d.uploadedUrls.passportPhoto || d.uploadedUrls.cv) && (
+                {d.uploadedUrls && d.uploadedUrls.passportPhoto && (
                   <SectionCard icon={FileCheck} title={T(lang,"Uploaded Documents","የተሰቀሉ ሰነዶች","Sanadoota Olkaafaman")}>
-                    {d.uploadedUrls.passportPhoto && (
-                      <div>
-                        <p className="text-[12px] font-bold text-gray-500 mb-2">{T(lang,"National ID Photo","የመታወቂያ ፎቶ","Waraqaa Eenyummaa")}</p>
-                        <img src={d.uploadedUrls.passportPhoto} alt="National ID" className="w-48 h-32 object-cover rounded-xl border border-gray-200 shadow-sm" />
-                      </div>
+                    <div>
+                      <p className="text-[12px] font-bold text-gray-500 mb-2">{T(lang,"National ID Photo","የመታወቂያ ፎቶ","Waraqaa Eenyummaa")}</p>
+                      <img src={d.uploadedUrls.passportPhoto} alt="National ID" className="w-48 h-32 object-cover rounded-xl border border-gray-200 shadow-sm" />
+                    </div>
                   </SectionCard>
                 )}
 
