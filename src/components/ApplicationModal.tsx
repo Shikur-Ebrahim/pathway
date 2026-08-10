@@ -488,6 +488,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
           <div className="h-1 w-full bg-gray-100 shrink-0">
             <div className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300 ease-out" style={{ width: `${(step / 7) * 100}%` }} />
           </div>
+        )}
         {/* Body Content */}
         <div ref={bodyRef} className="flex-1 overflow-y-auto px-5 py-6 hide-scrollbar relative bg-gray-50/30">
           {error && (
