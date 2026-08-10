@@ -261,14 +261,9 @@ export const StatusTrackerModal: React.FC<Props> = ({ isOpen, onClose, lang }) =
                         <p className="text-[12px] font-bold text-gray-500 mb-2">{T(lang,"CV / Resume","ሲቪ","CV")}</p>
                         <iframe 
                           src={d.uploadedUrls.cv.endsWith('.pdf') ? `https://docs.google.com/gview?url=${encodeURIComponent(d.uploadedUrls.cv)}&embedded=true` : d.uploadedUrls.cv}
-                          className="w-full h-80 rounded-xl border border-gray-200 bg-gray-50"
+                          className="w-full h-96 rounded-xl border border-gray-200 bg-gray-50"
                           title="CV Preview"
                         />
-                        <a href={d.uploadedUrls.cv} target="_blank" rel="noopener noreferrer"
-                          className="flex items-center justify-center gap-2.5 bg-blue-50 text-blue-700 hover:bg-blue-100 transition-colors border border-blue-100 rounded-xl px-4 py-3 mt-3 text-[13px] font-bold">
-                          <FileCheck className="w-4 h-4 shrink-0" />
-                          {T(lang,"Open in New Tab","በአዲስ ገጽ ይክፈቱ","Fuula Haaraa irratti Bani")}
-                        </a>
                       </div>
                     )}
                   </SectionCard>
