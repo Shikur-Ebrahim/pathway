@@ -35,6 +35,11 @@ const SECTORS = [
     id: "foreign", emoji: "🌐",
     title: "Foreign Employment",
     desc: "Verified International Employment Opportunities."
+  },
+  {
+    id: "maritime", emoji: "🚢",
+    title: "Maritime & Seafaring",
+    desc: "Deckhand, Engine Room, Steward, and other Seafarer roles."
   }
 ];
 
@@ -42,7 +47,8 @@ const SUB_CATEGORIES: Record<string, string[]> = {
   embassy: ["Administrative", "Secretarial", "Finance", "IT", "Technical Positions", "Other"],
   ngo: ["Development", "Humanitarian", "Project Management", "Administration", "Other"],
   airport: ["Airport Operations", "Customer Service", "Ground Handling", "Cargo and Logistics", "Other"],
-  foreign: ["Domestic Work", "Technical Skills", "Hospitality", "Construction", "Other"]
+  foreign: ["Domestic Work", "Technical Skills", "Hospitality", "Construction", "Other"],
+  maritime: ["Seafarer", "Deckhand", "Engine Room", "Cook/Steward", "Other"]
 };
 
 const InputField = ({ label, section, field, type = "text", required = false, options = [], formData, updateForm, min, max, step, placeholder }: any) => {
@@ -196,7 +202,7 @@ const FileUploadCard = ({ id, label, required = false, accept = ".pdf,.doc,.docx
 }
 
 export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onClose, lang }) => {
-  const { user } = useAuth();
+  const { user, signUpWithEmail } = useAuth();
   
   const [step, setStep] = useState(1);
   const bodyRef = useRef<HTMLDivElement>(null);
@@ -230,7 +236,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
     status: "", // "fresh" | "experienced"
     sector: "", // "embassy" | "ngo" | "airport" | "foreign"
     personal: {
-      fullName: "", gender: "", dob: "", phone: "", email: user?.email || "",
+      fullName: "", gender: "", dob: "", phone: "", email: user?.email || "", password: "",
       region: "", city: "", currentAddress: "", nationality: "Ethiopian", nationalId: ""
     },
     education: {
@@ -371,7 +377,21 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
       }
       setFileUrls(uploadedUrls);
 
-      // 2. Save to Firestore
+      // 2. Create account if new user
+      if (!user && formData.personal.password) {
+        try {
+          await signUpWithEmail(formData.personal.email, formData.personal.password, formData.personal.fullName);
+        } catch (authErr: any) {
+          // If the email is already in use, we can just proceed with the application or fail.
+          // Usually we want to fail so they log in first, but let's just log and continue if it's "email-already-in-use"
+          console.warn("Auth error during application (might be existing user):", authErr);
+          if (authErr.code !== 'auth/email-already-in-use') {
+            throw authErr;
+          }
+        }
+      }
+
+      // 3. Save to Firestore
       const finalData = { ...formData, uploadedUrls };
       
       await addPathwayPost({
@@ -397,7 +417,9 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
   if (step === 2) canProceed = !!formData.sector && !!formData.sectorSpecific.subCategory;
   if (step === 3) canProceed = !!formData.personal.fullName && !!formData.personal.gender && formData.personal.phone?.length === 9 && !!formData.personal.email && !!formData.personal.region && !!formData.personal.city;
   if (step === 4) {
-    const eduDone = !!formData.education.highestLevel && !!formData.education.university && !!formData.education.field && !!formData.education.gradYear;
+    const eduDone = formData.status === 'not_graduated'
+      ? !!formData.education.highestLevel && !!formData.education.university && !!formData.education.gradYear
+      : !!formData.education.highestLevel && !!formData.education.university && !!formData.education.field && !!formData.education.gradYear;
     const expDone = formData.status === 'experienced'
       ? !!formData.experience.yearsOfExperience && !!formData.experience.currentEmployer && !!formData.experience.currentPosition
       : true;
@@ -411,7 +433,10 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
     else canProceed = true;
   }
   if (step === 6) canProceed = !!files.cv && !!files.passportPhoto;
-  if (step === 7) canProceed = formData.declarations.isTrue && formData.declarations.shareProfile && !!files.paymentScreenshot;
+  if (step === 7) {
+    const isPasswordValid = user ? true : (formData.personal.password && formData.personal.password.length >= 6);
+    canProceed = formData.declarations.isTrue && formData.declarations.shareProfile && isPasswordValid;
+  }
 
   const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text);
@@ -554,6 +579,29 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                         ))}
                       </div>
                     </button>
+
+                    <button
+                      onClick={() => setFormData((p: any) => ({ ...p, status: 'not_graduated' }))}
+                      className={`w-full text-left p-5 rounded-[20px] border-2 transition-all ${
+                        formData.status === 'not_graduated' ? 'border-blue-500 bg-blue-50 shadow-md shadow-blue-500/10' : 'border-gray-200 bg-white hover:border-gray-300'
+                      }`}
+                    >
+                      <div className="flex justify-between items-start mb-3">
+                        <div className="text-3xl">📚</div>
+                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center ${
+                          formData.status === 'not_graduated' ? 'border-blue-500 bg-blue-500' : 'border-gray-300'
+                        }`}>
+                          {formData.status === 'not_graduated' && <CheckCircle2 className="w-4 h-4 text-white" />}
+                        </div>
+                      </div>
+                      <h3 className="text-[17px] font-bold text-gray-900 mb-1">{lang === 'am' ? 'ያልተመረቁ' : lang === 'or' ? 'Kan Hin Eebbifamne' : 'Not Graduated'}</h3>
+                      <p className="text-[13px] text-gray-500 leading-relaxed">{lang === 'am' ? 'ከ 8ኛ እስከ 12ኛ ክፍል ያጠናቀቁ እና ስራ የሚፈልጉ።' : lang === 'or' ? 'Kutaa 8ffaa hanga 12ffaa kan xumuranii fi hojii barbaadaa jiran.' : 'Completed grade 8 to 12 and looking for job opportunities.'}</p>
+                      <div className="mt-3 flex flex-wrap gap-2">
+                        {(lang === 'am' ? ['ዲግሪ አያስፈልግም', 'የስልጠና እድል', 'ወዲያውኑ መጀመር የሚችሉ'] : lang === 'or' ? ['Digiriin Hin Barbaadamu', 'Carraa Leenjii', 'Dafanii Eegaluu Danda\'u'] : ['No Degree Needed', 'Training Available', 'Immediate Start']).map(tag => (
+                          <span key={tag} className={`text-[11px] font-semibold px-2.5 py-1 rounded-full ${ formData.status === 'not_graduated' ? 'bg-blue-100 text-blue-700' : 'bg-gray-100 text-gray-500' }`}>{tag}</span>
+                        ))}
+                      </div>
+                    </button>
                   </div>
                 </div>
               )}
@@ -584,10 +632,12 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                                lang === 'am' && s.id === 'ngo' ? 'ዓ.ድ.ት.ሀ እና የ UN ኤጀንሲዎች' :
                                lang === 'am' && s.id === 'airport' ? 'አውሮፕላን ማረፊያ እና አቪዬሽን' :
                                lang === 'am' && s.id === 'foreign' ? 'የውጭ ሀገር ስራ' : 
+                               lang === 'am' && s.id === 'maritime' ? 'መርከበኛ (Maritime)' : 
                                lang === 'or' && s.id === 'embassy' ? 'Imbaasiiwwanii fi Ergamoota Dippilomaasii' :
                                lang === 'or' && s.id === 'ngo' ? 'Dhaabbilee Mit-Mootummaa (NGO) fi Eejansiilee UN' :
                                lang === 'or' && s.id === 'airport' ? 'Aviyeeshinii fi Daandiiwwan Qilleensaa' :
-                               lang === 'or' && s.id === 'foreign' ? 'Hojii Biyya Alaa' : s.title}
+                               lang === 'or' && s.id === 'foreign' ? 'Hojii Biyya Alaa' :
+                               lang === 'or' && s.id === 'maritime' ? 'Doonii Oofaa (Maritime)' : s.title}
                             </h3>
                             <p className="text-[12px] text-gray-500 leading-relaxed truncate whitespace-normal line-clamp-2">
                               {lang === 'am' && s.id === 'embassy' ? 'አስተዳደራዊ፣ ጸሐፊነት፣ ፋይናንስ፣ አይቲ እና ቴክኒካዊ ቦታዎች።' :
@@ -655,12 +705,26 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                   <div>
                     <h1 className="text-2xl font-black text-gray-900 mb-2">{lang === 'am' ? 'ትምህርት' : lang === 'or' ? 'Barnoota' : 'Education'}</h1>
                     <p className="text-[15px] text-gray-500 mb-6">{lang === 'am' ? 'የትምህርት ታሪክዎ።' : lang === 'or' ? 'Duubee barnoota keessanii.' : 'Your academic background.'}</p>
-                    <InputField label={lang === 'am' ? 'የትምህርት ደረጃ' : lang === 'or' ? 'Sadarkaa Barnootaa' : 'Highest Education'} section="education" field="highestLevel" options={lang === 'am' ? ["ዲፕሎማ / TVET", "የባችለር ዲግሪ", "የማስተርስ ዲግሪ", "ፒኤችዲ (PhD)"] : lang === 'or' ? ["Diploomaa / TVET", "Digrii Jalqabaa", "Digrii Maastarii", "PhD"] : ["Diploma / TVET", "Bachelor's Degree", "Master's Degree", "PhD"]} required formData={formData} updateForm={updateForm} />
+                    <InputField 
+                      label={lang === 'am' ? 'የትምህርት ደረጃ' : lang === 'or' ? 'Sadarkaa Barnootaa' : 'Highest Education'} 
+                      section="education" 
+                      field="highestLevel" 
+                      options={
+                        formData.status === 'not_graduated'
+                          ? (lang === 'am' ? ["12ኛ ክፍል", "10ኛ ክፍል", "8ኛ ክፍል"] : lang === 'or' ? ["Kutaa 12ffaa", "Kutaa 10ffaa", "Kutaa 8ffaa"] : ["Grade 12", "Grade 10", "Grade 8"])
+                          : (lang === 'am' ? ["ዲፕሎማ / TVET", "የባችለር ዲግሪ", "የማስተርስ ዲግሪ", "ፒኤችዲ (PhD)"] : lang === 'or' ? ["Diploomaa / TVET", "Digrii Jalqabaa", "Digrii Maastarii", "PhD"] : ["Diploma / TVET", "Bachelor's Degree", "Master's Degree", "PhD"])
+                      } 
+                      required 
+                      formData={formData} 
+                      updateForm={updateForm} 
+                    />
                     
                     {formData.education.highestLevel && (
                       <>
-                        <InputField label={lang === 'am' ? 'ዩኒቨርሲቲ / ኮሌጅ / ተቋም' : lang === 'or' ? 'Yuunivarsiitii / Kolleejjii / Dhaabbata' : 'University / College / Institution'} section="education" field="university" required formData={formData} updateForm={updateForm} />
-                        <InputField label={lang === 'am' ? 'የተማሩት መስክ (Field of Study)' : lang === 'or' ? 'Damee Qorannoo' : 'Field of Study'} section="education" field="field" required formData={formData} updateForm={updateForm} />
+                        <InputField label={lang === 'am' ? (formData.status === 'not_graduated' ? 'የትምህርት ቤት ስም' : 'ዩኒቨርሲቲ / ኮሌጅ / ተቋም') : lang === 'or' ? (formData.status === 'not_graduated' ? 'Maqaa Mana Barumsaa' : 'Yuunivarsiitii / Kolleejjii / Dhaabbata') : (formData.status === 'not_graduated' ? 'School Name' : 'University / College / Institution')} section="education" field="university" required formData={formData} updateForm={updateForm} />
+                        {formData.status !== 'not_graduated' && (
+                          <InputField label={lang === 'am' ? 'የተማሩት መስክ (Field of Study)' : lang === 'or' ? 'Damee Qorannoo' : 'Field of Study'} section="education" field="field" required formData={formData} updateForm={updateForm} />
+                        )}
                         <div className="grid grid-cols-2 gap-4">
                           <InputField label={lang === 'am' ? 'የተመረቁበት ዓመት' : lang === 'or' ? 'Bara Eebbaa' : 'Graduation Year'} section="education" field="gradYear" type="number" min="1950" max={new Date().getFullYear() + 5} required formData={formData} updateForm={updateForm} />
                           <InputField label={lang === 'am' ? 'ውጤት (CGPA) (አማራጭ)' : lang === 'or' ? 'Qabxii (CGPA) (Filannoo)' : 'CGPA (Optional)'} section="education" field="cgpa" type="number" min="0" max="4" step="0.01" formData={formData} updateForm={updateForm} />
@@ -808,11 +872,11 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                     <div className="divide-y divide-gray-50">
                       <div className="px-5 py-3 flex justify-between items-center">
                         <span className="text-[13px] text-gray-400 font-semibold">{lang === 'am' ? 'ሁኔታ' : lang === 'or' ? 'Haala' : 'Status'}</span>
-                        <span className="text-[13px] font-bold text-gray-900">{formData.status === 'fresh' ? (lang === 'am' ? '🎓 አዲስ ተመራቂ' : lang === 'or' ? '🎓 Eebbifamaa Haaraa' : '🎓 Fresh Graduate') : (lang === 'am' ? '💼 ልምድ ያለው' : lang === 'or' ? '💼 Muuxannoo Kan Qabu' : '💼 Experienced')}</span>
+                        <span className="text-[13px] font-bold text-gray-900">{formData.status === 'fresh' ? (lang === 'am' ? '🎓 አዲስ ተመራቂ' : lang === 'or' ? '🎓 Eebbifamaa Haaraa' : '🎓 Fresh Graduate') : formData.status === 'not_graduated' ? (lang === 'am' ? '📚 ያልተመረቁ' : lang === 'or' ? '📚 Kan Hin Eebbifamne' : '📚 Not Graduated') : (lang === 'am' ? '💼 ልምድ ያለው' : lang === 'or' ? '💼 Muuxannoo Kan Qabu' : '💼 Experienced')}</span>
                       </div>
                       <div className="px-5 py-3 flex justify-between items-center">
                         <span className="text-[13px] text-gray-400 font-semibold">{lang === 'am' ? 'ዘርፍ' : lang === 'or' ? 'Damee' : 'Sector'}</span>
-                        <span className="text-[13px] font-bold text-gray-900">{SECTORS.find(s=>s.id===formData.sector)?.emoji} {lang === 'am' ? (formData.sector === 'embassy' ? 'ኤምባሲ እና ዲፕሎማቲክ ተልዕኮዎች' : formData.sector === 'ngo' ? 'ዓ.ድ.ት.ሀ እና የ UN ኤጀንሲዎች' : formData.sector === 'airport' ? 'አውሮፕላን ማረፊያ እና አቪዬሽን' : formData.sector === 'foreign' ? 'የውጭ ሀገር ስራ' : SECTORS.find(s=>s.id===formData.sector)?.title) : SECTORS.find(s=>s.id===formData.sector)?.title}</span>
+                        <span className="text-[13px] font-bold text-gray-900">{SECTORS.find(s=>s.id===formData.sector)?.emoji} {lang === 'am' ? (formData.sector === 'embassy' ? 'ኤምባሲ እና ዲፕሎማቲክ ተልዕኮዎች' : formData.sector === 'ngo' ? 'ዓ.ድ.ት.ሀ እና የ UN ኤጀንሲዎች' : formData.sector === 'airport' ? 'አውሮፕላን ማረፊያ እና አቪዬሽን' : formData.sector === 'foreign' ? 'የውጭ ሀገር ስራ' : formData.sector === 'maritime' ? 'መርከበኛ' : SECTORS.find(s=>s.id===formData.sector)?.title) : SECTORS.find(s=>s.id===formData.sector)?.title}</span>
                       </div>
                       <div className="px-5 py-3 flex justify-between items-center">
                         <span className="text-[13px] text-gray-400 font-semibold">{lang === 'am' ? 'የስራ ድርሻ' : lang === 'or' ? 'Gahee' : 'Role'}</span>
@@ -833,53 +897,22 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                     </div>
                   </div>
 
-                  {/* Payment Section */}
-                  {paymentConfig && (
+                  {/* Account Creation (If Not Logged In) */}
+                  {!user && (
                     <div className="bg-white rounded-2xl border-2 border-blue-100 overflow-hidden shadow-sm">
                       <div className="bg-blue-50 px-5 py-4 border-b border-blue-100">
-                        <h3 className="font-black text-blue-900 text-[16px]">{lang === 'am' ? 'የማመልከቻ ክፍያ ፡' : lang === 'or' ? 'Kaffaltii Iyyannoo:' : 'Application Fee:'} {paymentConfig.feeAmount} ETB</h3>
-                        <p className="text-[13px] text-blue-700 mt-1 font-medium">{lang === 'am' ? `እባክዎ ማመልከቻዎ እንዲስተናገድ የ ${paymentConfig.feeAmount} ብር ክፍያ ይክፈሉ። ክፍያው ሲጠናቀቅ ለቃለ መጠይቅ በኢሜል እናሳውቅዎታለን።` : lang === 'or' ? `Maaloo iyyannoon keessan akka itti fufuuf kaffaltii Qarshii ${paymentConfig.feeAmount} raawwadhaa. Akkuma xumurameen qormaata afaaniif e-mail dhaan isin beeksisna.` : `Please pay the ${paymentConfig.feeAmount} ETB fee for your application to proceed. We will notify you via email for interviews once processed.`}</p>
+                        <h3 className="font-black text-blue-900 text-[16px]">{lang === 'am' ? 'ነፃ መለያ ይፍጠሩ' : lang === 'or' ? 'Herrega Tolaa Uumi' : 'Create Free Account'}</h3>
+                        <p className="text-[13px] text-blue-700 mt-1 font-medium">{lang === 'am' ? 'አካውንትዎን ለመፍጠር የይለፍ ቃል ያስገቡ። ማመልከቻው ሙሉ በሙሉ ነፃ ነው!' : lang === 'or' ? 'Herrega kee uumuuf jecha iccitii galchi. Iyyannoon guutummaatti tola!' : 'Create a password to save your profile. Application is 100% free!'}</p>
                       </div>
-                      <div className="p-5 space-y-4">
-                        <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-2">{lang === 'am' ? 'የመክፈያ ዘዴ ይምረጡ' : lang === 'or' ? 'Mala Kaffaltii Filadhaa' : 'Select Payment Method'}</p>
-                        
-                        <div className="flex gap-2 overflow-x-auto hide-scrollbar pb-1">
-                          {paymentConfig.cbe.active && (
-                            <button onClick={() => setSelectedBank('cbe')} className={`px-4 py-2.5 rounded-xl text-[14px] font-bold whitespace-nowrap transition-all border-2 ${selectedBank === 'cbe' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-300'}`}>CBE</button>
-                          )}
-                          {paymentConfig.telebirr.active && (
-                            <button onClick={() => setSelectedBank('telebirr')} className={`px-4 py-2.5 rounded-xl text-[14px] font-bold whitespace-nowrap transition-all border-2 ${selectedBank === 'telebirr' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-300'}`}>Telebirr</button>
-                          )}
-                          {paymentConfig.boa.active && (
-                            <button onClick={() => setSelectedBank('boa')} className={`px-4 py-2.5 rounded-xl text-[14px] font-bold whitespace-nowrap transition-all border-2 ${selectedBank === 'boa' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-300'}`}>BOA</button>
-                          )}
-                          {paymentConfig.awash.active && (
-                            <button onClick={() => setSelectedBank('awash')} className={`px-4 py-2.5 rounded-xl text-[14px] font-bold whitespace-nowrap transition-all border-2 ${selectedBank === 'awash' ? 'border-blue-500 bg-blue-50 text-blue-700' : 'border-gray-200 bg-gray-50 text-gray-600 hover:border-gray-300'}`}>Awash</button>
-                          )}
-                        </div>
-                        {selectedBank && paymentConfig[selectedBank as keyof Omit<PaymentConfig, 'feeAmount'>] && (
-                          <div className="p-4 border-2 border-gray-100 rounded-xl bg-gray-50 flex items-center justify-between">
-                            <div>
-                              <p className="text-[12px] font-bold text-gray-400 mb-1">{lang === 'am' ? 'የሂሳብ ባለቤት' : lang === 'or' ? 'Abbaa Herregaa' : 'Account Holder'}</p>
-                              <p className="font-bold text-gray-900 text-[15px] mb-2">{(paymentConfig[selectedBank as keyof Omit<PaymentConfig, 'feeAmount'>] as any).holderName}</p>
-                              <p className="text-[12px] font-bold text-gray-400 mb-1">{lang === 'am' ? 'የሂሳብ / ስልክ ቁጥር' : lang === 'or' ? 'Lakkoofsa Herregaa / Bilbilaa' : 'Account / Phone Number'}</p>
-                              <p className="text-[17px] font-black font-mono text-blue-600">{(paymentConfig[selectedBank as keyof Omit<PaymentConfig, 'feeAmount'>] as any).account}</p>
-                            </div>
-                            <button 
-                              onClick={() => handleCopy((paymentConfig[selectedBank as keyof Omit<PaymentConfig, 'feeAmount'>] as any).account)} 
-                              className={`p-3 rounded-xl border shadow-sm transition-colors flex flex-col items-center gap-1 shrink-0 ${copied ? 'bg-green-50 border-green-200 text-green-600' : 'bg-white border-gray-200 text-gray-500 hover:text-blue-600 hover:border-blue-300'}`}
-                            >
-                              {copied ? <CheckCircle2 className="w-5 h-5" /> : <FileText className="w-5 h-5" />}
-                              <span className="text-[10px] font-bold">
-                                {copied ? (lang === 'am' ? 'ተቀድቷል' : lang === 'or' ? 'Koppii Ta\'ee' : 'Copied!') : (lang === 'am' ? 'ቅዳ' : lang === 'or' ? 'Koppii' : 'Copy')}
-                              </span>
-                            </button>
-                          </div>
-                        )}
-
-                        <div className="mt-4 pt-4 border-t border-gray-100">
-                          <FileUploadCard id="paymentScreenshot" label={lang === 'am' ? 'የክፍያ ማረጋገጫ (Screenshot / ደረሰኝ) ይስቀሉ' : lang === 'or' ? 'Nagahee Kaffaltii / Screenshot Olkaasaa' : 'Upload Payment Screenshot / Receipt'} accept="image/*" required files={files} handleFileChange={handleFileChange} />
-                        </div>
+                      <div className="p-5">
+                        <label className="block text-[13px] font-bold text-gray-700 mb-2">{lang === 'am' ? 'የይለፍ ቃል ይፍጠሩ (ቢያንስ 6 ፊደላት)' : lang === 'or' ? 'Jecha iccitii uumi (Yoo xiqqaate arfiilee 6)' : 'Create Password (min 6 chars)'}</label>
+                        <input
+                          type="password"
+                          value={formData.personal.password}
+                          onChange={(e) => updateForm('personal', 'password', e.target.value)}
+                          placeholder="••••••"
+                          className="w-full h-12 rounded-xl border border-gray-200 bg-gray-50 px-4 focus:bg-white focus:ring-2 focus:ring-blue-500 transition-all font-medium text-gray-900"
+                        />
                       </div>
                     </div>
                   )}
