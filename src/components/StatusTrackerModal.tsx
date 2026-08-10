@@ -260,8 +260,8 @@ export const StatusTrackerModal: React.FC<Props> = ({ isOpen, onClose, lang }) =
                       <div className="mt-4">
                         <p className="text-[12px] font-bold text-gray-500 mb-2">{T(lang,"CV / Resume","ሲቪ","CV")}</p>
                         <iframe 
-                          src={d.uploadedUrls.cv.endsWith('.pdf') ? `https://docs.google.com/gview?url=${encodeURIComponent(d.uploadedUrls.cv)}&embedded=true` : d.uploadedUrls.cv}
-                          className="w-full h-96 rounded-xl border border-gray-200 bg-gray-50"
+                          src={d.uploadedUrls.cv.endsWith('.pdf') ? `https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(d.uploadedUrls.cv)}` : d.uploadedUrls.cv}
+                          className="w-full h-96 rounded-xl border border-gray-200 bg-gray-50 shadow-inner"
                           title="CV Preview"
                         />
                       </div>
