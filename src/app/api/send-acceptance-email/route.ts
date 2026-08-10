@@ -45,7 +45,7 @@ export async function POST(req: NextRequest) {
               <h2 style="color:#1e293b;font-size:20px;font-weight:800;margin:0 0 12px;">🎉 Congratulations, Application Accepted!</h2>
               <p style="color:#475569;font-size:15px;line-height:1.7;margin:0 0 20px;">
                 Dear <strong>${toName}</strong>,<br/><br/>
-                We are thrilled to let you know that your initial application at <strong>Pathway Agency Ethiopia</strong> has been <strong>successfully accepted</strong>!
+                We are thrilled to let you know that your initial application for the role of <strong>${role}</strong> in the <strong>${sector}</strong> sector at <strong>Pathway Agency Ethiopia</strong> has been <strong>successfully accepted</strong>!
               </p>
               
               <div style="background:#eff6ff;border-left:4px solid #3b82f6;padding:16px 20px;margin-bottom:24px;border-radius:0 8px 8px 0;">
@@ -55,13 +55,6 @@ export async function POST(req: NextRequest) {
                 </p>
               </div>
 
-              <p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 24px;">
-                <strong>Sector</strong><br/>
-                ${sector}<br/><br/>
-                <strong>Role</strong><br/>
-                ${role}
-              </p>
-
               <!-- Divider -->
               <hr style="border:none;border-top:2px dashed #e2e8f0;margin:28px 0;" />
 
@@ -70,7 +63,7 @@ export async function POST(req: NextRequest) {
               <h2 style="color:#1e293b;font-size:20px;font-weight:800;margin:0 0 12px;">🎉 እንኳን ደስ አለዎ፣ ማመልከቻዎ ተቀባይነት አግኝቷል!</h2>
               <p style="color:#475569;font-size:15px;line-height:1.8;margin:0 0 20px;">
                 ውድ <strong>${toName}</strong>,<br/><br/>
-                በ<strong>Pathway Agency Ethiopia</strong> ያቀረቡት ማመልከቻ <strong>ተቀባይነት ማግኘቱን</strong> በደስታ እንገልጻለን!
+                በ<strong>Pathway Agency Ethiopia</strong> ለ <strong>${sector}</strong> ዘርፍ፣ እንደ <strong>${role}</strong> ያቀረቡት ማመልከቻ <strong>ተቀባይነት ማግኘቱን</strong> በደስታ እንገልጻለን!
               </p>
 
               <div style="background:#f0fdf4;border-left:4px solid #22c55e;padding:16px 20px;margin-bottom:24px;border-radius:0 8px 8px 0;">
@@ -79,13 +72,6 @@ export async function POST(req: NextRequest) {
                   ቡድናችን በአሁኑ ጊዜ ፕሮግራሙን እያዘጋጀ ነው። በቅርቡ ትክክለኛውን የቃለ-መጠይቅ ቀን እና ሰዓት ይዘን እናሳውቆታለን። እባክዎ ይከታተሉ!
                 </p>
               </div>
-
-              <p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 24px;">
-                <strong>የስራ ዘርፍ (Sector)</strong><br/>
-                ${sector}<br/><br/>
-                <strong>የስራ ድርሻ (Role)</strong><br/>
-                ${role}
-              </p>
               
             </td>
           </tr>

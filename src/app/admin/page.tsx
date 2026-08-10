@@ -46,7 +46,12 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
         await fetch('/api/send-acceptance-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ toEmail, toName })
+          body: JSON.stringify({ 
+            toEmail, 
+            toName, 
+            sector: fd?.sector || '', 
+            role: fd?.sectorSpecific?.subCategory || '' 
+          })
         });
       }
     } catch (err) {
