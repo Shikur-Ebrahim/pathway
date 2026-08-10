@@ -488,8 +488,6 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
           <div className="h-1 w-full bg-gray-100 shrink-0">
             <div className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-300 ease-out" style={{ width: `${(step / 7) * 100}%` }} />
           </div>
-        )}
-
         {/* Body Content */}
         <div ref={bodyRef} className="flex-1 overflow-y-auto px-5 py-6 hide-scrollbar relative bg-gray-50/30">
           {error && (
@@ -506,12 +504,14 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
               </div>
               
               <div className="w-full bg-green-50 border border-green-200 rounded-2xl p-6 text-center shadow-sm">
-                <h3 className="text-2xl font-black text-green-700 flex items-center justify-center gap-2 mb-3">
-                  {lang === 'am' ? 'ተቀባይነት አግኝቷል' : lang === 'or' ? 'Fudhatameera' : 'Accepted'} 
-                  <span className="text-green-600 bg-green-100 rounded p-0.5"><CheckCircle2 className="w-6 h-6" /></span>
-                </h3>
+                <div className="flex items-center justify-center gap-2 mb-2 text-green-700">
+                  <h2 className="text-2xl font-black">
+                    {lang === 'am' ? 'ማመልከቻዎ ገብቷል' : lang === 'or' ? 'Iyyannoon Galameera' : 'Application Submitted'}
+                  </h2>
+                  <CheckCircle2 className="w-6 h-6" />
+                </div>
                 <p className="text-green-800 text-[14px] font-medium leading-relaxed">
-                  {lang === 'am' ? 'እንኳን ደስ አለዎት! ማመልከቻዎ ተቀባይነት አግኝቷል። ቡድናችን በቅርቡ ያነጋግርዎታል።' : lang === 'or' ? 'Baga gamaddan! Iyyannoon keessan fudhatameera. Gareen keenya dhiyeenyatti isin qunnama.' : 'Congratulations! Your application has been accepted. Our team will contact you shortly.'}
+                  {lang === 'am' ? 'ማመልከቻዎ በተሳካ ሁኔታ ገብቷል። በቅርቡ በኢሜል እናሳውቅዎታለን፣ እባክዎ ኢሜልዎን ይፈትሹ።' : lang === 'or' ? 'Iyyannoon keessan sirnaan galameera. Dhiyeenyatti iimeelii keessaniin isin beeksisna, maaloo iimeelii keessan ilaalaa.' : 'Your application has been submitted successfully. You will be notified via email shortly, please check your email.'}
                 </p>
               </div>
 
