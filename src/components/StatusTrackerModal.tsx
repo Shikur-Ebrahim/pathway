@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from "react";
-import { X, CheckCircle2, AlertCircle, Briefcase, Search, Loader2, User, Phone, BookOpen, ChevronDown, ChevronUp, FileCheck } from "lucide-react";
+import { X, CheckCircle2, AlertCircle, Briefcase, Search, Loader2, User, Phone, BookOpen, ChevronDown, ChevronUp, FileCheck, Star, Globe } from "lucide-react";
 
 import { Language } from "@/lib/translations";
 import { getPathwayPosts } from "@/lib/db";
