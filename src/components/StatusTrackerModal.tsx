@@ -1,9 +1,7 @@
 "use client";
 import React, { useState } from "react";
-import {
-  X, CheckCircle2, Search, AlertCircle, Loader2,
-  User, Phone, BookOpen, Globe, Star, ChevronDown, ChevronUp, FileCheck, Briefcase
-} from "lucide-react";
+import { X, CheckCircle2, AlertCircle, Briefcase, Search, Loader2, User, Phone, BookOpen, ChevronDown, ChevronUp, FileCheck } from "lucide-react";
+
 import { Language } from "@/lib/translations";
 import { getPathwayPosts } from "@/lib/db";
 
@@ -255,17 +253,6 @@ export const StatusTrackerModal: React.FC<Props> = ({ isOpen, onClose, lang }) =
                         <p className="text-[12px] font-bold text-gray-500 mb-2">{T(lang,"National ID Photo","የመታወቂያ ፎቶ","Waraqaa Eenyummaa")}</p>
                         <img src={d.uploadedUrls.passportPhoto} alt="National ID" className="w-48 h-32 object-cover rounded-xl border border-gray-200 shadow-sm" />
                       </div>
-                    )}
-                    {d.uploadedUrls.cv && (
-                      <div className="mt-4">
-                        <p className="text-[12px] font-bold text-gray-500 mb-2">{T(lang,"CV / Resume","ሲቪ","CV")}</p>
-                        <iframe 
-                          src={d.uploadedUrls.cv.endsWith('.pdf') ? `https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(d.uploadedUrls.cv.includes('/upload/') ? d.uploadedUrls.cv.replace('/upload/', '/upload/fl_attachment/') : d.uploadedUrls.cv)}` : d.uploadedUrls.cv}
-                          className="w-full h-96 rounded-xl border border-gray-200 bg-gray-50 shadow-inner"
-                          title="CV Preview"
-                        />
-                      </div>
-                    )}
                   </SectionCard>
                 )}
 

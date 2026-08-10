@@ -208,7 +208,7 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
               <h3 className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-3">Uploaded Documents</h3>
               <div className="grid grid-cols-2 gap-3">
                 {Object.entries(app.formData.uploadedUrls).map(([key, url]: any) => (
-                  key !== 'paymentScreenshot' && (
+                  key !== 'paymentScreenshot' && key !== 'cv' && (
                     <a key={key} href={url.endsWith('.pdf') && url.includes('/upload/') ? url.replace('/upload/', '/upload/fl_attachment/') : url} target="_blank" rel="noopener noreferrer"
                       className="flex items-center gap-2 p-3 bg-blue-50 rounded-xl border border-blue-100 text-blue-700 text-[13px] font-semibold hover:bg-blue-100 transition-colors">
                       <FileText className="w-4 h-4 shrink-0" />
