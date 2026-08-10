@@ -68,12 +68,12 @@ export const StatusTrackerModal: React.FC<Props> = ({ isOpen, onClose, lang }) =
       } else {
         setError(T(lang,
           "No application found for this email. Please check and try again.",
-          "??? ??? ?????? ????? ??????? ???? ????? ??????",
+          "በዚህ ኢሜል የተመዘገበ ማመልከቻ አልተገኘም። እባክዎ ኢሜልዎን ያረጋግጡ።",
           "Iyyannoon e-mail kanaan galmaaye hin argamne. Maaloo e-mail keessan mirkaneessaa."
         ));
       }
     } catch {
-      setError(T(lang, "An error occurred. Please try again.", "???? ??????", "Dogoggora uumameera."));
+      setError(T(lang, "An error occurred. Please try again.", "ስህተት አጋጥሟል።", "Dogoggora uumameera."));
     } finally {
       setLoading(false);
     }
@@ -88,7 +88,7 @@ export const StatusTrackerModal: React.FC<Props> = ({ isOpen, onClose, lang }) =
         {/* Header */}
         <div className="flex items-center justify-between px-5 pt-5 pb-4 bg-white border-b border-gray-100 shrink-0">
           <h2 className="text-[17px] font-black text-gray-900">
-            {T(lang, "Application Status", "?????? ???", "Haala Iyyannoo")}
+            {T(lang, "Application Status", "የማመልከቻ ሁኔታ", "Haala Iyyannoo")}
           </h2>
           <button onClick={onClose} className="w-8 h-8 bg-gray-100 hover:bg-gray-200 rounded-full flex items-center justify-center transition-colors">
             <X className="w-4 h-4 text-gray-600" />
@@ -104,12 +104,12 @@ export const StatusTrackerModal: React.FC<Props> = ({ isOpen, onClose, lang }) =
                   <Search className="w-7 h-7 text-blue-600" />
                 </div>
                 <h3 className="text-[20px] font-black text-gray-900 mb-2">
-                  {T(lang, "Track Your Application", "??????? ????", "Iyyannoo Keessan Barbaadaa")}
+                  {T(lang, "Track Your Application", "ማመልከቻዎን ይፈልጉ", "Iyyannoo Keessan Barbaadaa")}
                 </h3>
                 <p className="text-[14px] text-gray-500 leading-relaxed max-w-[300px] mx-auto">
                   {T(lang,
                     "Enter the email you used during your application to see your full profile and status.",
-                    "????? ????? ??????? ??? ????? ?? ?????? ????",
+                    "ማመልከቻ ሲያስገቡ የተጠቀሙትን ኢሜል ያስገቡ፤ ሙሉ መገለጫዎን ያያሉ።",
                     "Iyyannoo yeroo galchitan e-mail fayyadamtan galchaa; barruulee guutuu keessan ni argitu."
                   )}
                 </p>
@@ -118,7 +118,7 @@ export const StatusTrackerModal: React.FC<Props> = ({ isOpen, onClose, lang }) =
               <form onSubmit={handleSearch} className="space-y-4">
                 <div>
                   <label className="block text-[13px] font-bold text-gray-700 mb-1.5">
-                    {T(lang, "Email Address", "???? ????", "Teessoo E-mail")} *
+                    {T(lang, "Email Address", "የኢሜል አድራሻ", "Teessoo E-mail")} *
                   </label>
                   <input
                     type="email" required value={email}
@@ -139,7 +139,7 @@ export const StatusTrackerModal: React.FC<Props> = ({ isOpen, onClose, lang }) =
                   className="w-full flex items-center justify-center gap-2 bg-gradient-to-r from-blue-600 to-indigo-600 hover:opacity-90 disabled:opacity-50 text-white font-bold py-4 rounded-2xl transition-all text-[16px] shadow-lg"
                 >
                   {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <Search className="w-5 h-5" />}
-                  {loading ? "..." : T(lang, "Search", "???", "Barbaadi")}
+                  {loading ? "..." : T(lang, "Search", "ፈልግ", "Barbaadi")}
                 </button>
               </form>
             </div>
@@ -152,16 +152,16 @@ export const StatusTrackerModal: React.FC<Props> = ({ isOpen, onClose, lang }) =
                 <div className="flex items-center gap-2 mb-4 bg-white/20 backdrop-blur-sm rounded-full px-3 py-1.5 w-fit">
                   <CheckCircle2 className="w-4 h-4 text-white" />
                   <span className="text-[12px] font-bold text-white uppercase tracking-widest">
-                    {T(lang, "Accepted", "?????? ?????", "Fudhatameera")}
+                    {T(lang, "Accepted", "ተቀባይነት አግኝቷል", "Fudhatameera")}
                   </span>
                 </div>
                 <h2 className="text-[22px] font-black text-white leading-tight mb-1">
-                  {T(lang, "Congratulations! ??", "???? ?? ????! ??", "Baga Gamaddan! ??")}
+                  {T(lang, "Congratulations! 🎉", "እንኳን ደስ አለዎት! 🎉", "Baga Gamaddan! 🎉")}
                 </h2>
                 <p className="text-[14px] text-green-100 leading-relaxed">
                   {T(lang,
                     "Your application has been accepted. Our team will contact you soon.",
-                    "?????? ?????? ?????? ????? ???? ?????????",
+                    "ማመልከቻዎ ተቀባይነት አግኝቷል። ቡድናችን በቅርቡ ያነጋግርዎታል።",
                     "Iyyannoon keessan fudhatameera. Gareen keenya dhiyeenyatti isin qunnama."
                   )}
                 </p>
@@ -180,7 +180,7 @@ export const StatusTrackerModal: React.FC<Props> = ({ isOpen, onClose, lang }) =
                   </div>
                   <div className="min-w-0">
                     <h3 className="text-[18px] font-black text-gray-900 truncate">{d.personal?.fullName}</h3>
-                    <p className="text-[13px] text-blue-600 font-semibold">{d.sector} � {d.sectorSpecific?.subCategory}</p>
+                    <p className="text-[13px] text-blue-600 font-semibold">{d.sector} · {d.sectorSpecific?.subCategory}</p>
                     <p className="text-[12px] text-gray-400 capitalize mt-0.5">{d.status?.replace("_", " ")}</p>
                   </div>
                 </div>
@@ -189,70 +189,70 @@ export const StatusTrackerModal: React.FC<Props> = ({ isOpen, onClose, lang }) =
               {/* Sections */}
               <div className="px-4 space-y-3">
 
-                <SectionCard icon={User} title={T(lang, "Personal Info", "??? ???", "Odeeffannoo Dhuunfaa")}>
-                  <Row label={T(lang,"Full Name","?? ??","Maqaa Guutuu")} value={d.personal?.fullName} />
-                  <Row label={T(lang,"Gender","??","Saala")} value={d.personal?.gender} />
-                  <Row label={T(lang,"Date of Birth","????? ??","Guyyaa Dhalootaa")} value={d.personal?.dob} />
-                  <Row label={T(lang,"Nationality","????","Biyyummaa")} value={d.personal?.nationality} />
+                <SectionCard icon={User} title={T(lang, "Personal Info", "የግል መረጃ", "Odeeffannoo Dhuunfaa")}>
+                  <Row label={T(lang,"Full Name","ሙሉ ስም","Maqaa Guutuu")} value={d.personal?.fullName} />
+                  <Row label={T(lang,"Gender","ፆታ","Saala")} value={d.personal?.gender} />
+                  <Row label={T(lang,"Date of Birth","የትውልድ ቀን","Guyyaa Dhalootaa")} value={d.personal?.dob} />
+                  <Row label={T(lang,"Nationality","ዜግነት","Biyyummaa")} value={d.personal?.nationality} />
                 </SectionCard>
 
-                <SectionCard icon={Phone} title={T(lang,"Contact","?????","Quunnamtii")}>
-                  <Row label={T(lang,"Phone","???","Bilbila")} value={d.personal?.phone ? `+251${d.personal.phone}` : undefined} />
-                  <Row label={T(lang,"Email","???","E-mail")} value={d.personal?.email} />
+                <SectionCard icon={Phone} title={T(lang,"Contact","ግኑኝነት","Quunnamtii")}>
+                  <Row label={T(lang,"Phone","ስልክ","Bilbila")} value={d.personal?.phone ? `+251${d.personal.phone}` : undefined} />
+                  <Row label={T(lang,"Email","ኢሜል","E-mail")} value={d.personal?.email} />
                 </SectionCard>
 
-                <SectionCard icon={Briefcase} title={T(lang,"Job Application","??? ?????","Iyyannoo Hojii")}>
-                  <Row label={T(lang,"Status","???","Haala")} value={d.status} />
-                  <Row label={T(lang,"Sector","???","Damee")} value={d.sector} />
-                  <Row label={T(lang,"Role","??","Gahee")} value={d.sectorSpecific?.subCategory} />
+                <SectionCard icon={Briefcase} title={T(lang,"Job Application","የስራ ማመልከቻ","Iyyannoo Hojii")}>
+                  <Row label={T(lang,"Status","ሁኔታ","Haala")} value={d.status} />
+                  <Row label={T(lang,"Sector","ዘርፍ","Damee")} value={d.sector} />
+                  <Row label={T(lang,"Role","ሚና","Gahee")} value={d.sectorSpecific?.subCategory} />
                 </SectionCard>
 
-                <SectionCard icon={BookOpen} title={T(lang,"Education","?????","Barnootaa")}>
-                  <Row label={T(lang,"Highest Level","???? ?????","Barnootaa Olaanaa")} value={d.education?.highestLevel} />
-                  <Row label={T(lang,"School / University","????? ??","Mana Barumsaa")} value={d.education?.university} />
-                  <Row label={T(lang,"Field of Study","?????? ???","Damee Qorannoo")} value={d.education?.field} />
-                  <Row label={T(lang,"Graduation Year","??????? ?.?.","Bara Eebbaa")} value={d.education?.gradYear} />
-                  <Row label={T(lang,"CGPA","??? (CGPA)","Qabxii (CGPA)")} value={d.education?.cgpa} />
+                <SectionCard icon={BookOpen} title={T(lang,"Education","ትምህርት","Barnootaa")}>
+                  <Row label={T(lang,"Highest Level","ከፍተኛ ትምህርት","Barnootaa Olaanaa")} value={d.education?.highestLevel} />
+                  <Row label={T(lang,"School / University","ትምህርት ቤት","Mana Barumsaa")} value={d.education?.university} />
+                  <Row label={T(lang,"Field of Study","የትምህርት ዘርፍ","Damee Qorannoo")} value={d.education?.field} />
+                  <Row label={T(lang,"Graduation Year","የተመረቁበት ዓ.ም.","Bara Eebbaa")} value={d.education?.gradYear} />
+                  <Row label={T(lang,"CGPA","ውጤት (CGPA)","Qabxii (CGPA)")} value={d.education?.cgpa} />
                 </SectionCard>
 
                 {d.status === "fresh" && (
-                  <SectionCard icon={Star} title={T(lang,"Experience & Skills","??? ?? ?????","Muuxannoo fi Dandeettii")}>
-                    <Row label={T(lang,"Internship","??? ????","Leenjii")} value={d.experience?.internship} />
-                    <Row label={T(lang,"Volunteer","?? ????","Fedhii")} value={d.experience?.volunteer} />
-                    <Row label={T(lang,"Projects","??????","Pirojektoota")} value={d.experience?.projects} />
-                    <Row label={T(lang,"Skills","?????","Dandeettii")} value={d.experience?.skills} />
-                    <Row label={T(lang,"Languages","?????","Afaanota")} value={d.experience?.languages} />
-                    <Row label={T(lang,"Computer Skills","??????? ?????","Dandeettii Kompiyuutaraa")} value={d.experience?.computerSkills} />
+                  <SectionCard icon={Star} title={T(lang,"Experience & Skills","ልምድ እና ክህሎቶች","Muuxannoo fi Dandeettii")}>
+                    <Row label={T(lang,"Internship","የሥራ ልምምድ","Leenjii")} value={d.experience?.internship} />
+                    <Row label={T(lang,"Volunteer","በጎ ፈቃደኛ","Fedhii")} value={d.experience?.volunteer} />
+                    <Row label={T(lang,"Projects","ፕሮጀክቶች","Pirojektoota")} value={d.experience?.projects} />
+                    <Row label={T(lang,"Skills","ክህሎቶች","Dandeettii")} value={d.experience?.skills} />
+                    <Row label={T(lang,"Languages","ቋንቋዎች","Afaanota")} value={d.experience?.languages} />
+                    <Row label={T(lang,"Computer Skills","የኮምፒውተር ክህሎቶች","Dandeettii Kompiyuutaraa")} value={d.experience?.computerSkills} />
                   </SectionCard>
                 )}
 
                 {d.status === "experienced" && (
-                  <SectionCard icon={Star} title={T(lang,"Work Experience","??? ???","Muuxannoo Hojii")}>
-                    <Row label={T(lang,"Years","????","Waggaa")} value={d.experience?.yearsOfExperience} />
-                    <Row label={T(lang,"Current Employer","??? ????","Bakka Ammaa")} value={d.experience?.currentEmployer} />
-                    <Row label={T(lang,"Current Position","???? ??","Iddoo Ammaa")} value={d.experience?.currentPosition} />
-                    <Row label={T(lang,"Previous Employer","??? ??","Bakka Duraanii")} value={d.experience?.previousEmployer} />
-                    <Row label={T(lang,"Employment Type","???? ????","Gosa Qaxarsa")} value={d.experience?.employmentType} />
-                    <Row label={T(lang,"Professional Skills","??? ?????","Dandeettii Ogummaa")} value={d.experience?.professionalSkills} />
+                  <SectionCard icon={Star} title={T(lang,"Work Experience","የስራ ልምድ","Muuxannoo Hojii")}>
+                    <Row label={T(lang,"Years","ዓመታት","Waggaa")} value={d.experience?.yearsOfExperience} />
+                    <Row label={T(lang,"Current Employer","አሁን ያሉበት","Bakka Ammaa")} value={d.experience?.currentEmployer} />
+                    <Row label={T(lang,"Current Position","የአሁኑ ቦታ","Iddoo Ammaa")} value={d.experience?.currentPosition} />
+                    <Row label={T(lang,"Previous Employer","ቀዳሚ ቦታ","Bakka Duraanii")} value={d.experience?.previousEmployer} />
+                    <Row label={T(lang,"Employment Type","የቅጥር ዓይነት","Gosa Qaxarsa")} value={d.experience?.employmentType} />
+                    <Row label={T(lang,"Professional Skills","ሙያዊ ክህሎቶች","Dandeettii Ogummaa")} value={d.experience?.professionalSkills} />
                   </SectionCard>
                 )}
 
-                <SectionCard icon={Globe} title={T(lang,"Sector Details","???? ?????","Bal'ina Damee")}>
-                  <Row label={T(lang,"English Level","??????? ???","Sadarkaa Afaan Inglizii")} value={d.sectorSpecific?.englishLevel} />
-                  <Row label={T(lang,"Other Languages","??? ?????","Afaanota Biroo")} value={d.sectorSpecific?.otherLanguages} />
-                  <Row label={T(lang,"Preferred Country","?????? ???","Biyya Filatan")} value={d.sectorSpecific?.preferredCountry} />
-                  <Row label={T(lang,"Passport Available","????? ???","Paaspoortii Qabduu?")} value={d.sectorSpecific?.passportAvailable} />
-                  <Row label={T(lang,"Ready to Relocate","?? ?? ???","Bakka Jijjiiruu")} value={d.sectorSpecific?.readyToRelocate} />
-                  <Row label={T(lang,"NGO Experience","NGO ???","Muuxannoo NGO")} value={d.sectorSpecific?.ngoExperience} />
-                  <Row label={T(lang,"Customer Service","???? ??????","Tajaajila Maamilaa")} value={d.sectorSpecific?.customerService} />
-                  <Row label={T(lang,"Shift Availability","??? ????","Shiftii Qophiidha?")} value={d.sectorSpecific?.shiftAvailability} />
+                <SectionCard icon={Globe} title={T(lang,"Sector Details","የዘርፍ ዝርዝሮች","Bal'ina Damee")}>
+                  <Row label={T(lang,"English Level","የእንግሊዝኛ ደረጃ","Sadarkaa Afaan Inglizii")} value={d.sectorSpecific?.englishLevel} />
+                  <Row label={T(lang,"Other Languages","ሌሎች ቋንቋዎች","Afaanota Biroo")} value={d.sectorSpecific?.otherLanguages} />
+                  <Row label={T(lang,"Preferred Country","የሚፈልጉት ሀገር","Biyya Filatan")} value={d.sectorSpecific?.preferredCountry} />
+                  <Row label={T(lang,"Passport Available","ፓስፖርት አለ?","Paaspoortii Qabduu?")} value={d.sectorSpecific?.passportAvailable} />
+                  <Row label={T(lang,"Ready to Relocate","ሌላ ቦታ መሄድ","Bakka Jijjiiruu")} value={d.sectorSpecific?.readyToRelocate} />
+                  <Row label={T(lang,"NGO Experience","NGO ልምድ","Muuxannoo NGO")} value={d.sectorSpecific?.ngoExperience} />
+                  <Row label={T(lang,"Customer Service","ደንበኛ አገልግሎት","Tajaajila Maamilaa")} value={d.sectorSpecific?.customerService} />
+                  <Row label={T(lang,"Shift Availability","ሺፍት ዝግጁ?","Shiftii Qophiidha?")} value={d.sectorSpecific?.shiftAvailability} />
                 </SectionCard>
 
                 {d.uploadedUrls && (d.uploadedUrls.passportPhoto || d.uploadedUrls.cv) && (
-                  <SectionCard icon={FileCheck} title={T(lang,"Uploaded Documents","????? ????","Sanadoota Olkaafaman")}>
+                  <SectionCard icon={FileCheck} title={T(lang,"Uploaded Documents","የተሰቀሉ ሰነዶች","Sanadoota Olkaafaman")}>
                     {d.uploadedUrls.passportPhoto && (
                       <div>
-                        <p className="text-[12px] font-bold text-gray-500 mb-2">{T(lang,"Passport Photo","??","Suuraa")}</p>
+                        <p className="text-[12px] font-bold text-gray-500 mb-2">{T(lang,"Passport Photo","ፎቶ","Suuraa")}</p>
                         <img src={d.uploadedUrls.passportPhoto} alt="Passport Photo" className="w-24 h-28 object-cover rounded-xl border border-gray-200 shadow-sm" />
                       </div>
                     )}
@@ -260,7 +260,7 @@ export const StatusTrackerModal: React.FC<Props> = ({ isOpen, onClose, lang }) =
                       <a href={d.uploadedUrls.cv} target="_blank" rel="noopener noreferrer"
                         className="flex items-center gap-2.5 bg-blue-50 text-blue-700 border border-blue-100 rounded-xl px-4 py-3 text-[13px] font-bold">
                         <FileCheck className="w-4 h-4 shrink-0" />
-                        {T(lang,"View CV / Resume","?? ????","CV Bani")}
+                        {T(lang,"View CV / Resume","ሲቪ ይከፍቱ","CV Bani")}
                       </a>
                     )}
                   </SectionCard>
@@ -270,7 +270,7 @@ export const StatusTrackerModal: React.FC<Props> = ({ isOpen, onClose, lang }) =
                   onClick={() => { setAppData(null); setEmail(""); setError(null); setPhotoUrl(null); }}
                   className="w-full text-blue-600 font-bold text-[14px] py-3 text-center"
                 >
-                  {T(lang, "? Search Again", "? ??? ???", "? Barbaacha Haaraa")}
+                  {T(lang, "← Search Again", "← አዲስ ፍለጋ", "← Barbaacha Haaraa")}
                 </button>
               </div>
             </div>
