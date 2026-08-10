@@ -836,20 +836,6 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                     <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-3">{lang === 'am' ? 'የግዴታ ሰነዶች' : lang === 'or' ? 'Sanadoota Dirqamaa' : 'Required Documents'}</p>
                     <FileUploadCard id="cv" label={lang === 'am' ? 'ሲቪ / ሪዙም (CV) — PDF ብቻ' : lang === 'or' ? 'CV / Riizumee — PDF Qofaa' : 'CV / Resume — PDF only'} accept=".pdf" required files={files} handleFileChange={handleFileChange} />
                     <FileUploadCard id="passportPhoto" label={lang === 'am' ? 'የፓስፖርት መጠን ፎቶ (ግልጽ የሆነ)' : lang === 'or' ? "Suuraa Guddina Paaspoortii qabu (duubee ifa ta'e)" : 'Passport Size Photo (clear background)'} accept="image/*" required files={files} handleFileChange={handleFileChange} />
-                    <FileUploadCard id="educationalCert" label={lang === 'am' ? 'የከፍተኛ ትምህርት ማስረጃ' : lang === 'or' ? 'Ragaa Barnootaa Olaanaa' : 'Highest Educational Certificate'} required files={files} handleFileChange={handleFileChange} />
-                  </div>
-
-                  <div className="h-px bg-gray-200" />
-
-                  {/* Conditional docs */}
-                  <div>
-                    <p className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-3">{lang === 'am' ? 'ተጨማሪ ሰነዶች (አማራጭ)' : lang === 'or' ? 'Sanadoota Dabalataa (Filannoo)' : 'Additional Documents (Optional)'}</p>
-                    {formData.status === 'experienced' && (
-                      <FileUploadCard id="experienceCert" label={lang === 'am' ? 'የስራ ልምድ ማስረጃ' : lang === 'or' ? 'Ragaa Muuxannoo Hojii' : 'Work Experience Certificate'} files={files} handleFileChange={handleFileChange} />
-                    )}
-                    {formData.sector === 'foreign' && (
-                      <FileUploadCard id="passport" label={lang === 'am' ? 'የፓስፖርት ኮፒ' : lang === 'or' ? 'Koppii Paaspoortii' : 'Passport Copy'} files={files} handleFileChange={handleFileChange} />
-                    )}
                   </div>
                 </div>
               )}
