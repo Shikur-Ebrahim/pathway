@@ -418,7 +418,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
   if (step === 3) canProceed = !!formData.personal.fullName && !!formData.personal.gender && formData.personal.phone?.length === 9 && !!formData.personal.email && !!formData.personal.region && !!formData.personal.city;
   if (step === 4) {
     const eduDone = formData.status === 'not_graduated'
-      ? !!formData.education.highestLevel && !!formData.education.university && !!formData.education.gradYear
+      ? !!formData.education.highestLevel && !!formData.education.university
       : !!formData.education.highestLevel && !!formData.education.university && !!formData.education.field && !!formData.education.gradYear;
     const expDone = formData.status === 'experienced'
       ? !!formData.experience.yearsOfExperience && !!formData.experience.currentEmployer && !!formData.experience.currentPosition
@@ -725,10 +725,12 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                         {formData.status !== 'not_graduated' && (
                           <InputField label={lang === 'am' ? 'የተማሩት መስክ (Field of Study)' : lang === 'or' ? 'Damee Qorannoo' : 'Field of Study'} section="education" field="field" required formData={formData} updateForm={updateForm} />
                         )}
-                        <div className="grid grid-cols-2 gap-4">
-                          <InputField label={lang === 'am' ? 'የተመረቁበት ዓመት' : lang === 'or' ? 'Bara Eebbaa' : 'Graduation Year'} section="education" field="gradYear" type="number" min="1950" max={new Date().getFullYear() + 5} required formData={formData} updateForm={updateForm} />
-                          <InputField label={lang === 'am' ? 'ውጤት (CGPA) (አማራጭ)' : lang === 'or' ? 'Qabxii (CGPA) (Filannoo)' : 'CGPA (Optional)'} section="education" field="cgpa" type="number" min="0" max="4" step="0.01" formData={formData} updateForm={updateForm} />
-                        </div>
+                        {formData.status !== 'not_graduated' && (
+                          <div className="grid grid-cols-2 gap-4">
+                            <InputField label={lang === 'am' ? 'የተመረቁበት ዓመት' : lang === 'or' ? 'Bara Eebbaa' : 'Graduation Year'} section="education" field="gradYear" type="number" min="1950" max={new Date().getFullYear() + 5} required formData={formData} updateForm={updateForm} />
+                            <InputField label={lang === 'am' ? 'ውጤት (CGPA) (አማራጭ)' : lang === 'or' ? 'Qabxii (CGPA) (Filannoo)' : 'CGPA (Optional)'} section="education" field="cgpa" type="number" min="0" max="4" step="0.01" formData={formData} updateForm={updateForm} />
+                          </div>
+                        )}
                       </>
                     )}
                   </div>
