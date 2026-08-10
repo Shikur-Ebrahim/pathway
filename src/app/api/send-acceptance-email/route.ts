@@ -41,7 +41,6 @@ export async function POST(req: NextRequest) {
             <td style="padding:36px 40px;">
 
               <!-- English Section -->
-              <p style="color:#1e3a8a;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin:0 0 8px;">English</p>
               <h2 style="color:#1e293b;font-size:20px;font-weight:800;margin:0 0 12px;">🎉 Congratulations, Application Accepted!</h2>
               <p style="color:#475569;font-size:15px;line-height:1.7;margin:0 0 20px;">
                 Dear <strong>${toName}</strong>,<br/><br/>
@@ -59,7 +58,6 @@ export async function POST(req: NextRequest) {
               <hr style="border:none;border-top:2px dashed #e2e8f0;margin:28px 0;" />
 
               <!-- Amharic Section -->
-              <p style="color:#1e3a8a;font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin:0 0 8px;">አማርኛ</p>
               <h2 style="color:#1e293b;font-size:20px;font-weight:800;margin:0 0 12px;">🎉 እንኳን ደስ አለዎ፣ ማመልከቻዎ ተቀባይነት አግኝቷል!</h2>
               <p style="color:#475569;font-size:15px;line-height:1.8;margin:0 0 20px;">
                 ውድ <strong>${toName}</strong>,<br/><br/>

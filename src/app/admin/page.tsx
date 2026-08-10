@@ -37,13 +37,11 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
     if (!confirm("Are you sure you want to Accept this application?")) return;
     setProcessing(true);
     try {
-      await onUpdate(app.id!, 'accepted');
-      
       const toEmail = fd?.personal?.email || app.authorEmail;
       const toName = fd?.personal?.fullName || app.authorName || 'Applicant';
       
       if (toEmail) {
-        await fetch('/api/send-acceptance-email', {
+        const res = await fetch('/api/send-acceptance-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ 
@@ -53,9 +51,18 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
             role: fd?.sectorSpecific?.subCategory || '' 
           })
         });
+        
+        if (!res.ok) {
+          const json = await res.json().catch(() => ({}));
+          throw new Error(json.error || 'Email failed to send');
+        }
       }
-    } catch (err) {
+      
+      await onUpdate(app.id!, 'accepted');
+      alert("Application accepted and email sent successfully!");
+    } catch (err: any) {
       console.error("Error accepting application:", err);
+      alert(`Error: Email not sent. Application status was NOT updated. Details: ${err.message}`);
     } finally {
       setProcessing(false);
       onClose();
@@ -75,11 +82,9 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
     setEmailSending(true);
     setEmailError(null);
     try {
-      // 1. Update status in DB
-      await onUpdate(app.id!, 'interview');
-      // 2. Send email notification
       const toEmail = fd?.personal?.email || app.authorEmail;
       const toName = fd?.personal?.fullName || app.authorName;
+      
       const res = await fetch('/api/send-interview-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -92,11 +97,18 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
           role: fd?.sectorSpecific?.subCategory || '',
         }),
       });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error || 'Email failed');
+      
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json.error || 'Email failed to send');
+      }
+      
+      await onUpdate(app.id!, 'interview');
       setEmailSent(true);
+      alert("Interview scheduled and email sent successfully!");
     } catch (err: any) {
       setEmailError(err.message || 'Failed to send email');
+      alert(`Error: Email not sent. Application status was NOT updated. Details: ${err.message}`);
     } finally {
       setEmailSending(false);
     }
