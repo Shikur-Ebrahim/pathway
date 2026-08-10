@@ -43,12 +43,28 @@ const SECTORS = [
   }
 ];
 
-const SUB_CATEGORIES: Record<string, string[]> = {
-  embassy: ["Administrative", "Secretarial", "Finance", "IT", "Technical Positions", "Other"],
-  ngo: ["Development", "Humanitarian", "Project Management", "Administration", "Other"],
-  airport: ["Airport Operations", "Customer Service", "Ground Handling", "Cargo and Logistics", "Other"],
-  foreign: ["Domestic Work", "Technical Skills", "Hospitality", "Construction", "Other"],
-  maritime: ["Seafarer", "Deckhand", "Engine Room", "Cook/Steward", "Other"]
+const SUB_CATEGORIES: Record<string, Record<string, string[]>> = {
+  en: {
+    embassy: ["Administrative", "Secretarial", "Finance", "IT", "Technical Positions", "Other"],
+    ngo: ["Development", "Humanitarian", "Project Management", "Administration", "Driver", "Other"],
+    airport: ["Airport Operations", "Customer Service", "Ground Handling", "Cargo and Logistics", "Other"],
+    foreign: ["Domestic Work", "Technical Skills", "Hospitality", "Construction", "Other"],
+    maritime: ["Seafarer", "Deckhand", "Engine Room", "Cook/Steward", "Other"]
+  },
+  am: {
+    embassy: ["አስተዳደር", "የፀሐፊነት ስራ", "ፋይናንስ", "IT", "የቴክኒክ ስራዎች", "ሌላ"],
+    ngo: ["ልማት", "ሰብአዊነት", "የፕሮጀክት አስተዳደር", "አስተዳደር", "ሹፌር", "ሌላ"],
+    airport: ["የአየር ማረፊያ ስራዎች", "የደንበኞች አገልግሎት", "የመሬት አገልግሎት", "ካርጎ እና ሎጂስቲክስ", "ሌላ"],
+    foreign: ["የቤት ውስጥ ስራ", "የቴክኒክ ክህሎት", "እንግዳ ተቀባይነት", "ግንባታ", "ሌላ"],
+    maritime: ["መርከበኛ", "ዴክሀንድ", "የሞተር ክፍል", "አስተናጋጅ/ምግብ አብሳይ", "ሌላ"]
+  },
+  or: {
+    embassy: ["Bulchiinsa", "Barreessaa", "Faayinaansii", "IT", "Hojiiwwan Teeknikaa", "Kan biroo"],
+    ngo: ["Misooma", "Gargaarsa Namoomaa", "Hoggansa Pirojektii", "Bulchiinsa", "Konkolaachisaa", "Kan biroo"],
+    airport: ["Hojiiwwan Buufata Xiyyaaraa", "Tajaajila Maamiltootaa", "Tajaajila Lafaa", "Kaargoo fi Loojistikii", "Kan biroo"],
+    foreign: ["Hojii Man-keessaa", "Ogummaa Teeknikaa", "Keessummeessuu", "Ijaarsa", "Kan biroo"],
+    maritime: ["Doonii-Oofaa", "Hojjetaa Xiyyaaraa", "Kutaa Moootoraa", "Kookii/Tajaajilaa", "Kan biroo"]
+  }
 };
 
 const InputField = ({ label, section, field, type = "text", required = false, options = [], formData, updateForm, min, max, step, placeholder }: any) => {
@@ -661,7 +677,7 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
                               label={lang === 'am' ? 'የተለየ ሚና/ምድብ ይምረጡ' : lang === 'or' ? 'Gahee/Kutaa Addaa Filadhaa' : 'Select Specific Role/Category'}
                               section="sectorSpecific"
                               field="subCategory"
-                              options={SUB_CATEGORIES[s.id]}
+                              options={SUB_CATEGORIES[lang]?.[s.id] || SUB_CATEGORIES.en[s.id]}
                               required
                               formData={formData}
                               updateForm={updateForm}
