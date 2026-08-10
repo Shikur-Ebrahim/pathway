@@ -493,7 +493,8 @@ export default function AdminPage() {
     const fd = app.formData;
     const name = (fd?.personal?.fullName || app.authorName || "").toLowerCase();
     const email = (fd?.personal?.email || app.authorEmail || "").toLowerCase();
-    const matchSearch = !search || name.includes(search.toLowerCase()) || email.includes(search.toLowerCase());
+    const searchStr = search.toLowerCase().trim();
+    const matchSearch = !searchStr || name.includes(searchStr) || email.includes(searchStr);
     const matchSector = filterSector === "all" || fd?.sector === filterSector;
     const matchStatus = filterStatus === "all" || fd?.status === filterStatus;
     return matchSearch && matchSector && matchStatus;
