@@ -5,15 +5,16 @@ import Image from "next/image";
 import { Language, content } from "@/lib/translations";
 import { useAuth } from "@/context/AuthContext";
 import { AuthModal } from "@/components/AuthModal";
-import { Send, Menu, X, Globe, LogOut, User as UserIcon, ChevronDown, Briefcase, FileText } from "lucide-react";
+import { Send, Menu, X, Globe, LogOut, User as UserIcon, ChevronDown, Briefcase, FileText, SearchCheck } from "lucide-react";
 
 interface NavbarProps {
   lang: Language;
   setLang: (l: Language) => void;
   onApplyClick: () => void;
+  onCheckStatus: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) => {
+export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick, onCheckStatus }) => {
   const t = content[lang];
   const { user, logout, isAdmin } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -123,6 +124,13 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
               </div>
             ) : (
               <div className="flex items-center gap-2">
+                <button
+                  onClick={onCheckStatus}
+                  className="px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-xl transition-colors border border-gray-200 flex items-center gap-1.5"
+                >
+                  <SearchCheck className="w-3.5 h-3.5 text-blue-600" />
+                  {lang === 'am' ? 'ሁኔታ ይፈልጉ' : lang === 'or' ? 'Haala Ilaalaa' : 'Check Status'}
+                </button>
                 <button
                   onClick={() => setIsAuthOpen(true)}
                   className="px-4 py-2 text-sm font-semibold text-blue-700 hover:bg-blue-50 rounded-xl transition-colors border border-transparent hover:border-blue-200"
@@ -261,6 +269,13 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick }) =
                 Register Free
               </button>
             </div>
+            <button
+              onClick={() => { setMobileMenuOpen(false); onCheckStatus(); }}
+              className="w-full py-3 rounded-xl border border-gray-200 text-gray-700 font-bold text-sm flex items-center justify-center gap-2 mb-3"
+            >
+              <SearchCheck className="w-4 h-4 text-blue-600" />
+              {lang === 'am' ? 'ሁኔታ ይፈልጉ' : lang === 'or' ? 'Haala Ilaalaa' : 'Check Application Status'}
+            </button>
             <div className="flex flex-col gap-1 pt-2 border-t border-gray-100">
               <a href="#sectors" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-2 text-sm text-gray-600 font-medium">Job Categories</a>
               <a href="/requirements" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-2 text-sm text-gray-600 font-medium">Requirements</a>

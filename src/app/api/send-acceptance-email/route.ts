@@ -55,6 +55,13 @@ export async function POST(req: NextRequest) {
                 </p>
               </div>
 
+              <p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 24px;">
+                <strong>Sector</strong><br/>
+                ${sector}<br/><br/>
+                <strong>Role</strong><br/>
+                ${role}
+              </p>
+
               <!-- Divider -->
               <hr style="border:none;border-top:2px dashed #e2e8f0;margin:28px 0;" />
 
@@ -72,6 +79,13 @@ export async function POST(req: NextRequest) {
                   ቡድናችን በአሁኑ ጊዜ ፕሮግራሙን እያዘጋጀ ነው። በቅርቡ ትክክለኛውን የቃለ-መጠይቅ ቀን እና ሰዓት ይዘን እናሳውቆታለን። እባክዎ ይከታተሉ!
                 </p>
               </div>
+
+              <p style="color:#475569;font-size:14px;line-height:1.6;margin:0 0 24px;">
+                <strong>የስራ ዘርፍ (Sector)</strong><br/>
+                ${sector}<br/><br/>
+                <strong>የስራ ድርሻ (Role)</strong><br/>
+                ${role}
+              </p>
               
             </td>
           </tr>

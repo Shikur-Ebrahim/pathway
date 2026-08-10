@@ -484,43 +484,41 @@ export const ApplicationModal: React.FC<ApplicationModalProps> = ({ isOpen, onCl
           )}
 
           {submitted ? (
-            <div className="h-full flex flex-col items-center justify-center text-center space-y-6 pb-20 px-4">
-              <div className="w-24 h-24 rounded-full bg-green-50 flex items-center justify-center border-[6px] border-green-100">
-                <CheckCircle2 className="w-12 h-12 text-green-500" />
+            <div className="h-full flex flex-col items-center justify-center p-6 space-y-6">
+              <div className="w-full text-center">
+                <h2 className="text-xl font-bold text-gray-900 mb-6">{lang === 'am' ? 'የማመልከቻ ሁኔታ' : lang === 'or' ? 'Haala Iyyannoo' : 'Application Status'}</h2>
               </div>
-              <div className="space-y-2">
-                 <h2 className="text-2xl font-black text-gray-900">{lang === 'am' ? 'ማመልከቻ ገብቷል! 🎉' : lang === 'or' ? 'Iyyannoon Ergameera! 🎉' : 'Application Submitted! 🎉'}</h2>
-                 <p className="text-[15px] text-gray-500 leading-relaxed">
-                   {lang === 'am' ? 'መገለጫዎ በተሳካ ሁኔታ ተፈጥሯል። ቡድናችን ማመልከቻዎን በቅርቡ ይገመግማል።' : lang === 'or' ? "Pirofaayilli keessan milkaa'inaan uumameera. Gareen keenya dhiyeenyatti iyyannoo keessan ni gamaaggama." : 'Your profile has been created successfully. Our team will review your application soon.'}
-                 </p>
+              
+              <div className="w-full bg-green-50 border border-green-200 rounded-2xl p-6 text-center shadow-sm">
+                <h3 className="text-2xl font-black text-green-700 flex items-center justify-center gap-2 mb-3">
+                  {lang === 'am' ? 'ተቀባይነት አግኝቷል' : lang === 'or' ? 'Fudhatameera' : 'Accepted'} 
+                  <span className="text-green-600 bg-green-100 rounded p-0.5"><CheckCircle2 className="w-6 h-6" /></span>
+                </h3>
+                <p className="text-green-800 text-[14px] font-medium leading-relaxed">
+                  {lang === 'am' ? 'እንኳን ደስ አለዎት! ማመልከቻዎ ተቀባይነት አግኝቷል። ቡድናችን በቅርቡ ያነጋግርዎታል።' : lang === 'or' ? 'Baga gamaddan! Iyyannoon keessan fudhatameera. Gareen keenya dhiyeenyatti isin qunnama.' : 'Congratulations! Your application has been accepted. Our team will contact you shortly.'}
+                </p>
               </div>
 
-              {/* Email notification info card */}
-              <div className="w-full bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-2xl p-5 text-left space-y-3">
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="w-8 h-8 rounded-xl bg-blue-100 flex items-center justify-center">
-                    <span className="text-base">📧</span>
-                  </div>
-                  <p className="text-[13px] font-bold text-blue-800 uppercase tracking-wide">{lang === 'am' ? 'ቀጣዩ ምንድነው?' : lang === 'or' ? "Itti Aansuun Maaltu Ta'a?" : 'What Happens Next?'}</p>
-                </div>
-                <p className="text-[14px] text-gray-600 leading-relaxed">
-                  {lang === 'am' ? (
-                    <>ቡድናችን ማመልከቻዎን ከገመገመ እና <strong>ከተቀበለ</strong> በኋላ፣ በቀጥታ ከ <span className="text-blue-700 font-semibold">Pathway Agency Ethiopia</span> <strong>የኢሜል ማሳወቂያ</strong> ይደርስዎታል።</>
-                  ) : (
-                    <>After our team reviews and <strong>accepts</strong> your application, you will receive an <strong>email notification</strong> directly from <span className="text-blue-700 font-semibold">Pathway Agency Ethiopia</span>.</>
-                  )}
+              <div className="w-full bg-gray-50 border border-gray-100 rounded-2xl p-5 mt-4">
+                <p className="text-[11px] font-bold text-gray-400 uppercase tracking-widest mb-4">
+                  {lang === 'am' ? 'የማመልከቻ ዝርዝሮች' : lang === 'or' ? 'Bal\'ina Iyyannoo' : 'Application Details'}
                 </p>
-                <div className="bg-white/70 rounded-xl p-3 flex items-start gap-2.5 border border-blue-100">
-                  <span className="text-lg mt-0.5">🍀</span>
-                  <p className="text-[13px] text-gray-700 font-medium leading-relaxed">
-                    {lang === 'am' ? (
-                      <><strong>መልካም ዕድል!</strong> የህልምዎን የስራ እድል እንዲያገኙ ለመርዳት እንጠባበቃለን።</>
-                    ) : (
-                      <><strong>Good Luck!</strong> We look forward to helping you secure your dream career opportunity.</>
-                    )}
-                  </p>
+                <div className="space-y-3">
+                  <div className="flex justify-between items-center border-b border-gray-200/60 pb-3">
+                    <span className="text-[14px] text-gray-500">{lang === 'am' ? 'ስም' : lang === 'or' ? 'Maqaa' : 'Name'}</span>
+                    <span className="text-[14px] font-bold text-gray-900">{formData.personal.fullName}</span>
+                  </div>
+                  <div className="flex justify-between items-center border-b border-gray-200/60 pb-3">
+                    <span className="text-[14px] text-gray-500">{lang === 'am' ? 'ዘርፍ' : lang === 'or' ? 'Damee' : 'Sector'}</span>
+                    <span className="text-[14px] font-bold text-gray-900">{formData.sector}</span>
+                  </div>
+                  <div className="flex justify-between items-center">
+                    <span className="text-[14px] text-gray-500">{lang === 'am' ? 'ሚና' : lang === 'or' ? 'Gahee' : 'Role'}</span>
+                    <span className="text-[14px] font-bold text-gray-900">{formData.sectorSpecific.subCategory}</span>
+                  </div>
                 </div>
               </div>
+
             </div>
           ) : (
             <div className="pb-24">

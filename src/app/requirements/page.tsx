@@ -8,43 +8,46 @@ import { Language } from "@/lib/translations";
 
 const FRESH_GRAD_DOCS = {
   en: [
-    { icon: Shield, label: "National ID", desc: "A valid government-issued national identification card." },
-    { icon: BookOpen, label: "Cumulative GPA", desc: "Minimum GPA of 2.1 and above from your university or college." },
-    { icon: FileText, label: "Standard Resume (CV)", desc: "A professionally written, clearly formatted curriculum vitae." },
-    { icon: Camera, label: "Passport Size Photo", desc: "A recent professional passport-size photograph." },
+    { icon: FileText, label: "Resume (CV)", desc: "A professionally written, clearly formatted curriculum vitae in PDF format." },
+    { icon: Camera, label: "Passport Size Photo", desc: "A recent professional passport-size photograph with a clear background." },
   ],
   am: [
-    { icon: Shield, label: "የብሔራዊ መታወቂያ", desc: "በመንግስት የተሰጠ ትክክለኛ የብሔራዊ መታወቂያ ካርድ።" },
-    { icon: BookOpen, label: "የተጠራቀመ ውጤት (GPA)", desc: "ከዩኒቨርሲቲዎ ወይም ኮሌጅዎ ቢያንስ 2.1 እና ከዚያ በላይ የሆነ ውጤት።" },
-    { icon: FileText, label: "መደበኛ ሲቪ (CV)", desc: "በሙያዊ ሁኔታ የተፃፈ እና ግልጽ የሆነ ሲቪ።" },
-    { icon: Camera, label: "የፓስፖርት መጠን ፎቶ", desc: "የቅርብ ጊዜ ሙያዊ የፓስፖርት መጠን ፎቶ።" },
+    { icon: FileText, label: "ሲቪ (CV)", desc: "በሙያዊ ሁኔታ የተፃፈ እና ግልጽ የሆነ ሲቪ በPDF ቅርጸት።" },
+    { icon: Camera, label: "የፓስፖርት መጠን ፎቶ", desc: "የቅርብ ጊዜ ሙያዊ የፓስፖርት መጠን ፎቶ (ግልጽ የሆነ)።" },
   ],
   or: [
-    { icon: Shield, label: "Waraqaa Eenyummaa Biyyaalessaa", desc: "Waraqaa eenyummaa biyyaalessaa mootummaan kenname seera qabeessa ta'e." },
-    { icon: BookOpen, label: "Qabxii Waligalaa (GPA)", desc: "Yuunivarsiitii ykn kolleejjii irraa qabxii xiqqaatti 2.1 fi isaa ol ta'e." },
-    { icon: FileText, label: "CV Idilee (Resume)", desc: "CV haala ogummaa qabuun barreeffame fi ifa ta'e." },
-    { icon: Camera, label: "Suuraa Guddina Paaspoortii", desc: "Suuraa haaraa guddina paaspoortii qabu kan ogummaa calaqqisu." },
+    { icon: FileText, label: "CV (Resume)", desc: "CV haala ogummaa qabuun barreeffame fi bifa PDF ta'e." },
+    { icon: Camera, label: "Suuraa Guddina Paaspoortii", desc: "Suuraa haaraa guddina paaspoortii qabu (duubee ifa ta'e)." },
   ]
 };
 
 const EXPERIENCED_DOCS = {
   en: [
-    { icon: Shield, label: "National ID", desc: "A valid government-issued national identification card." },
-    { icon: Briefcase, label: "Work Experience Documents", desc: "Proof of previous employment, reference letters, or experience certificates." },
-    { icon: FileText, label: "Professional Resume (CV)", desc: "An up-to-date, modern CV highlighting your key skills and achievements." },
-    { icon: Camera, label: "Passport Size Photo", desc: "A recent professional passport-size photograph." },
+    { icon: FileText, label: "Resume (CV)", desc: "An up-to-date, modern CV in PDF format highlighting your skills." },
+    { icon: Camera, label: "Passport Size Photo", desc: "A recent professional passport-size photograph with a clear background." },
   ],
   am: [
-    { icon: Shield, label: "የብሔራዊ መታወቂያ", desc: "በመንግስት የተሰጠ ትክክለኛ የብሔራዊ መታወቂያ ካርድ።" },
-    { icon: Briefcase, label: "የስራ ልምድ ሰነዶች", desc: "የቀድሞ የስራ ቅጥር ማረጋገጫ፣ የማጣቀሻ ደብዳቤዎች ወይም የልምድ የምስክር ወረቀቶች።" },
-    { icon: FileText, label: "ሙያዊ ሲቪ (CV)", desc: "ዋና ክህሎቶችዎን እና ስኬቶችዎን የሚያጎላ ወቅታዊ ሲቪ።" },
-    { icon: Camera, label: "የፓስፖርት መጠን ፎቶ", desc: "የቅርብ ጊዜ ሙያዊ የፓስፖርት መጠን ፎቶ።" },
+    { icon: FileText, label: "ሲቪ (CV)", desc: "ዋና ክህሎቶችዎን የሚያጎላ ወቅታዊ ሲቪ በPDF ቅርጸት።" },
+    { icon: Camera, label: "የፓስፖርት መጠን ፎቶ", desc: "የቅርብ ጊዜ ሙያዊ የፓስፖርት መጠን ፎቶ (ግልጽ የሆነ)።" },
   ],
   or: [
-    { icon: Shield, label: "Waraqaa Eenyummaa Biyyaalessaa", desc: "Waraqaa eenyummaa biyyaalessaa mootummaan kenname seera qabeessa ta'e." },
-    { icon: Briefcase, label: "Sanadoota Muuxannoo Hojii", desc: "Ragaa qaxarii kanaan duraa, xalayaa deeggarsaa ykn waraqaa ragaa muuxannoo." },
-    { icon: FileText, label: "CV Ogummaa (Resume)", desc: "CV haaraa dandeettiiwwan ijoo fi milkaa'ina keessan agarsiisu." },
-    { icon: Camera, label: "Suuraa Guddina Paaspoortii", desc: "Suuraa haaraa guddina paaspoortii qabu kan ogummaa calaqqisu." },
+    { icon: FileText, label: "CV (Resume)", desc: "CV haaraa dandeettiiwwan ijoo keessan agarsiisu bifa PDF." },
+    { icon: Camera, label: "Suuraa Guddina Paaspoortii", desc: "Suuraa haaraa guddina paaspoortii qabu (duubee ifa ta'e)." },
+  ]
+};
+
+const NOT_GRADUATED_DOCS = {
+  en: [
+    { icon: FileText, label: "Resume (CV)", desc: "An up-to-date CV in PDF format detailing any skills or background." },
+    { icon: Camera, label: "Passport Size Photo", desc: "A recent professional passport-size photograph with a clear background." },
+  ],
+  am: [
+    { icon: FileText, label: "ሲቪ (CV)", desc: "ያለዎትን ማንኛውንም ክህሎት ወይም ዳራ የሚገልጽ ሲቪ በPDF ቅርጸት።" },
+    { icon: Camera, label: "የፓስፖርት መጠን ፎቶ", desc: "የቅርብ ጊዜ ሙያዊ የፓስፖርት መጠን ፎቶ (ግልጽ የሆነ)።" },
+  ],
+  or: [
+    { icon: FileText, label: "CV (Resume)", desc: "CV haaraa dandeettiiwwan ykn duubee kamiyyuu ibsu bifa PDF." },
+    { icon: Camera, label: "Suuraa Guddina Paaspoortii", desc: "Suuraa haaraa guddina paaspoortii qabu (duubee ifa ta'e)." },
   ]
 };
 
@@ -104,10 +107,10 @@ export default function RequirementsPage() {
         <h2 className="text-[22px] font-black text-gray-900 mb-2">{lang === "am" ? "ማን ማመልከት ይችላል?" : lang === "or" ? "Eenyutu Iyyachuu Danda'a?" : "Who Can Apply?"}</h2>
         <p className="text-[15px] text-gray-600 leading-relaxed mb-6">
           {lang === "am" 
-            ? "Pathway ኤጀንሲ አመልካቾችን ከሁለት ዋና ዋና ምድቦች ይቀበላል። አዲስ ተመራቂም ሆኑ ልምድ ያለው ባለሙያ፣ ለእርስዎ የተረጋገጠ እድል አለ።"
+            ? "Pathway ኤጀንሲ አመልካቾችን ከሶስት ዋና ዋና ምድቦች ይቀበላል። አዲስ ተመራቂም ሆኑ፣ ልምድ ያለው ባለሙያ፣ ወይም ገና ያልተመረቁ፣ ለእርስዎ የተረጋገጠ እድል አለ።"
             : lang === "or"
-            ? "Eejansiin Pathway iyyattoota kutaalee gurguddoo lama irraa ni simata. Eebbifamaa haaraas ta'e ogeessa muuxannoo qabu, carraan mirkanaa'e isin eegaa jira."
-            : "Pathway Agency welcomes applicants from two main categories. Whether you are a fresh graduate or an experienced professional, there is a verified opportunity waiting for you."}
+            ? "Eejansiin Pathway iyyattoota kutaalee gurguddoo sadii irraa ni simata. Eebbifamaa haaraas ta'e, ogeessa muuxannoo qabu, ykn kan hin eebbifamne, carraan mirkanaa'e isin eegaa jira."
+            : "Pathway Agency welcomes applicants from three main categories. Whether you are a fresh graduate, an experienced professional, or not yet graduated, there is a verified opportunity waiting for you."}
         </p>
 
         {/* Fresh Graduates Card */}
@@ -140,6 +143,23 @@ export default function RequirementsPage() {
                 : lang === "or"
                 ? "Yeroo ammaa qaxaramtanii kan hojjettan ykn bara 2015 dura kan eebbifamtan yoo ta'e, rakkoon hin jiru — akka iyyattan guutummaatti isin simanna. Sadarkaa giddugaleessaa fi olaanaa duubee ogummaa keessanii waliin walsimu bal'aa qabna."
                 : "If you are currently employed or graduated before 2015 E.C., no problem at all — you are fully welcome to apply. We have a wide range of mid-level and senior positions that match your professional background."}
+            </p>
+          </div>
+        </div>
+
+        {/* Not Graduated Card */}
+        <div className="rounded-3xl overflow-hidden shadow-sm border border-purple-100 mt-5">
+          <div className="bg-gradient-to-r from-purple-600 to-fuchsia-600 px-5 py-4">
+            <h3 className="text-[18px] font-black text-white">{lang === "am" ? "3. ገና ያልተመረቁ (ከ8-12 ክፍል)" : lang === "or" ? "3. Kan Hin Eebbifamne (Kutaa 8-12)" : "3. Not Graduated (Grade 8-12)"}</h3>
+            <p className="text-[13px] text-purple-100 mt-1">{lang === "am" ? "ከ8 እስከ 12 ክፍል ላጠናቀቁ እና ለተለያዩ የስራ ዘርፎች ዝግጁ ለሆኑ" : lang === "or" ? "Kutaa 8 hanga 12 kan xumuranii fi damee hojii adda addaatiif qophii kan ta'an" : "Completed Grade 8 to 12 and ready for various sectors"}</p>
+          </div>
+          <div className="bg-purple-50 px-5 py-5">
+            <p className="text-[14px] text-gray-700 leading-relaxed">
+              {lang === "am" 
+                ? "ትምህርትዎን ገና ያላጠናቀቁ ወይም ዩኒቨርሲቲ ያልገቡ ቢሆንም፣ ለእርስዎም ብዙ የስራ እድሎች አሉን። ለውጭ ሀገር ስራ እና ለሌሎች ልዩ ዘርፎች ማመልከት ይችላሉ።"
+                : lang === "or"
+                ? "Barnoota keessan kan hin xumurre ykn yuunivarsiitii kan hin seenne yoo ta'es, carraawwan hojii hedduu isiniif qabna. Hojii biyya alaa fi dameewwan addaa biroof iyyachuu ni dandeessu."
+                : "Even if you haven't completed your higher education or joined a university, we still have many job opportunities for you. You can apply for foreign employment and other specific sectors."}
             </p>
           </div>
         </div>
@@ -177,6 +197,22 @@ export default function RequirementsPage() {
             <div key={i} className="flex gap-4 bg-white p-4 rounded-2xl shadow-sm border border-emerald-50">
               <div className="w-10 h-10 rounded-xl bg-emerald-100 flex items-center justify-center shrink-0">
                 <doc.icon className="w-5 h-5 text-emerald-600" />
+              </div>
+              <div>
+                <p className="text-[15px] font-bold text-gray-900">{doc.label}</p>
+                <p className="text-[13px] text-gray-500 mt-0.5 leading-relaxed">{doc.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Not Graduated Docs */}
+        <h3 className="text-[16px] font-black text-purple-700 mb-4 mt-8">{lang === "am" ? "ገና ላልተመረቁ" : "For Not Graduated"}</h3>
+        <div className="grid gap-3">
+          {NOT_GRADUATED_DOCS[lang].map((doc, i) => (
+            <div key={i} className="flex gap-4 bg-white p-4 rounded-2xl shadow-sm border border-purple-50">
+              <div className="w-10 h-10 rounded-xl bg-purple-100 flex items-center justify-center shrink-0">
+                <doc.icon className="w-5 h-5 text-purple-600" />
               </div>
               <div>
                 <p className="text-[15px] font-bold text-gray-900">{doc.label}</p>
