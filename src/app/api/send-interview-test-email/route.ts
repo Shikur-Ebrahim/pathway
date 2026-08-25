@@ -81,7 +81,7 @@ export async function POST(req: NextRequest) {
     </td></tr>
   </table>
 </body>
-</html>\`
+</html>`
     });
 
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
