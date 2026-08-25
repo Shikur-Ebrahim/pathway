@@ -403,8 +403,8 @@ export async function submitInterviewAnswers(
 
 export async function markInterviewResultSent(id: string): Promise<void> {
   if (isFirebaseConfigured && db?.app) {
-    const { updateDoc: upd } = await import("firebase/firestore");
-    await upd(doc(db, "interviews", id), { resultSent: true });
+    const { updateDoc: upd, doc: getD } = await import("firebase/firestore");
+    await upd(getD(db, "interviews", id), { resultSent: true });
   } else {
     const existing: InterviewSession[] = JSON.parse(localStorage.getItem(INTERVIEW_STORAGE_KEY) || "[]");
     const idx = existing.findIndex(i => i.id === id);
@@ -412,6 +412,16 @@ export async function markInterviewResultSent(id: string): Promise<void> {
       existing[idx].resultSent = true;
       localStorage.setItem(INTERVIEW_STORAGE_KEY, JSON.stringify(existing));
     }
+  }
+}
+
+export async function updateInterviewResult(id: string, score: number, passed: boolean): Promise<void> {
+  if (isFirebaseConfigured && db?.app) {
+    const { updateDoc, doc } = await import("firebase/firestore");
+    await updateDoc(doc(db, "interviews", id), { score, passed });
+  } else {
+    const existing: InterviewSession[] = JSON.parse(localStorage.getItem(INTERVIEW_STORAGE_KEY) || "[]");
+    localStorage.setItem(INTERVIEW_STORAGE_KEY, JSON.stringify(existing.map(i => i.id === id ? { ...i, score, passed } : i)));
   }
 }
 

@@ -1,15 +1,12 @@
-"use client";
+﻿"use client";
 import React, { useState, useEffect, useRef } from "react";
-import { X, Mail, Clock, CheckCircle2, AlertCircle, ChevronRight, Trophy, XCircle } from "lucide-react";
+import { X, Mail, Clock, CheckCircle2, AlertCircle, ChevronRight, Trophy, XCircle, Volume2, VolumeX } from "lucide-react";
 import { getInterviewByEmail, submitInterviewAnswers, InterviewSession, DEFAULT_QUESTIONS } from "@/lib/db";
-
-
-
 
 const QUESTION_TIME = 30; // seconds per question
 const PASS_SCORE = 6; // out of 10
 
-type Phase = 'email' | 'waiting' | 'quiz' | 'done' | 'already_done' | 'not_found';
+type Phase = 'email' | 'waiting' | 'quiz' | 'done' | 'already_done' | 'not_found' | 'expired';
 
 export default function InterviewPortal({ onClose }: { onClose: () => void }) {
   const [email, setEmail] = useState('');
@@ -29,6 +26,9 @@ export default function InterviewPortal({ onClose }: { onClose: () => void }) {
   const [qTimer, setQTimer] = useState(QUESTION_TIME);
   const qTimerRef = useRef<NodeJS.Timeout | null>(null);
 
+  // TTS state
+  const [ttsEnabled, setTtsEnabled] = useState(true);
+
   const handleLookup = async () => {
     if (!email.trim()) return;
     setLoading(true);
@@ -37,10 +37,18 @@ export default function InterviewPortal({ onClose }: { onClose: () => void }) {
       const found = await getInterviewByEmail(email.trim());
       if (!found) { setPhase('not_found'); return; }
       if (found.status === 'completed') { setPhase('already_done'); return; }
+      
       setSession(found);
       const now = Date.now();
       const start = new Date(found.scheduledAt).getTime();
       const diff = Math.floor((start - now) / 1000);
+      
+      if (diff < -3600) {
+        // If they missed it by more than 1 hour
+        setPhase('expired');
+        return;
+      }
+
       if (diff <= 0) {
         setPhase('quiz');
         startQuestion();
@@ -63,6 +71,7 @@ export default function InterviewPortal({ onClose }: { onClose: () => void }) {
         if (prev <= 1) {
           clearInterval(countdownRef.current!);
           setPhase('quiz');
+          startQuestion();
           return 0;
         }
         return prev - 1;
@@ -93,6 +102,39 @@ export default function InterviewPortal({ onClose }: { onClose: () => void }) {
     return () => clearInterval(qTimerRef.current!);
   }, [phase, qIndex]);
 
+  // TTS Reader
+  useEffect(() => {
+    if (phase === 'quiz' && ttsEnabled && typeof window !== 'undefined' && window.speechSynthesis) {
+      const questions = session?.questions || DEFAULT_QUESTIONS;
+      const q = questions[qIndex];
+      if (q) {
+        window.speechSynthesis.cancel();
+        
+        let textToRead = `Question ${qIndex + 1}. ${q.question} `;
+        q.options.forEach((opt, idx) => {
+          textToRead += `Option ${['A','B','C','D'][idx]}. ${opt}. `;
+        });
+
+        const utterance = new SpeechSynthesisUtterance(textToRead);
+        utterance.rate = 1.05; // Slightly faster to fit 30s
+        window.speechSynthesis.speak(utterance);
+      }
+    }
+
+    return () => {
+      if (typeof window !== 'undefined' && window.speechSynthesis) {
+        window.speechSynthesis.cancel();
+      }
+    };
+  }, [phase, qIndex, ttsEnabled]);
+
+  const toggleTts = () => {
+    setTtsEnabled(!ttsEnabled);
+    if (ttsEnabled && typeof window !== 'undefined' && window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+    }
+  };
+
   const advanceQuestion = (ans: number) => {
     clearInterval(qTimerRef.current!);
     const newAnswers = [...answers, ans];
@@ -117,10 +159,13 @@ export default function InterviewPortal({ onClose }: { onClose: () => void }) {
   };
 
   const fmtTime = (s: number) => {
-    const h = Math.floor(s / 3600);
+    const d = Math.floor(s / (3600 * 24));
+    const h = Math.floor((s % (3600 * 24)) / 3600);
     const m = Math.floor((s % 3600) / 60);
     const sec = s % 60;
-    if (h > 0) return `${h}:${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
+    
+    if (d > 0) return `${d}d ${h}h ${m}m ${sec}s`;
+    if (h > 0) return `${h}h ${m}m ${sec}s`;
     return `${String(m).padStart(2,'0')}:${String(sec).padStart(2,'0')}`;
   };
 
@@ -144,9 +189,17 @@ export default function InterviewPortal({ onClose }: { onClose: () => void }) {
               {phase === 'quiz' && <p className="text-[11px] text-gray-400 font-semibold">Question {qIndex + 1} of {questions.length}</p>}
             </div>
           </div>
-          <button onClick={onClose} className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200">
-            <X className="w-4 h-4" />
-          </button>
+          
+          <div className="flex items-center gap-2">
+            {phase === 'quiz' && (
+              <button onClick={toggleTts} className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200 transition-colors" title={ttsEnabled ? "Mute AI Voice" : "Enable AI Voice"}>
+                {ttsEnabled ? <Volume2 className="w-4 h-4 text-indigo-600" /> : <VolumeX className="w-4 h-4" />}
+              </button>
+            )}
+            <button onClick={onClose} className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         <div className="flex-1 overflow-y-auto">
@@ -200,6 +253,20 @@ export default function InterviewPortal({ onClose }: { onClose: () => void }) {
             </div>
           )}
 
+          {/* EXPIRED */}
+          {phase === 'expired' && (
+            <div className="p-6 text-center space-y-4">
+              <div className="w-16 h-16 bg-red-50 rounded-2xl flex items-center justify-center mx-auto">
+                <XCircle className="w-8 h-8 text-red-500" />
+              </div>
+              <h2 className="text-lg font-black text-gray-900">Interview Missed</h2>
+              <p className="text-[14px] text-gray-500 leading-relaxed">The scheduled time for your interview has passed. Please contact Pathway Agency to reschedule.</p>
+              <button onClick={onClose} className="w-full py-3 bg-gray-100 text-gray-700 font-bold rounded-2xl hover:bg-gray-200">
+                Close
+              </button>
+            </div>
+          )}
+
           {/* ALREADY DONE */}
           {phase === 'already_done' && (
             <div className="p-6 text-center space-y-4">
@@ -222,7 +289,7 @@ export default function InterviewPortal({ onClose }: { onClose: () => void }) {
                 <p className="text-[14px] text-gray-500">Your interview starts in</p>
               </div>
               <div className="bg-gradient-to-br from-blue-600 to-indigo-700 rounded-3xl p-8 text-white">
-                <p className="text-5xl font-black tracking-tight font-mono">{fmtTime(countdown)}</p>
+                <p className="text-3xl sm:text-4xl font-black tracking-tight font-mono">{fmtTime(countdown)}</p>
                 <p className="text-blue-200 text-[13px] mt-2 font-semibold">Keep this page open</p>
               </div>
               <div className="bg-gray-50 rounded-2xl p-4 text-left space-y-2">

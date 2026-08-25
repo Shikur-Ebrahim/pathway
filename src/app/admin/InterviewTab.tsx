@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { PathwayItem, InterviewSession, InterviewQuestion, getInterviews, createInterview, markInterviewResultSent, deleteInterview, saveDefaultQuestionsToFirestore, DEFAULT_QUESTIONS } from "@/lib/db";
@@ -139,10 +139,25 @@ export function InterviewTab({ applications }: { applications: PathwayItem[] }) 
     }
   };
 
+  const [editingResultId, setEditingResultId] = useState<string | null>(null);
+  const [editScore, setEditScore] = useState<number>(0);
+  const [editPassed, setEditPassed] = useState<boolean>(false);
+
   const handleDelete = async (id: string) => {
     if (!confirm('Are you sure you want to delete this interview record?')) return;
     await deleteInterview(id);
     fetchInterviews();
+  };
+
+  const handleUpdateResult = async (id: string) => {
+    try {
+      const { updateInterviewResult } = await import('@/lib/db');
+      await updateInterviewResult(id, editScore, editPassed);
+      setEditingResultId(null);
+      fetchInterviews();
+    } catch (err: any) {
+      alert('Error updating result: ' + err.message);
+    }
   };
 
   const updateQuestion = (idx: number, field: keyof InterviewQuestion, value: any) => {
@@ -343,6 +358,22 @@ export function InterviewTab({ applications }: { applications: PathwayItem[] }) 
                         <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-amber-50 text-amber-700 text-[11px] font-bold border border-amber-200/50">
                           <Clock className="w-3.5 h-3.5" /> Scheduled
                         </span>
+                      ) : editingResultId === session.id ? (
+                        <div className="flex flex-col gap-2">
+                          <div className="flex items-center gap-2">
+                            <label className="text-[11px] font-bold text-gray-500">Score:</label>
+                            <input type="number" min="0" max={session.questions?.length || 10} value={editScore} onChange={e => setEditScore(Number(e.target.value))} className="w-16 px-2 py-1 border border-gray-200 rounded text-[12px] font-bold" />
+                            <span className="text-[11px] font-bold text-gray-500">/ {session.questions?.length || 10}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <label className="text-[11px] font-bold text-gray-500">Passed:</label>
+                            <input type="checkbox" checked={editPassed} onChange={e => setEditPassed(e.target.checked)} className="w-4 h-4 cursor-pointer" />
+                          </div>
+                          <div className="flex gap-2">
+                            <button onClick={() => handleUpdateResult(session.id!)} className="px-2 py-1 bg-green-100 text-green-700 text-[10px] font-bold rounded">Save</button>
+                            <button onClick={() => setEditingResultId(null)} className="px-2 py-1 bg-gray-100 text-gray-600 text-[10px] font-bold rounded">Cancel</button>
+                          </div>
+                        </div>
                       ) : (
                         <div className="flex flex-col gap-1">
                           <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md text-[11px] font-bold border w-max ${session.passed ? 'bg-green-50 text-green-700 border-green-200/50' : 'bg-red-50 text-red-700 border-red-200/50'}`}>
@@ -355,6 +386,15 @@ export function InterviewTab({ applications }: { applications: PathwayItem[] }) 
                     </td>
                     <td className="p-4 text-right">
                       <div className="flex items-center justify-end gap-2">
+                        {isDone && !session.resultSent && editingResultId !== session.id && (
+                          <button onClick={() => {
+                            setEditingResultId(session.id!);
+                            setEditScore(session.score || 0);
+                            setEditPassed(session.passed || false);
+                          }} className="px-2.5 py-1.5 bg-gray-50 hover:bg-gray-100 text-gray-600 border border-gray-200 text-[11px] font-bold rounded-lg transition-colors flex items-center gap-1.5">
+                            <Pencil className="w-3 h-3" /> Edit
+                          </button>
+                        )}
                         {isDone && !session.resultSent && (
                           <button onClick={() => handleSendResult(session)} disabled={sendingResultId === session.id} className="px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-700 text-[12px] font-bold rounded-lg transition-colors flex items-center gap-1.5 disabled:opacity-50">
                             <Send className="w-3.5 h-3.5" /> {sendingResultId === session.id ? 'Sending...' : 'Send Result'}
