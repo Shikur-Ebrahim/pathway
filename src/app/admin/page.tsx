@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
@@ -25,6 +25,61 @@ const STATUS_LABELS: Record<string, string> = {
   fresh: "🎓 Fresh Graduate",
   experienced: "💼 Experienced",
 };
+
+const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
+  <div className="mb-6">
+    <h3 className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-3">{title}</h3>
+    <div className="bg-gray-50 rounded-2xl divide-y divide-gray-100">{children}</div>
+  </div>
+);
+const Row = ({ label, value }: { label: string; value: string }) => (
+  value ? (
+    <div className="flex justify-between items-start px-4 py-2.5 gap-4">
+      <span className="text-[13px] text-gray-400 font-semibold shrink-0">{label}</span>
+      <span className="text-[13px] font-semibold text-gray-800 text-right">{value}</span>
+    </div>
+  ) : null
+);
+
+// Edit field components
+const EField = ({ label, path, type = 'text', editData, setField }: { label: string; path: string; type?: string; editData: any; setField: (path: string, value: string) => void }) => {
+  const val = path.split('.').reduce((o: any, k: string) => o?.[k], editData) ?? '';
+  return (
+    <div className="flex flex-col gap-1 px-4 py-2.5">
+      <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">{label}</label>
+      <input
+        type={type}
+        value={val}
+        onChange={e => setField(path, e.target.value)}
+        className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+      />
+    </div>
+  );
+};
+
+const ESelect = ({ label, path, options, editData, setField }: { label: string; path: string; options: {value: string; label: string}[]; editData: any; setField: (path: string, value: string) => void }) => {
+  const val = path.split('.').reduce((o: any, k: string) => o?.[k], editData) ?? '';
+  return (
+    <div className="flex flex-col gap-1 px-4 py-2.5">
+      <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">{label}</label>
+      <select
+        value={val}
+        onChange={e => setField(path, e.target.value)}
+        className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+      >
+        <option value="">— Select —</option>
+        {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+      </select>
+    </div>
+  );
+};
+
+const ESection = ({ title, children }: { title: string; children: React.ReactNode }) => (
+  <div className="mb-6">
+    <h3 className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-3">{title}</h3>
+    <div className="bg-gray-50 rounded-2xl divide-y divide-gray-100">{children}</div>
+  </div>
+);
 
 function DetailModal({ app, onClose, onUpdate, onDelete, onRefresh }: { app: PathwayItem; onClose: () => void; onUpdate: (id: string, status: 'accepted' | 'rejected' | 'interview') => Promise<void>; onDelete: (id: string) => Promise<void>; onRefresh?: () => void; }) {
   const fd = app.formData;
@@ -79,46 +134,6 @@ function DetailModal({ app, onClose, onUpdate, onDelete, onRefresh }: { app: Pat
       return next;
     });
   };
-
-  // Edit field components
-  const EField = ({ label, path, type = 'text' }: { label: string; path: string; type?: string }) => {
-    const val = path.split('.').reduce((o: any, k) => o?.[k], editData) ?? '';
-    return (
-      <div className="flex flex-col gap-1 px-4 py-2.5">
-        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">{label}</label>
-        <input
-          type={type}
-          value={val}
-          onChange={e => setField(path, e.target.value)}
-          className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
-        />
-      </div>
-    );
-  };
-
-  const ESelect = ({ label, path, options }: { label: string; path: string; options: {value: string; label: string}[] }) => {
-    const val = path.split('.').reduce((o: any, k) => o?.[k], editData) ?? '';
-    return (
-      <div className="flex flex-col gap-1 px-4 py-2.5">
-        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">{label}</label>
-        <select
-          value={val}
-          onChange={e => setField(path, e.target.value)}
-          className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
-        >
-          <option value="">— Select —</option>
-          {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
-        </select>
-      </div>
-    );
-  };
-
-  const ESection = ({ title, children }: { title: string; children: React.ReactNode }) => (
-    <div className="mb-6">
-      <h3 className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-3">{title}</h3>
-      <div className="bg-gray-50 rounded-2xl divide-y divide-gray-100">{children}</div>
-    </div>
-  );
 
 
   const handleAccept = async () => {
@@ -201,21 +216,6 @@ function DetailModal({ app, onClose, onUpdate, onDelete, onRefresh }: { app: Pat
       setEmailSending(false);
     }
   };
-
-  const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
-    <div className="mb-6">
-      <h3 className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-3">{title}</h3>
-      <div className="bg-gray-50 rounded-2xl divide-y divide-gray-100">{children}</div>
-    </div>
-  );
-  const Row = ({ label, value }: { label: string; value: string }) => (
-    value ? (
-      <div className="flex justify-between items-start px-4 py-2.5 gap-4">
-        <span className="text-[13px] text-gray-400 font-semibold shrink-0">{label}</span>
-        <span className="text-[13px] font-semibold text-gray-800 text-right">{value}</span>
-      </div>
-    ) : null
-  );
 
   return (
     <div className="fixed inset-0 z-[200] bg-black/50 backdrop-blur-sm flex items-end sm:items-center justify-center sm:p-4">
@@ -331,61 +331,61 @@ function DetailModal({ app, onClose, onUpdate, onDelete, onRefresh }: { app: Pat
             /* ─── EDIT MODE ─── */
             <>
               <ESection title="Personal Info">
-                <EField label="Full Name" path="personal.fullName" />
-                <EField label="Email" path="personal.email" type="email" />
-                <EField label="Phone" path="personal.phone" />
-                <EField label="Region" path="personal.region" />
-                <EField label="City" path="personal.city" />
-                <ESelect label="Gender" path="personal.gender" options={[
+                <EField editData={editData} setField={setField} label="Full Name" path="personal.fullName" />
+                <EField editData={editData} setField={setField} label="Email" path="personal.email" type="email" />
+                <EField editData={editData} setField={setField} label="Phone" path="personal.phone" />
+                <EField editData={editData} setField={setField} label="Region" path="personal.region" />
+                <EField editData={editData} setField={setField} label="City" path="personal.city" />
+                <ESelect editData={editData} setField={setField} label="Gender" path="personal.gender" options={[
                   {value:'Male',label:'Male'},{value:'Female',label:'Female'}
                 ]} />
-                <EField label="Date of Birth" path="personal.dob" type="date" />
+                <EField editData={editData} setField={setField} label="Date of Birth" path="personal.dob" type="date" />
               </ESection>
 
               <ESection title="Application">
-                <ESelect label="Status" path="status" options={[
+                <ESelect editData={editData} setField={setField} label="Status" path="status" options={[
                   {value:'fresh',label:'🎓 Fresh Graduate'},{value:'experienced',label:'💼 Experienced'}
                 ]} />
-                <ESelect label="Sector" path="sector" options={[
+                <ESelect editData={editData} setField={setField} label="Sector" path="sector" options={[
                   {value:'embassy',label:'🏛️ Embassy & Diplomatic'},
                   {value:'ngo',label:'🌍 NGOs & UN Agencies'},
                   {value:'airport',label:'✈️ Airport & Aviation'},
                   {value:'foreign',label:'🌐 Foreign Employment'},
                   {value:'maritime',label:'🚢 Maritime & Seafaring'},
                 ]} />
-                <EField label="Specific Role / Sub Category" path="sectorSpecific.subCategory" />
+                <EField editData={editData} setField={setField} label="Specific Role / Sub Category" path="sectorSpecific.subCategory" />
               </ESection>
 
               <ESection title="Education">
-                <EField label="Highest Level" path="education.highestLevel" />
-                <EField label="University / Institution" path="education.university" />
-                <EField label="Field of Study" path="education.field" />
-                <EField label="Graduation Year" path="education.gradYear" />
-                <EField label="CGPA" path="education.cgpa" />
+                <EField editData={editData} setField={setField} label="Highest Level" path="education.highestLevel" />
+                <EField editData={editData} setField={setField} label="University / Institution" path="education.university" />
+                <EField editData={editData} setField={setField} label="Field of Study" path="education.field" />
+                <EField editData={editData} setField={setField} label="Graduation Year" path="education.gradYear" />
+                <EField editData={editData} setField={setField} label="CGPA" path="education.cgpa" />
               </ESection>
 
               {editData?.status === 'fresh' ? (
                 <ESection title="Background">
-                  <EField label="Internship/Volunteer" path="experience.internship" />
-                  <EField label="Key Skills" path="experience.skills" />
-                  <EField label="Languages" path="experience.languages" />
+                  <EField editData={editData} setField={setField} label="Internship/Volunteer" path="experience.internship" />
+                  <EField editData={editData} setField={setField} label="Key Skills" path="experience.skills" />
+                  <EField editData={editData} setField={setField} label="Languages" path="experience.languages" />
                 </ESection>
               ) : (
                 <ESection title="Work Experience">
-                  <EField label="Years of Experience" path="experience.yearsOfExperience" />
-                  <EField label="Current Employer" path="experience.currentEmployer" />
-                  <EField label="Current Position" path="experience.currentPosition" />
-                  <EField label="Employment Type" path="experience.employmentType" />
-                  <EField label="Professional Skills" path="experience.professionalSkills" />
+                  <EField editData={editData} setField={setField} label="Years of Experience" path="experience.yearsOfExperience" />
+                  <EField editData={editData} setField={setField} label="Current Employer" path="experience.currentEmployer" />
+                  <EField editData={editData} setField={setField} label="Current Position" path="experience.currentPosition" />
+                  <EField editData={editData} setField={setField} label="Employment Type" path="experience.employmentType" />
+                  <EField editData={editData} setField={setField} label="Professional Skills" path="experience.professionalSkills" />
                 </ESection>
               )}
 
               <ESection title="Sector-Specific Details">
-                <EField label="NGO Experience (years)" path="sectorSpecific.ngoExperience" />
-                <EField label="English Level" path="sectorSpecific.englishLevel" />
-                <EField label="Computer Skills" path="sectorSpecific.computerSkills" />
-                <EField label="Driving License" path="sectorSpecific.drivingLicense" />
-                <EField label="Passport" path="sectorSpecific.passport" />
+                <EField editData={editData} setField={setField} label="NGO Experience (years)" path="sectorSpecific.ngoExperience" />
+                <EField editData={editData} setField={setField} label="English Level" path="sectorSpecific.englishLevel" />
+                <EField editData={editData} setField={setField} label="Computer Skills" path="sectorSpecific.computerSkills" />
+                <EField editData={editData} setField={setField} label="Driving License" path="sectorSpecific.drivingLicense" />
+                <EField editData={editData} setField={setField} label="Passport" path="sectorSpecific.passport" />
               </ESection>
             </>
           )}
