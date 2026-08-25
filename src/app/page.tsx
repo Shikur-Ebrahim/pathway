@@ -92,10 +92,10 @@ export default function Home() {
 
   return (
     <div className="min-h-screen bg-white text-gray-900 font-sans flex flex-col">
-      <Navbar lang={lang} setLang={setLang} onApplyClick={handleApplyClick} onCheckStatus={() => setIsStatusOpen(true)} />
+      <Navbar lang={lang} setLang={setLang} onApplyClick={handleApplyClick} onCheckStatus={() => setIsStatusOpen(true)} onOnlineInterview={() => setIsInterviewOpen(true)} />
 
       <main className="flex-1 w-full flex flex-col overflow-x-hidden">
-        <HeroSection onApplyClick={handleApplyClick} onBrowseJobs={handleBrowseJobs} onOnlineInterview={() => setIsInterviewOpen(true)} lang={lang} />
+        <HeroSection onApplyClick={handleApplyClick} onBrowseJobs={handleBrowseJobs} lang={lang} />
         <ImageBannerSection lang={lang} />
         <CategoriesSection onSelectCategory={handleCategorySelect} lang={lang} />
         <GallerySection lang={lang} />

@@ -26,7 +26,7 @@ const STATUS_LABELS: Record<string, string> = {
   experienced: "💼 Experienced",
 };
 
-function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; onClose: () => void; onUpdate: (id: string, status: 'accepted' | 'rejected' | 'interview') => Promise<void>; onDelete: (id: string) => Promise<void>; }) {
+function DetailModal({ app, onClose, onUpdate, onDelete, onRefresh }: { app: PathwayItem; onClose: () => void; onUpdate: (id: string, status: 'accepted' | 'rejected' | 'interview') => Promise<void>; onDelete: (id: string) => Promise<void>; onRefresh?: () => void; }) {
   const fd = app.formData;
   const appStatus = app.applicationStatus || fd?.applicationStatus;
   const [processing, setProcessing] = useState(false);
@@ -57,6 +57,7 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
       await updatePathwayPostFormData(app.id, editData);
       alert('Application updated successfully!');
       setEditMode(false);
+      if (onRefresh) onRefresh();
       onClose(); // Close and let parent refresh
     } catch (err: any) {
       alert('Error saving: ' + err.message);
@@ -890,7 +891,7 @@ export default function AdminPage() {
         )}
       </div>
 
-      {selectedApp && <DetailModal app={selectedApp} onClose={() => setSelectedApp(null)} onUpdate={handleUpdateStatus} onDelete={handleDelete} />}
+      {selectedApp && <DetailModal app={selectedApp} onClose={() => setSelectedApp(null)} onUpdate={handleUpdateStatus} onDelete={handleDelete} onRefresh={fetchApplications} />}
     </div>
   );
 }

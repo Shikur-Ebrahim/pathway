@@ -5,16 +5,17 @@ import Image from "next/image";
 import { Language, content } from "@/lib/translations";
 import { useAuth } from "@/context/AuthContext";
 import { AuthModal } from "@/components/AuthModal";
-import { Send, Menu, X, Globe, LogOut, User as UserIcon, ChevronDown, Briefcase, FileText, SearchCheck } from "lucide-react";
+import { Send, Menu, X, Globe, LogOut, User as UserIcon, ChevronDown, Briefcase, FileText, SearchCheck, Trophy } from "lucide-react";
 
 interface NavbarProps {
   lang: Language;
   setLang: (l: Language) => void;
   onApplyClick: () => void;
   onCheckStatus: () => void;
+  onOnlineInterview: () => void;
 }
 
-export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick, onCheckStatus }) => {
+export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick, onCheckStatus, onOnlineInterview }) => {
   const t = content[lang];
   const { user, logout, isAdmin } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -124,6 +125,13 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick, onC
               </div>
             ) : (
               <div className="flex items-center gap-2">
+                <button
+                  onClick={onOnlineInterview}
+                  className="px-3 py-2 text-sm font-semibold text-indigo-700 hover:bg-indigo-50 rounded-xl transition-colors border border-transparent hover:border-indigo-200 flex items-center gap-1.5"
+                >
+                  <Trophy className="w-3.5 h-3.5 text-indigo-600" />
+                  Interview
+                </button>
                 <button
                   onClick={onCheckStatus}
                   className="px-3 py-2 text-sm font-semibold text-gray-700 hover:bg-gray-100 rounded-xl transition-colors border border-gray-200 flex items-center gap-1.5"
@@ -275,6 +283,12 @@ export const Navbar: React.FC<NavbarProps> = ({ lang, setLang, onApplyClick, onC
             >
               <SearchCheck className="w-4 h-4 text-blue-600" />
               {lang === 'am' ? 'ሁኔታ ይፈልጉ' : lang === 'or' ? 'Haala Ilaalaa' : 'Check Application Status'}
+            </button>
+            <button
+              onClick={() => { setMobileMenuOpen(false); onOnlineInterview(); }}
+              className="w-full flex items-center justify-center gap-2 py-3 bg-gradient-to-r from-indigo-500 to-purple-600 text-white text-sm font-bold rounded-xl shadow-sm hover:shadow-md transition-shadow mb-3"
+            >
+              <Trophy className="w-4 h-4" /> Interview
             </button>
             <div className="flex flex-col gap-1 pt-2 border-t border-gray-100">
               <a href="#sectors" onClick={() => setMobileMenuOpen(false)} className="py-2.5 px-2 text-sm text-gray-600 font-medium">Job Categories</a>

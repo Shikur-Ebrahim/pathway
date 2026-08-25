@@ -3,10 +3,10 @@
 import React from "react";
 import { motion } from "framer-motion";
 import CountUp from "react-countup";
-import { ArrowRight, Search, Briefcase, Globe2, Star, ShieldCheck, Trophy } from "lucide-react";
+import { ArrowRight, Search, Briefcase, Globe2, Star, ShieldCheck } from "lucide-react";
 import { content, Language } from "@/lib/translations";
 
-export const HeroSection = ({ onApplyClick, onBrowseJobs, onOnlineInterview, lang }: { onApplyClick: () => void; onBrowseJobs: () => void; onOnlineInterview: () => void; lang: Language }) => {
+export const HeroSection = ({ onApplyClick, onBrowseJobs, lang }: { onApplyClick: () => void; onBrowseJobs: () => void; lang: Language }) => {
   const t = content[lang];
   const stats = [
     { num: 10000, suffix: "+", label: t.heroStatJobs, icon: Briefcase, color: "text-blue-600", bg: "bg-blue-100" },
@@ -35,12 +35,9 @@ export const HeroSection = ({ onApplyClick, onBrowseJobs, onOnlineInterview, lan
               <p className="text-base md:text-lg lg:text-xl text-gray-600 leading-relaxed max-w-2xl mx-auto lg:mx-0">{t.heroSub}</p>
             </motion.div>
 
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex flex-col sm:flex-row flex-wrap items-center justify-center lg:justify-start gap-4 mb-10 lg:mb-0">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 mb-10 lg:mb-0">
               <button onClick={onApplyClick} className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-[16px] md:text-lg shadow-xl shadow-blue-500/25 flex items-center justify-center gap-2 hover:shadow-2xl hover:-translate-y-1 transition-all">
                 {t.heroApplyBtn} <ArrowRight className="w-5 h-5" />
-              </button>
-              <button onClick={onOnlineInterview} className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white border-2 border-indigo-100 text-indigo-700 font-bold text-[16px] md:text-lg shadow-sm hover:border-indigo-200 hover:bg-indigo-50 flex items-center justify-center gap-2 hover:-translate-y-1 transition-all">
-                <Trophy className="w-5 h-5 text-indigo-500" /> Online Interview
               </button>
               <button onClick={onBrowseJobs} className="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white border-2 border-gray-100 text-gray-800 font-bold text-[16px] md:text-lg shadow-sm hover:border-gray-200 hover:bg-gray-50 flex items-center justify-center gap-2 hover:-translate-y-1 transition-all">
                 <Search className="w-5 h-5 text-gray-400" /> {t.heroBrowseBtn}
