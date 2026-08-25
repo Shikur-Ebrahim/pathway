@@ -236,26 +236,134 @@ export interface InterviewSession {
   id?: string;
   applicantEmail: string;
   applicantName: string;
-  scheduledAt: string; // ISO datetime string e.g. "2024-08-26T09:00"
+  scheduledAt: string;
   status: 'scheduled' | 'completed';
   questions: InterviewQuestion[];
-  answers?: number[];   // index of chosen option per question (-1 = skipped)
+  answers?: number[];
   score?: number;
   passed?: boolean;
   resultSent?: boolean;
   createdAt?: any;
 }
 
+// ─── Default Interview Questions (10 MCQ) ────────────────────────────────────
+export const DEFAULT_QUESTIONS: InterviewQuestion[] = [
+  {
+    question: "How do you prioritize tasks when you have multiple deadlines at the same time?",
+    options: [
+      "Work on all tasks simultaneously without a plan",
+      "Identify the most urgent and important tasks first, then work systematically",
+      "Ask colleagues to handle some tasks for you",
+      "Work on the easiest task first to gain momentum"
+    ],
+    correctIndex: 1
+  },
+  {
+    question: "How do you handle a conflict with a coworker?",
+    options: [
+      "Avoid them completely and hope it resolves itself",
+      "Report them to the manager immediately without discussion",
+      "Discuss the issue calmly and professionally to find a resolution",
+      "Ignore the problem entirely"
+    ],
+    correctIndex: 2
+  },
+  {
+    question: "What does professional confidentiality require of an employee?",
+    options: [
+      "Sharing company information freely with friends",
+      "Keeping sensitive information private and secure at all times",
+      "Discussing client details with other clients",
+      "Posting work updates on social media"
+    ],
+    correctIndex: 1
+  },
+  {
+    question: "When you make a mistake at work, what is the best course of action?",
+    options: [
+      "Hide it and hope no one notices",
+      "Blame a colleague for the mistake",
+      "Acknowledge it, inform your supervisor, and propose a solution",
+      "Quit the job to avoid consequences"
+    ],
+    correctIndex: 2
+  },
+  {
+    question: "Which quality is most important for effective teamwork?",
+    options: [
+      "Being the best individual performer on the team",
+      "Open communication and active collaboration",
+      "Taking all the credit for group accomplishments",
+      "Working independently at all times"
+    ],
+    correctIndex: 1
+  },
+  {
+    question: "How should you respond when receiving constructive criticism from your supervisor?",
+    options: [
+      "Argue back immediately to defend yourself",
+      "Listen calmly, ask clarifying questions if needed, and work to improve",
+      "Ignore the feedback and continue as before",
+      "Complain to other colleagues about the supervisor"
+    ],
+    correctIndex: 1
+  },
+  {
+    question: "What best defines professional integrity in the workplace?",
+    options: [
+      "Always agreeing with your manager regardless of the situation",
+      "Being honest and ethical even when it is difficult or inconvenient",
+      "Prioritizing personal gain over company values",
+      "Following only the rules you personally agree with"
+    ],
+    correctIndex: 1
+  },
+  {
+    question: "If you are unsure how to complete an important task, what should you do?",
+    options: [
+      "Guess and submit the work anyway",
+      "Do nothing and wait for someone to notice",
+      "Ask your supervisor or a knowledgeable colleague for guidance",
+      "Search for a different job instead"
+    ],
+    correctIndex: 2
+  },
+  {
+    question: "Which of the following best describes a strong work ethic?",
+    options: [
+      "Coming to work only when you feel motivated",
+      "Completing tasks quickly without attention to quality",
+      "Being punctual, responsible, and consistently dedicated to your work",
+      "Doing the minimum required and nothing more"
+    ],
+    correctIndex: 2
+  },
+  {
+    question: "How should you handle a situation where you disagree with a company policy?",
+    options: [
+      "Ignore it and do what you personally think is right",
+      "Discuss your concerns respectfully through proper channels",
+      "Publicly criticize the company on social media",
+      "Refuse to follow the policy outright"
+    ],
+    correctIndex: 1
+  }
+];
+
 const INTERVIEW_STORAGE_KEY = "pathway_interviews";
 
 export async function createInterview(data: Omit<InterviewSession, 'id' | 'createdAt'>): Promise<string> {
+  // Always attach the default 10 questions if none were provided
+  const questions = (data.questions && data.questions.length > 0) ? data.questions : DEFAULT_QUESTIONS;
+  const payload = { ...data, questions };
+
   if (isFirebaseConfigured && db?.app) {
     const { addDoc: add, serverTimestamp: ts } = await import("firebase/firestore");
-    const ref = await add(collection(db, "interviews"), { ...data, createdAt: ts() });
+    const ref = await add(collection(db, "interviews"), { ...payload, createdAt: ts() });
     return ref.id;
   }
   const existing = JSON.parse(localStorage.getItem(INTERVIEW_STORAGE_KEY) || "[]");
-  const newItem = { ...data, id: Date.now().toString(), createdAt: new Date().toISOString() };
+  const newItem = { ...payload, id: Date.now().toString(), createdAt: new Date().toISOString() };
   localStorage.setItem(INTERVIEW_STORAGE_KEY, JSON.stringify([...existing, newItem]));
   return newItem.id;
 }

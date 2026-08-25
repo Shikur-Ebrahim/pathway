@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { PathwayItem, InterviewSession, getInterviews, createInterview, markInterviewResultSent, deleteInterview } from "@/lib/db";
@@ -52,20 +52,27 @@ export function InterviewTab({ applications }: { applications: PathwayItem[] }) 
     setScheduling(true);
     try {
       const scheduledAt = new Date(`${schedDate}T${schedTime}`).toISOString();
+
+      // 1. Save interview session with questions auto-attached in db
       await createInterview({
         applicantEmail: selectedEmail,
         applicantName: selectedName,
         scheduledAt,
         status: 'scheduled',
-        questions: [] // will use default in portal
+        questions: [] // db.ts will auto-fill DEFAULT_QUESTIONS
       });
 
-      // Send Email
-      await fetch('/api/send-interview-test-email', {
+      // 2. Send notification email via Resend
+      const res = await fetch('/api/send-interview-test-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ toEmail: selectedEmail, toName: selectedName, scheduledAt })
       });
+
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json.error || 'Email notification failed to send');
+      }
 
       setShowSchedule(false);
       setSelectedEmail('');
@@ -73,9 +80,9 @@ export function InterviewTab({ applications }: { applications: PathwayItem[] }) 
       setSchedDate('');
       setSchedTime('');
       fetchInterviews();
-      alert('Interview scheduled and email sent successfully!');
+      alert('✅ Interview scheduled and notification email sent successfully!');
     } catch (err: any) {
-      alert('Error scheduling: ' + err.message);
+      alert('❌ Error: ' + err.message);
     } finally {
       setScheduling(false);
     }
