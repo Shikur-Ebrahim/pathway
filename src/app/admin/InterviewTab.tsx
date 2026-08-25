@@ -1,8 +1,8 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { PathwayItem, InterviewSession, getInterviews, createInterview, markInterviewResultSent, deleteInterview } from "@/lib/db";
-import { Trophy, Calendar, Clock, Send, CheckCircle2, X, Trash2 } from "lucide-react";
+import { PathwayItem, InterviewSession, getInterviews, createInterview, markInterviewResultSent, deleteInterview, saveDefaultQuestionsToFirestore, DEFAULT_QUESTIONS } from "@/lib/db";
+import { Trophy, Calendar, Clock, Send, CheckCircle2, X, Trash2, Database } from "lucide-react";
 
 export function InterviewTab({ applications }: { applications: PathwayItem[] }) {
   const [interviews, setInterviews] = useState<InterviewSession[]>([]);
@@ -16,12 +16,39 @@ export function InterviewTab({ applications }: { applications: PathwayItem[] }) 
   const [schedTime, setSchedTime] = useState('');
   const [scheduling, setScheduling] = useState(false);
 
-  // Sending result state
-  const [sendingResultId, setSendingResultId] = useState<string | null>(null);
+  // Saving questions state
+  const [savingQ, setSavingQ] = useState(false);
+  const [savedQ, setSavedQ] = useState(false);
 
   useEffect(() => {
     fetchInterviews();
+    // Auto-save questions to Firestore on first load
+    autoSeedQuestions();
   }, []);
+
+  const autoSeedQuestions = async () => {
+    try {
+      await saveDefaultQuestionsToFirestore();
+    } catch (e) {
+      // silently fail — questions are still in code
+    }
+  };
+
+  const handleSaveQuestions = async () => {
+    setSavingQ(true);
+    try {
+      await saveDefaultQuestionsToFirestore();
+      setSavedQ(true);
+      setTimeout(() => setSavedQ(false), 3000);
+    } catch (err: any) {
+      alert('Error saving questions: ' + err.message);
+    } finally {
+      setSavingQ(false);
+    }
+  };
+
+  // Sending result state
+  const [sendingResultId, setSendingResultId] = useState<string | null>(null);
 
   const fetchInterviews = async () => {
     setLoading(true);
@@ -123,12 +150,26 @@ export function InterviewTab({ applications }: { applications: PathwayItem[] }) 
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap gap-3">
         <h2 className="text-2xl font-black text-gray-900 flex items-center gap-2"><Trophy className="w-6 h-6 text-indigo-600" /> Online Interviews</h2>
-        <button onClick={() => setShowSchedule(!showSchedule)} className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-sm transition-all flex items-center gap-2">
-          {showSchedule ? <X className="w-4 h-4" /> : <Calendar className="w-4 h-4" />}
-          {showSchedule ? 'Close' : 'Schedule New'}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleSaveQuestions}
+            disabled={savingQ}
+            className={`px-4 py-2 rounded-xl text-[13px] font-bold flex items-center gap-2 transition-all ${
+              savedQ
+                ? 'bg-green-50 text-green-700 border border-green-200'
+                : 'bg-gray-50 hover:bg-gray-100 text-gray-600 border border-gray-200'
+            } disabled:opacity-50`}
+          >
+            <Database className="w-3.5 h-3.5" />
+            {savingQ ? 'Saving...' : savedQ ? '✅ Questions Saved!' : `Save ${DEFAULT_QUESTIONS.length} Questions to DB`}
+          </button>
+          <button onClick={() => setShowSchedule(!showSchedule)} className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-sm transition-all flex items-center gap-2">
+            {showSchedule ? <X className="w-4 h-4" /> : <Calendar className="w-4 h-4" />}
+            {showSchedule ? 'Close' : 'Schedule New'}
+          </button>
+        </div>
       </div>
 
       {showSchedule && (

@@ -425,3 +425,29 @@ export async function deleteInterview(id: string): Promise<void> {
   }
 }
 
+// ─── Save / Load Default Questions from Firestore ────────────────────────────
+export async function saveDefaultQuestionsToFirestore(): Promise<void> {
+  if (isFirebaseConfigured && db?.app) {
+    const { setDoc, doc } = await import("firebase/firestore");
+    await setDoc(doc(db, "settings", "interviewQuestions"), {
+      questions: DEFAULT_QUESTIONS,
+      savedAt: new Date().toISOString(),
+    });
+  } else {
+    localStorage.setItem("pathway_default_questions", JSON.stringify(DEFAULT_QUESTIONS));
+  }
+}
+
+export async function getDefaultQuestionsFromFirestore(): Promise<InterviewQuestion[]> {
+  if (isFirebaseConfigured && db?.app) {
+    const { getDoc, doc } = await import("firebase/firestore");
+    const snap = await getDoc(doc(db, "settings", "interviewQuestions"));
+    if (snap.exists()) {
+      return (snap.data().questions as InterviewQuestion[]) || DEFAULT_QUESTIONS;
+    }
+  } else {
+    const local = localStorage.getItem("pathway_default_questions");
+    if (local) return JSON.parse(local);
+  }
+  return DEFAULT_QUESTIONS;
+}
