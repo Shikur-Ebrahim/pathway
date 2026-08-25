@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
     const timeStr = dt.toLocaleTimeString("en-ET", { hour: "2-digit", minute: "2-digit" });
 
     const { data, error } = await resend.emails.send({
-      from: "Pathway Agency Ethiopia <noreply@pathwayagencyethiopia.com>",
+      from: "Pathway Agency <notifications@pathwayet.com>",
       to: toEmail,
       subject: "📋 Your Online Interview Test is Scheduled — Pathway Agency Ethiopia",
       html: `

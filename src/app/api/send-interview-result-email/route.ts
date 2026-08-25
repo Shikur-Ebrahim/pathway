@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
       : "Thank you for completing the online interview test. Unfortunately, you did not reach the passing score this time. We encourage you to continue developing your skills and apply again in the future.";
 
     const { data, error } = await resend.emails.send({
-      from: "Pathway Agency Ethiopia <noreply@pathwayagencyethiopia.com>",
+      from: "Pathway Agency <notifications@pathwayet.com>",
       to: toEmail,
       subject: `Your Interview Results: ${passed ? 'PASSED 🎉' : 'Completed'} — Pathway Agency Ethiopia`,
       html: `
