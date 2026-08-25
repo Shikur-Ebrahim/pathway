@@ -22,6 +22,7 @@ import { NewsletterSection } from "@/components/landing/NewsletterSection";
 import { Footer } from "@/components/landing/Footer";
 import { InstallBanner } from "@/components/InstallBanner";
 import { StatusTrackerModal } from "@/components/StatusTrackerModal";
+import InterviewPortal from "@/components/InterviewPortal";
 
 export default function Home() {
   const [lang, setLangState] = useState<Language>("en");
@@ -61,6 +62,7 @@ export default function Home() {
   const [isAppModalOpen, setIsAppModalOpen] = useState(false);
   const [isAuthOpen, setIsAuthOpen] = useState(false);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
+  const [isInterviewOpen, setIsInterviewOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
   const [showAllJobs, setShowAllJobs] = useState(false);
   const { user } = useAuth();
@@ -93,7 +95,7 @@ export default function Home() {
       <Navbar lang={lang} setLang={setLang} onApplyClick={handleApplyClick} onCheckStatus={() => setIsStatusOpen(true)} />
 
       <main className="flex-1 w-full flex flex-col overflow-x-hidden">
-        <HeroSection onApplyClick={handleApplyClick} onBrowseJobs={handleBrowseJobs} lang={lang} />
+        <HeroSection onApplyClick={handleApplyClick} onBrowseJobs={handleBrowseJobs} onOnlineInterview={() => setIsInterviewOpen(true)} lang={lang} />
         <ImageBannerSection lang={lang} />
         <CategoriesSection onSelectCategory={handleCategorySelect} lang={lang} />
         <GallerySection lang={lang} />
@@ -134,6 +136,8 @@ export default function Home() {
       <InstallBanner />
 
       <StatusTrackerModal isOpen={isStatusOpen} onClose={() => setIsStatusOpen(false)} lang={lang} />
+
+      {isInterviewOpen && <InterviewPortal onClose={() => setIsInterviewOpen(false)} />}
     </div>
   );
 }

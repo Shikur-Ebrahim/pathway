@@ -223,3 +223,97 @@ export async function savePaymentSettings(config: PaymentConfig): Promise<void> 
     localStorage.setItem("pathway_payment_settings", JSON.stringify(config));
   }
 }
+
+// ─── Interview System ─────────────────────────────────────────────────────────
+
+export interface InterviewQuestion {
+  question: string;
+  options: string[];
+  correctIndex: number;
+}
+
+export interface InterviewSession {
+  id?: string;
+  applicantEmail: string;
+  applicantName: string;
+  scheduledAt: string; // ISO datetime string e.g. "2024-08-26T09:00"
+  status: 'scheduled' | 'completed';
+  questions: InterviewQuestion[];
+  answers?: number[];   // index of chosen option per question (-1 = skipped)
+  score?: number;
+  passed?: boolean;
+  resultSent?: boolean;
+  createdAt?: any;
+}
+
+const INTERVIEW_STORAGE_KEY = "pathway_interviews";
+
+export async function createInterview(data: Omit<InterviewSession, 'id' | 'createdAt'>): Promise<string> {
+  if (isFirebaseConfigured && db?.app) {
+    const { addDoc: add, serverTimestamp: ts } = await import("firebase/firestore");
+    const ref = await add(collection(db, "interviews"), { ...data, createdAt: ts() });
+    return ref.id;
+  }
+  const existing = JSON.parse(localStorage.getItem(INTERVIEW_STORAGE_KEY) || "[]");
+  const newItem = { ...data, id: Date.now().toString(), createdAt: new Date().toISOString() };
+  localStorage.setItem(INTERVIEW_STORAGE_KEY, JSON.stringify([...existing, newItem]));
+  return newItem.id;
+}
+
+export async function getInterviews(): Promise<InterviewSession[]> {
+  if (isFirebaseConfigured && db?.app) {
+    const { getDocs: gd, collection: col, orderBy: ob, query: q } = await import("firebase/firestore");
+    const snap = await gd(q(col(db, "interviews"), ob("createdAt", "desc")));
+    return snap.docs.map(d => ({ id: d.id, ...d.data() } as InterviewSession));
+  }
+  return JSON.parse(localStorage.getItem(INTERVIEW_STORAGE_KEY) || "[]").reverse();
+}
+
+export async function getInterviewByEmail(email: string): Promise<InterviewSession | null> {
+  const all = await getInterviews();
+  return all.find(i => i.applicantEmail.toLowerCase() === email.toLowerCase()) || null;
+}
+
+export async function submitInterviewAnswers(
+  id: string,
+  answers: number[],
+  score: number,
+  passed: boolean
+): Promise<void> {
+  if (isFirebaseConfigured && db?.app) {
+    const { updateDoc: upd } = await import("firebase/firestore");
+    await upd(doc(db, "interviews", id), { answers, score, passed, status: 'completed' });
+  } else {
+    const existing: InterviewSession[] = JSON.parse(localStorage.getItem(INTERVIEW_STORAGE_KEY) || "[]");
+    const idx = existing.findIndex(i => i.id === id);
+    if (idx !== -1) {
+      existing[idx] = { ...existing[idx], answers, score, passed, status: 'completed' };
+      localStorage.setItem(INTERVIEW_STORAGE_KEY, JSON.stringify(existing));
+    }
+  }
+}
+
+export async function markInterviewResultSent(id: string): Promise<void> {
+  if (isFirebaseConfigured && db?.app) {
+    const { updateDoc: upd } = await import("firebase/firestore");
+    await upd(doc(db, "interviews", id), { resultSent: true });
+  } else {
+    const existing: InterviewSession[] = JSON.parse(localStorage.getItem(INTERVIEW_STORAGE_KEY) || "[]");
+    const idx = existing.findIndex(i => i.id === id);
+    if (idx !== -1) {
+      existing[idx].resultSent = true;
+      localStorage.setItem(INTERVIEW_STORAGE_KEY, JSON.stringify(existing));
+    }
+  }
+}
+
+export async function deleteInterview(id: string): Promise<void> {
+  if (isFirebaseConfigured && db?.app) {
+    const { deleteDoc } = await import("firebase/firestore");
+    await deleteDoc(doc(db, "interviews", id));
+  } else {
+    const existing: InterviewSession[] = JSON.parse(localStorage.getItem(INTERVIEW_STORAGE_KEY) || "[]");
+    localStorage.setItem(INTERVIEW_STORAGE_KEY, JSON.stringify(existing.filter(i => i.id !== id)));
+  }
+}
+

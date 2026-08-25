@@ -2,12 +2,17 @@
 
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { getPathwayPosts, PathwayItem, PaymentConfig, getPaymentSettings, savePaymentSettings, deletePathwayPost, updatePathwayPostStatus, markApplicationAsViewed, updatePathwayPostFormData } from "@/lib/db";
+import { 
+  getPathwayPosts, PathwayItem, PaymentConfig, getPaymentSettings, savePaymentSettings, 
+  deletePathwayPost, updatePathwayPostStatus, markApplicationAsViewed, updatePathwayPostFormData,
+  InterviewSession, getInterviews, createInterview, markInterviewResultSent, deleteInterview
+} from "@/lib/db";
 import { useRouter } from "next/navigation";
 import {
   Users, FileText, LogOut, Eye, X, Phone, MapPin,
-  Briefcase, CheckCircle2, AlertCircle, Search, RefreshCw, Trash2, Settings, Calendar, Clock, Send, Edit2, Save
+  Briefcase, CheckCircle2, AlertCircle, Search, RefreshCw, Trash2, Settings, Calendar, Clock, Send, Edit2, Save, Trophy
 } from "lucide-react";
+import { InterviewTab } from "./InterviewTab";
 
 const SECTOR_LABELS: Record<string, string> = {
   embassy: "🏛️ Embassy & Diplomatic",
@@ -581,7 +586,7 @@ function SettingsTab() {
 export default function AdminPage() {
   const { user, logout, isAdmin, loading: authLoading } = useAuth();
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'apps' | 'settings'>('apps');
+  const [activeTab, setActiveTab] = useState<'apps' | 'settings' | 'interviews'>('apps');
   const [applications, setApplications] = useState<PathwayItem[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedApp, setSelectedApp] = useState<PathwayItem | null>(null);
@@ -702,6 +707,9 @@ export default function AdminPage() {
               <button onClick={() => setActiveTab('settings')} className={`px-4 py-2 rounded-lg text-[13px] font-bold transition-all flex items-center gap-2 ${activeTab === 'settings' ? 'bg-gray-100 text-gray-900' : 'text-gray-400 hover:text-gray-600'}`}>
                 <Settings className="w-3.5 h-3.5" /> Settings
               </button>
+              <button onClick={() => setActiveTab('interviews')} className={`px-4 py-2 rounded-lg text-[13px] font-bold transition-all flex items-center gap-2 ${activeTab === 'interviews' ? 'bg-indigo-50 text-indigo-700' : 'text-gray-400 hover:text-gray-600'}`}>
+                <Trophy className="w-3.5 h-3.5" /> Interviews
+              </button>
             </nav>
           </div>
           
@@ -724,14 +732,14 @@ export default function AdminPage() {
           <button onClick={() => setActiveTab('settings')} className={`flex-1 py-2 rounded-lg text-[13px] font-bold text-center transition-all flex items-center justify-center gap-2 ${activeTab === 'settings' ? 'bg-gray-100 text-gray-900' : 'text-gray-400'}`}>
             <Settings className="w-3.5 h-3.5" /> Settings
           </button>
+          <button onClick={() => setActiveTab('interviews')} className={`flex-1 py-2 rounded-lg text-[13px] font-bold text-center transition-all flex items-center justify-center gap-2 ${activeTab === 'interviews' ? 'bg-indigo-50 text-indigo-700' : 'text-gray-400'}`}>
+            <Trophy className="w-3.5 h-3.5" />
+          </button>
         </div>
       </header>
 
-      <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
-        
-        {activeTab === 'settings' ? (
-          <SettingsTab />
-        ) : (
+      <main className="max-w-6xl mx-auto px-4 py-8">
+        {activeTab === 'interviews' ? <InterviewTab applications={applications} /> : activeTab === 'settings' ? <SettingsTab /> : (
           <>
             {/* Stats Row */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
