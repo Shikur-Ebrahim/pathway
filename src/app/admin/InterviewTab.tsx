@@ -351,7 +351,7 @@ export function InterviewTab({ applications }: { applications: PathwayItem[] }) 
                     </td>
                     <td className="p-4">
                       <p className="font-bold text-gray-900 text-[13px]">{dt.toLocaleDateString('en-ET', { timeZone: 'Africa/Addis_Ababa' })}</p>
-                      <p className="text-gray-500 text-[12px]">{dt.toLocaleTimeString('en-ET', { timeZone: 'Africa/Addis_Ababa', hour: '2-digit', minute: '2-digit' })}</p>
+                      <p className="text-gray-500 text-[12px]">{dt.toLocaleTimeString('en-ET', { timeZone: 'Africa/Addis_Ababa', hour: '2-digit', minute: '2-digit', hour12: false })}</p>
                     </td>
                     <td className="p-4">
                       {!isDone ? (
