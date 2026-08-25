@@ -11,8 +11,8 @@ export async function POST(req: NextRequest) {
     }
 
     const dt = new Date(scheduledAt);
-    const dateStr = dt.toLocaleDateString("en-ET", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
-    const timeStr = dt.toLocaleTimeString("en-ET", { hour: "2-digit", minute: "2-digit" });
+    const dateStr = dt.toLocaleDateString("en-ET", { timeZone: "Africa/Addis_Ababa", weekday: "long", year: "numeric", month: "long", day: "numeric" });
+    const timeStr = dt.toLocaleTimeString("en-ET", { timeZone: "Africa/Addis_Ababa", hour: "2-digit", minute: "2-digit" });
 
     const { data, error } = await resend.emails.send({
       from: "Pathway Agency <notifications@pathwayet.com>",
