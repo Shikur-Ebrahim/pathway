@@ -1,14 +1,13 @@
-"use client";
+﻿"use client";
 
 import React, { useEffect, useState } from "react";
-import { PathwayItem, InterviewSession, getInterviews, createInterview, markInterviewResultSent, deleteInterview, saveDefaultQuestionsToFirestore, DEFAULT_QUESTIONS } from "@/lib/db";
-import { Trophy, Calendar, Clock, Send, CheckCircle2, X, Trash2, Database } from "lucide-react";
+import { PathwayItem, InterviewSession, InterviewQuestion, getInterviews, createInterview, markInterviewResultSent, deleteInterview, saveDefaultQuestionsToFirestore, DEFAULT_QUESTIONS } from "@/lib/db";
+import { Trophy, Calendar, Clock, Send, CheckCircle2, X, Trash2, Database, ChevronDown, ChevronUp, Eye, Pencil } from "lucide-react";
 
 export function InterviewTab({ applications }: { applications: PathwayItem[] }) {
   const [interviews, setInterviews] = useState<InterviewSession[]>([]);
   const [loading, setLoading] = useState(true);
-  
-  // Schedule Form State
+
   const [showSchedule, setShowSchedule] = useState(false);
   const [selectedEmail, setSelectedEmail] = useState('');
   const [selectedName, setSelectedName] = useState('');
@@ -16,22 +15,23 @@ export function InterviewTab({ applications }: { applications: PathwayItem[] }) 
   const [schedTime, setSchedTime] = useState('');
   const [scheduling, setScheduling] = useState(false);
 
-  // Saving questions state
+  const [showQuestions, setShowQuestions] = useState(false);
+  const [editableQuestions, setEditableQuestions] = useState<InterviewQuestion[]>(
+    DEFAULT_QUESTIONS.map(q => ({ ...q }))
+  );
+  const [editingQIndex, setEditingQIndex] = useState<number | null>(null);
+
   const [savingQ, setSavingQ] = useState(false);
   const [savedQ, setSavedQ] = useState(false);
+  const [sendingResultId, setSendingResultId] = useState<string | null>(null);
 
   useEffect(() => {
     fetchInterviews();
-    // Auto-save questions to Firestore on first load
     autoSeedQuestions();
   }, []);
 
   const autoSeedQuestions = async () => {
-    try {
-      await saveDefaultQuestionsToFirestore();
-    } catch (e) {
-      // silently fail — questions are still in code
-    }
+    try { await saveDefaultQuestionsToFirestore(); } catch (e) {}
   };
 
   const handleSaveQuestions = async () => {
@@ -46,9 +46,6 @@ export function InterviewTab({ applications }: { applications: PathwayItem[] }) 
       setSavingQ(false);
     }
   };
-
-  // Sending result state
-  const [sendingResultId, setSendingResultId] = useState<string | null>(null);
 
   const fetchInterviews = async () => {
     setLoading(true);
@@ -80,16 +77,14 @@ export function InterviewTab({ applications }: { applications: PathwayItem[] }) 
     try {
       const scheduledAt = new Date(`${schedDate}T${schedTime}`).toISOString();
 
-      // 1. Save interview session with questions auto-attached in db
       await createInterview({
         applicantEmail: selectedEmail,
         applicantName: selectedName,
         scheduledAt,
         status: 'scheduled',
-        questions: [] // db.ts will auto-fill DEFAULT_QUESTIONS
+        questions: editableQuestions
       });
 
-      // 2. Send notification email via Resend
       const res = await fetch('/api/send-interview-test-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -107,9 +102,9 @@ export function InterviewTab({ applications }: { applications: PathwayItem[] }) 
       setSchedDate('');
       setSchedTime('');
       fetchInterviews();
-      alert('✅ Interview scheduled and notification email sent successfully!');
+      alert('Interview scheduled and notification email sent successfully!');
     } catch (err: any) {
-      alert('❌ Error: ' + err.message);
+      alert('Error: ' + err.message);
     } finally {
       setScheduling(false);
     }
@@ -119,7 +114,7 @@ export function InterviewTab({ applications }: { applications: PathwayItem[] }) 
     if (!session.id || session.score === undefined || session.passed === undefined) return;
     setSendingResultId(session.id);
     try {
-      await fetch('/api/send-interview-result-email', {
+      const res = await fetch('/api/send-interview-result-email', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -130,6 +125,10 @@ export function InterviewTab({ applications }: { applications: PathwayItem[] }) 
           passed: session.passed
         })
       });
+      if (!res.ok) {
+        const json = await res.json().catch(() => ({}));
+        throw new Error(json.error || 'Failed');
+      }
       await markInterviewResultSent(session.id);
       fetchInterviews();
       alert('Result email sent successfully!');
@@ -146,26 +145,47 @@ export function InterviewTab({ applications }: { applications: PathwayItem[] }) 
     fetchInterviews();
   };
 
+  const updateQuestion = (idx: number, field: keyof InterviewQuestion, value: any) => {
+    setEditableQuestions(prev => {
+      const next = [...prev];
+      next[idx] = { ...next[idx], [field]: value };
+      return next;
+    });
+  };
+
+  const updateOption = (qIdx: number, optIdx: number, value: string) => {
+    setEditableQuestions(prev => {
+      const next = [...prev];
+      const opts = [...next[qIdx].options];
+      opts[optIdx] = value;
+      next[qIdx] = { ...next[qIdx], options: opts };
+      return next;
+    });
+  };
+
   const uniqueEmails = Array.from(new Set(applications.map(a => a.formData?.personal?.email || a.authorEmail).filter(Boolean)));
 
   return (
     <div className="max-w-6xl mx-auto space-y-6">
       <div className="flex items-center justify-between flex-wrap gap-3">
-        <h2 className="text-2xl font-black text-gray-900 flex items-center gap-2"><Trophy className="w-6 h-6 text-indigo-600" /> Online Interviews</h2>
+        <h2 className="text-2xl font-black text-gray-900 flex items-center gap-2">
+          <Trophy className="w-6 h-6 text-indigo-600" /> Online Interviews
+        </h2>
         <div className="flex items-center gap-2">
           <button
             onClick={handleSaveQuestions}
             disabled={savingQ}
             className={`px-4 py-2 rounded-xl text-[13px] font-bold flex items-center gap-2 transition-all ${
-              savedQ
-                ? 'bg-green-50 text-green-700 border border-green-200'
-                : 'bg-gray-50 hover:bg-gray-100 text-gray-600 border border-gray-200'
+              savedQ ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-gray-50 hover:bg-gray-100 text-gray-600 border border-gray-200'
             } disabled:opacity-50`}
           >
             <Database className="w-3.5 h-3.5" />
-            {savingQ ? 'Saving...' : savedQ ? '✅ Questions Saved!' : `Save ${DEFAULT_QUESTIONS.length} Questions to DB`}
+            {savingQ ? 'Saving...' : savedQ ? 'Questions Saved!' : `Save ${DEFAULT_QUESTIONS.length} Questions to DB`}
           </button>
-          <button onClick={() => setShowSchedule(!showSchedule)} className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-sm transition-all flex items-center gap-2">
+          <button
+            onClick={() => { setShowSchedule(!showSchedule); setShowQuestions(false); }}
+            className="px-5 py-2.5 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl shadow-sm transition-all flex items-center gap-2"
+          >
             {showSchedule ? <X className="w-4 h-4" /> : <Calendar className="w-4 h-4" />}
             {showSchedule ? 'Close' : 'Schedule New'}
           </button>
@@ -195,6 +215,88 @@ export function InterviewTab({ applications }: { applications: PathwayItem[] }) 
               <input type="time" value={schedTime} onChange={e => setSchedTime(e.target.value)} required className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none" />
             </div>
           </div>
+
+          <div className="border border-indigo-100 rounded-2xl overflow-hidden">
+            <button
+              type="button"
+              onClick={() => setShowQuestions(!showQuestions)}
+              className="w-full flex items-center justify-between px-5 py-3.5 bg-indigo-50 hover:bg-indigo-100 transition-colors"
+            >
+              <span className="flex items-center gap-2 text-[13px] font-bold text-indigo-700">
+                <Eye className="w-4 h-4" />
+                View / Edit Interview Questions ({editableQuestions.length} questions - 30 seconds each)
+              </span>
+              {showQuestions ? <ChevronUp className="w-4 h-4 text-indigo-600" /> : <ChevronDown className="w-4 h-4 text-indigo-600" />}
+            </button>
+
+            {showQuestions && (
+              <div className="divide-y divide-gray-100 bg-white max-h-96 overflow-y-auto">
+                {editableQuestions.map((q, qi) => (
+                  <div key={qi} className="p-4 space-y-3">
+                    <div className="flex items-start gap-3">
+                      <span className="flex-shrink-0 w-7 h-7 bg-indigo-100 text-indigo-700 text-[12px] font-black rounded-full flex items-center justify-center mt-0.5">{qi + 1}</span>
+                      <div className="flex-1 space-y-2">
+                        {editingQIndex === qi ? (
+                          <>
+                            <textarea
+                              value={q.question}
+                              onChange={e => updateQuestion(qi, 'question', e.target.value)}
+                              rows={2}
+                              className="w-full px-3 py-2 bg-gray-50 border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 resize-none"
+                            />
+                            <div className="space-y-1.5">
+                              {q.options.map((opt, oi) => (
+                                <div key={oi} className="flex items-center gap-2">
+                                  <input
+                                    type="radio"
+                                    name={`correct-${qi}`}
+                                    checked={q.correctIndex === oi}
+                                    onChange={() => updateQuestion(qi, 'correctIndex', oi)}
+                                    className="w-4 h-4 text-indigo-600 cursor-pointer"
+                                  />
+                                  <input
+                                    type="text"
+                                    value={opt}
+                                    onChange={e => updateOption(qi, oi, e.target.value)}
+                                    className="flex-1 px-3 py-1.5 bg-gray-50 border border-gray-200 rounded-lg text-[13px] font-medium text-gray-700 focus:outline-none focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500"
+                                  />
+                                  {q.correctIndex === oi && (
+                                    <span className="text-[11px] font-bold text-green-600 bg-green-50 px-2 py-0.5 rounded-full whitespace-nowrap">Correct</span>
+                                  )}
+                                </div>
+                              ))}
+                            </div>
+                            <button type="button" onClick={() => setEditingQIndex(null)} className="text-[12px] font-bold text-indigo-600 hover:underline">
+                              Done Editing
+                            </button>
+                          </>
+                        ) : (
+                          <>
+                            <p className="text-[13px] font-bold text-gray-800">{q.question}</p>
+                            <ul className="space-y-1">
+                              {q.options.map((opt, oi) => (
+                                <li key={oi} className={`flex items-center gap-2 text-[12px] font-semibold px-3 py-1.5 rounded-lg ${q.correctIndex === oi ? 'bg-green-50 text-green-700' : 'text-gray-500 bg-gray-50'}`}>
+                                  <span className="w-5 h-5 rounded-full border-2 flex-shrink-0 flex items-center justify-center text-[10px] font-black border-current">
+                                    {String.fromCharCode(65 + oi)}
+                                  </span>
+                                  {opt}
+                                  {q.correctIndex === oi && <span className="ml-auto text-[10px] font-black text-green-600">correct</span>}
+                                </li>
+                              ))}
+                            </ul>
+                            <button type="button" onClick={() => setEditingQIndex(qi)} className="flex items-center gap-1.5 text-[12px] font-bold text-indigo-500 hover:text-indigo-700 transition-colors">
+                              <Pencil className="w-3 h-3" /> Edit
+                            </button>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
           <div className="flex justify-end pt-2">
             <button type="submit" disabled={scheduling} className="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-bold rounded-xl shadow-lg shadow-blue-500/25 flex items-center gap-2 disabled:opacity-50">
               <Send className="w-4 h-4" /> {scheduling ? 'Scheduling & Emailing...' : 'Schedule & Notify Applicant'}

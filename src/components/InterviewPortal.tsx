@@ -6,7 +6,7 @@ import { getInterviewByEmail, submitInterviewAnswers, InterviewSession, DEFAULT_
 
 
 
-const QUESTION_TIME = 60; // seconds per question
+const QUESTION_TIME = 30; // seconds per question
 const PASS_SCORE = 6; // out of 10
 
 type Phase = 'email' | 'waiting' | 'quiz' | 'done' | 'already_done' | 'not_found';
