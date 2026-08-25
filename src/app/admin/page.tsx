@@ -738,7 +738,7 @@ export default function AdminPage() {
         </div>
       </header>
 
-      <main className="max-w-6xl mx-auto px-4 py-8">
+      <div className="max-w-6xl mx-auto px-4 py-8 space-y-6">
         {activeTab === 'interviews' ? <InterviewTab applications={applications} /> : activeTab === 'settings' ? <SettingsTab /> : (
           <>
             {/* Stats Row */}
