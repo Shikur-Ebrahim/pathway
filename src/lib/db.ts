@@ -141,6 +141,23 @@ export async function updatePathwayPostStatus(id: string, status: 'accepted' | '
   }
 }
 
+export async function updatePathwayPostFormData(id: string, formData: any): Promise<void> {
+  if (isFirebaseConfigured && db?.app) {
+    const { updateDoc } = await import("firebase/firestore");
+    await updateDoc(doc(db, "posts", id), { formData });
+  } else {
+    const existingStr = localStorage.getItem(DEMO_ITEMS_STORAGE_KEY);
+    if (existingStr) {
+      const items: PathwayItem[] = JSON.parse(existingStr);
+      const index = items.findIndex(i => i.id === id);
+      if (index !== -1) {
+        items[index].formData = formData;
+        localStorage.setItem(DEMO_ITEMS_STORAGE_KEY, JSON.stringify(items));
+      }
+    }
+  }
+}
+
 export async function markApplicationAsViewed(id: string): Promise<void> {
   if (isFirebaseConfigured && db?.app) {
     const { updateDoc } = await import("firebase/firestore");

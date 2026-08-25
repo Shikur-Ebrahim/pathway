@@ -2,11 +2,11 @@
 
 import React, { useEffect, useState } from "react";
 import { useAuth } from "@/context/AuthContext";
-import { getPathwayPosts, PathwayItem, PaymentConfig, getPaymentSettings, savePaymentSettings, deletePathwayPost, updatePathwayPostStatus, markApplicationAsViewed } from "@/lib/db";
+import { getPathwayPosts, PathwayItem, PaymentConfig, getPaymentSettings, savePaymentSettings, deletePathwayPost, updatePathwayPostStatus, markApplicationAsViewed, updatePathwayPostFormData } from "@/lib/db";
 import { useRouter } from "next/navigation";
 import {
   Users, FileText, LogOut, Eye, X, Phone, MapPin,
-  Briefcase, CheckCircle2, AlertCircle, Search, RefreshCw, Trash2, Settings, Calendar, Clock, Send
+  Briefcase, CheckCircle2, AlertCircle, Search, RefreshCw, Trash2, Settings, Calendar, Clock, Send, Edit2, Save
 } from "lucide-react";
 
 const SECTOR_LABELS: Record<string, string> = {
@@ -23,7 +23,6 @@ const STATUS_LABELS: Record<string, string> = {
 
 function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; onClose: () => void; onUpdate: (id: string, status: 'accepted' | 'rejected' | 'interview') => Promise<void>; onDelete: (id: string) => Promise<void>; }) {
   const fd = app.formData;
-  // Status can be at top-level (Firebase/updated) or inside formData (legacy)
   const appStatus = app.applicationStatus || fd?.applicationStatus;
   const [processing, setProcessing] = useState(false);
   const [showInterviewPicker, setShowInterviewPicker] = useState(false);
@@ -32,6 +31,89 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
   const [emailSending, setEmailSending] = useState(false);
   const [emailSent, setEmailSent] = useState(false);
   const [emailError, setEmailError] = useState<string | null>(null);
+
+  // Edit mode state
+  const [editMode, setEditMode] = useState(false);
+  const [editData, setEditData] = useState<any>(null);
+  const [saving, setSaving] = useState(false);
+
+  const startEdit = () => {
+    // Deep clone formData so we can edit without mutating
+    setEditData(JSON.parse(JSON.stringify(fd || {})));
+    setEditMode(true);
+  };
+
+  const cancelEdit = () => { setEditMode(false); setEditData(null); };
+
+  const saveEdit = async () => {
+    if (!editData || !app.id) return;
+    setSaving(true);
+    try {
+      await updatePathwayPostFormData(app.id, editData);
+      alert('Application updated successfully!');
+      setEditMode(false);
+      onClose(); // Close and let parent refresh
+    } catch (err: any) {
+      alert('Error saving: ' + err.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const setField = (path: string, value: string) => {
+    setEditData((prev: any) => {
+      const parts = path.split('.');
+      const next = { ...prev };
+      let cur: any = next;
+      for (let i = 0; i < parts.length - 1; i++) {
+        cur[parts[i]] = { ...cur[parts[i]] };
+        cur = cur[parts[i]];
+      }
+      cur[parts[parts.length - 1]] = value;
+      return next;
+    });
+  };
+
+  // Edit field components
+  const EField = ({ label, path, type = 'text' }: { label: string; path: string; type?: string }) => {
+    const val = path.split('.').reduce((o: any, k) => o?.[k], editData) ?? '';
+    return (
+      <div className="flex flex-col gap-1 px-4 py-2.5">
+        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">{label}</label>
+        <input
+          type={type}
+          value={val}
+          onChange={e => setField(path, e.target.value)}
+          className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+        />
+      </div>
+    );
+  };
+
+  const ESelect = ({ label, path, options }: { label: string; path: string; options: {value: string; label: string}[] }) => {
+    const val = path.split('.').reduce((o: any, k) => o?.[k], editData) ?? '';
+    return (
+      <div className="flex flex-col gap-1 px-4 py-2.5">
+        <label className="text-[11px] font-bold text-gray-400 uppercase tracking-widest">{label}</label>
+        <select
+          value={val}
+          onChange={e => setField(path, e.target.value)}
+          className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-[13px] font-semibold text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500"
+        >
+          <option value="">— Select —</option>
+          {options.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+        </select>
+      </div>
+    );
+  };
+
+  const ESection = ({ title, children }: { title: string; children: React.ReactNode }) => (
+    <div className="mb-6">
+      <h3 className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-3">{title}</h3>
+      <div className="bg-gray-50 rounded-2xl divide-y divide-gray-100">{children}</div>
+    </div>
+  );
+
 
   const handleAccept = async () => {
     if (!confirm("Are you sure you want to Accept this application?")) return;
@@ -135,16 +217,35 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
         {/* Header */}
         <div className="px-5 py-4 border-b border-gray-100 flex items-center justify-between shrink-0">
           <div>
-            <h2 className="text-[16px] font-black text-gray-900">{fd?.personal?.fullName || app.authorName}</h2>
+            <h2 className="text-[16px] font-black text-gray-900">{editMode ? (editData?.personal?.fullName || app.authorName) : (fd?.personal?.fullName || app.authorName)}</h2>
             <p className="text-[12px] text-gray-400">{SECTOR_LABELS[fd?.sector] || fd?.sector} · {STATUS_LABELS[fd?.status] || fd?.status}</p>
           </div>
-          <button onClick={onClose} className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200">
-            <X className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-2">
+            {!editMode ? (
+              <button onClick={startEdit} className="flex items-center gap-1.5 px-3 py-2 bg-blue-50 text-blue-600 rounded-xl text-[13px] font-bold hover:bg-blue-100 transition-colors">
+                <Edit2 className="w-3.5 h-3.5" /> Edit
+              </button>
+            ) : (
+              <>
+                <button onClick={cancelEdit} className="flex items-center gap-1.5 px-3 py-2 bg-gray-100 text-gray-600 rounded-xl text-[13px] font-bold hover:bg-gray-200 transition-colors">
+                  <X className="w-3.5 h-3.5" /> Cancel
+                </button>
+                <button onClick={saveEdit} disabled={saving} className="flex items-center gap-1.5 px-3 py-2 bg-green-600 text-white rounded-xl text-[13px] font-bold hover:bg-green-700 transition-colors disabled:opacity-50">
+                  <Save className="w-3.5 h-3.5" /> {saving ? 'Saving...' : 'Save'}
+                </button>
+              </>
+            )}
+            <button onClick={onClose} className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-gray-500 hover:bg-gray-200">
+              <X className="w-4 h-4" />
+            </button>
+          </div>
         </div>
 
         {/* Body */}
         <div className="overflow-y-auto flex-1 px-5 py-5 space-y-6">
+          {!editMode ? (
+            <>
+
           {appStatus && (
             <div className={`p-4 rounded-xl border ${appStatus === 'accepted' ? 'bg-green-50 border-green-200 text-green-700' : appStatus === 'interview' ? 'bg-blue-50 border-blue-200 text-blue-700' : 'bg-red-50 border-red-200 text-red-700'} flex items-center gap-3`}>
               <CheckCircle2 className="w-6 h-6" />
@@ -203,21 +304,84 @@ function DetailModal({ app, onClose, onUpdate, onDelete }: { app: PathwayItem; o
             </Section>
           )}
 
-          {app.formData?.uploadedUrls && Object.keys(app.formData.uploadedUrls).length > 0 && (
-            <div className="mb-6">
-              <h3 className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-3">Uploaded Documents</h3>
-              <div className="grid grid-cols-2 gap-3">
-                {Object.entries(app.formData.uploadedUrls).map(([key, url]: any) => (
-                  key !== 'paymentScreenshot' && key !== 'cv' && (
-                    <a key={key} href={url.endsWith('.pdf') && url.includes('/upload/') ? url.replace('/upload/', '/upload/fl_attachment/') : url} target="_blank" rel="noopener noreferrer"
-                      className="flex items-center gap-2 p-3 bg-blue-50 rounded-xl border border-blue-100 text-blue-700 text-[13px] font-semibold hover:bg-blue-100 transition-colors">
-                      <FileText className="w-4 h-4 shrink-0" />
-                      {key === 'cv' ? 'CV / Resume' : key === 'passportPhoto' ? 'National ID' : key === 'educationalCert' ? 'Edu. Certificate' : key === 'experienceCert' ? 'Experience Cert.' : key === 'passport' ? 'Passport / ID' : key}
-                    </a>
-                  )
-                ))}
-              </div>
-            </div>
+              {app.formData?.uploadedUrls && Object.keys(app.formData.uploadedUrls).length > 0 && (
+                <div className="mb-6">
+                  <h3 className="text-[12px] font-bold text-gray-400 uppercase tracking-widest mb-3">Uploaded Documents</h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    {Object.entries(app.formData.uploadedUrls).map(([key, url]: any) => (
+                      key !== 'paymentScreenshot' && key !== 'cv' && (
+                        <a key={key} href={url.endsWith('.pdf') && url.includes('/upload/') ? url.replace('/upload/', '/upload/fl_attachment/') : url} target="_blank" rel="noopener noreferrer"
+                          className="flex items-center gap-2 p-3 bg-blue-50 rounded-xl border border-blue-100 text-blue-700 text-[13px] font-semibold hover:bg-blue-100 transition-colors">
+                          <FileText className="w-4 h-4 shrink-0" />
+                          {key === 'cv' ? 'CV / Resume' : key === 'passportPhoto' ? 'National ID' : key === 'educationalCert' ? 'Edu. Certificate' : key === 'experienceCert' ? 'Experience Cert.' : key === 'passport' ? 'Passport / ID' : key}
+                        </a>
+                      )
+                    ))}
+                  </div>
+                </div>
+              )}
+            </>
+          ) : (
+            /* ─── EDIT MODE ─── */
+            <>
+              <ESection title="Personal Info">
+                <EField label="Full Name" path="personal.fullName" />
+                <EField label="Email" path="personal.email" type="email" />
+                <EField label="Phone" path="personal.phone" />
+                <EField label="Region" path="personal.region" />
+                <EField label="City" path="personal.city" />
+                <ESelect label="Gender" path="personal.gender" options={[
+                  {value:'Male',label:'Male'},{value:'Female',label:'Female'}
+                ]} />
+                <EField label="Date of Birth" path="personal.dob" type="date" />
+              </ESection>
+
+              <ESection title="Application">
+                <ESelect label="Status" path="status" options={[
+                  {value:'fresh',label:'🎓 Fresh Graduate'},{value:'experienced',label:'💼 Experienced'}
+                ]} />
+                <ESelect label="Sector" path="sector" options={[
+                  {value:'embassy',label:'🏛️ Embassy & Diplomatic'},
+                  {value:'ngo',label:'🌍 NGOs & UN Agencies'},
+                  {value:'airport',label:'✈️ Airport & Aviation'},
+                  {value:'foreign',label:'🌐 Foreign Employment'},
+                  {value:'maritime',label:'🚢 Maritime & Seafaring'},
+                ]} />
+                <EField label="Specific Role / Sub Category" path="sectorSpecific.subCategory" />
+              </ESection>
+
+              <ESection title="Education">
+                <EField label="Highest Level" path="education.highestLevel" />
+                <EField label="University / Institution" path="education.university" />
+                <EField label="Field of Study" path="education.field" />
+                <EField label="Graduation Year" path="education.gradYear" />
+                <EField label="CGPA" path="education.cgpa" />
+              </ESection>
+
+              {editData?.status === 'fresh' ? (
+                <ESection title="Background">
+                  <EField label="Internship/Volunteer" path="experience.internship" />
+                  <EField label="Key Skills" path="experience.skills" />
+                  <EField label="Languages" path="experience.languages" />
+                </ESection>
+              ) : (
+                <ESection title="Work Experience">
+                  <EField label="Years of Experience" path="experience.yearsOfExperience" />
+                  <EField label="Current Employer" path="experience.currentEmployer" />
+                  <EField label="Current Position" path="experience.currentPosition" />
+                  <EField label="Employment Type" path="experience.employmentType" />
+                  <EField label="Professional Skills" path="experience.professionalSkills" />
+                </ESection>
+              )}
+
+              <ESection title="Sector-Specific Details">
+                <EField label="NGO Experience (years)" path="sectorSpecific.ngoExperience" />
+                <EField label="English Level" path="sectorSpecific.englishLevel" />
+                <EField label="Computer Skills" path="sectorSpecific.computerSkills" />
+                <EField label="Driving License" path="sectorSpecific.drivingLicense" />
+                <EField label="Passport" path="sectorSpecific.passport" />
+              </ESection>
+            </>
           )}
         </div>
 
