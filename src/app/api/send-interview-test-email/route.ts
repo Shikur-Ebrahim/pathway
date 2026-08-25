@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
             <p style="margin:0 0 12px;font-size:14px;font-weight:800;color:#111827;">📱 How to Take Your Test:</p>
             <ol style="margin:0;padding-left:20px;color:#374151;font-size:14px;line-height:2;">
               <li>Visit <a href="https://pathwayet.com" style="color:#3b82f6;font-weight:700;">pathwayet.com</a></li>
-              <li>Click the <strong>"🎯 Online Interview"</strong> button</li>
+              <li>Click the <strong>"Interview"</strong> link in the top menu</li>
               <li>Enter your email address</li>
               <li>Wait for the countdown timer — questions appear automatically!</li>
             </ol>
@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
             <p style="margin:0 0 8px;font-size:13px;font-weight:800;color:#854d0e;">⚡ Quick Tips:</p>
             <ul style="margin:0;padding-left:18px;color:#713f12;font-size:13px;line-height:1.8;">
               <li>10 multiple-choice questions</li>
-              <li>60 seconds per question — answer quickly!</li>
+              <li>30 seconds per question — answer quickly!</li>
               <li>Use a stable internet connection</li>
               <li>Be ready before the start time</li>
             </ul>
