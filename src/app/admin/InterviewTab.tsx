@@ -226,8 +226,34 @@ export function InterviewTab({ applications }: { applications: PathwayItem[] }) 
               <input type="date" value={schedDate} onChange={e => setSchedDate(e.target.value)} required className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none" />
             </div>
             <div>
-              <label className="block text-[12px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">Time</label>
-              <input type="time" value={schedTime} onChange={e => setSchedTime(e.target.value)} required className="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none" />
+              <label className="block text-[12px] font-bold text-gray-500 uppercase tracking-widest mb-1.5">Time (24-Hour)</label>
+              <div className="flex gap-2">
+                <select 
+                  value={schedTime.split(':')[0] || ''} 
+                  onChange={e => setSchedTime(`${e.target.value}:${schedTime.split(':')[1] || '00'}`)}
+                  required 
+                  className="w-1/2 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+                >
+                  <option value="">Hour</option>
+                  {Array.from({length: 24}).map((_, i) => {
+                    const v = i.toString().padStart(2, '0');
+                    return <option key={v} value={v}>{v}</option>;
+                  })}
+                </select>
+                <span className="flex items-center font-black text-gray-400">:</span>
+                <select 
+                  value={schedTime.split(':')[1] || ''} 
+                  onChange={e => setSchedTime(`${schedTime.split(':')[0] || '00'}:${e.target.value}`)}
+                  required 
+                  className="w-1/2 px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl text-sm font-semibold focus:ring-2 focus:ring-indigo-500/20 focus:border-indigo-500 outline-none"
+                >
+                  <option value="">Min</option>
+                  {Array.from({length: 60}).map((_, i) => {
+                    const v = i.toString().padStart(2, '0');
+                    return <option key={v} value={v}>{v}</option>;
+                  })}
+                </select>
+              </div>
             </div>
           </div>
 
