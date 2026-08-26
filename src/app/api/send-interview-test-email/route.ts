@@ -65,7 +65,7 @@ export async function POST(req: NextRequest) {
             <p style="margin:0 0 8px;font-size:13px;font-weight:800;color:#854d0e;">⚡ Quick Tips:</p>
             <ul style="margin:0;padding-left:18px;color:#713f12;font-size:13px;line-height:1.8;">
               <li>10 multiple-choice questions</li>
-              <li>30 seconds per question — answer quickly!</li>
+              <li>45 seconds per question — answer quickly!</li>
               <li>Use a stable internet connection</li>
               <li>Be ready before the start time</li>
             </ul>
