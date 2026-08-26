@@ -249,102 +249,102 @@ export interface InterviewSession {
 // ─── Default Interview Questions (10 MCQ) ────────────────────────────────────
 export const DEFAULT_QUESTIONS: InterviewQuestion[] = [
   {
-    question: "How do you prioritize tasks when you have multiple deadlines at the same time?",
+    question: "You discover your direct manager is manipulating financial reports to hide a critical multi-million dollar budget deficit before an acquisition. What is your immediate course of action?",
     options: [
-      "Work on all tasks simultaneously without a plan",
-      "Identify the most urgent and important tasks first, then work systematically",
-      "Ask colleagues to handle some tasks for you",
-      "Work on the easiest task first to gain momentum"
-    ],
-    correctIndex: 1
-  },
-  {
-    question: "How do you handle a conflict with a coworker?",
-    options: [
-      "Avoid them completely and hope it resolves itself",
-      "Report them to the manager immediately without discussion",
-      "Discuss the issue calmly and professionally to find a resolution",
-      "Ignore the problem entirely"
+      "Confront your manager privately and threaten to expose them if they don't fix it.",
+      "Immediately report the discrepancy anonymously to the regulatory compliance board.",
+      "Document the evidence securely and escalate it to the Chief Compliance Officer or Board of Directors.",
+      "Ignore it, as it is above your pay grade and exposing it could cost you your job."
     ],
     correctIndex: 2
   },
   {
-    question: "What does professional confidentiality require of an employee?",
+    question: "During a high-stakes negotiation with a foreign client, the client makes a culturally insensitive and highly offensive remark to a junior member of your team. How do you respond?",
     options: [
-      "Sharing company information freely with friends",
-      "Keeping sensitive information private and secure at all times",
-      "Discussing client details with other clients",
-      "Posting work updates on social media"
-    ],
-    correctIndex: 1
-  },
-  {
-    question: "When you make a mistake at work, what is the best course of action?",
-    options: [
-      "Hide it and hope no one notices",
-      "Blame a colleague for the mistake",
-      "Acknowledge it, inform your supervisor, and propose a solution",
-      "Quit the job to avoid consequences"
+      "Immediately terminate the negotiation and walk out to protect your team member.",
+      "Laugh it off to save the deal, then apologize to your team member privately later.",
+      "Calmly and professionally pause the meeting to address the boundary violation without escalating into a fight.",
+      "Yell at the client for their ignorance and demand an immediate apology."
     ],
     correctIndex: 2
   },
   {
-    question: "Which quality is most important for effective teamwork?",
+    question: "You are managing a remote international team spanning 4 continents. Two key engineers from different cultures are actively sabotaging each other's code due to a severe personal conflict, endangering a major release. What do you do?",
     options: [
-      "Being the best individual performer on the team",
-      "Open communication and active collaboration",
-      "Taking all the credit for group accomplishments",
-      "Working independently at all times"
+      "Fire both of them immediately to set an example for the rest of the team.",
+      "Halt their repository access, mandate an immediate mediated emergency resolution meeting, and restructure their dependencies.",
+      "Let them work it out themselves; engineers need to learn how to resolve their own conflicts.",
+      "Take over their code yourself and work 100 hours a week to ensure the release goes out on time."
     ],
     correctIndex: 1
   },
   {
-    question: "How should you respond when receiving constructive criticism from your supervisor?",
+    question: "Your company's flagship software just deployed a critical bug that caused a major hospital's life-support monitoring system to crash for 5 minutes. The press is calling. What is the very first thing you do?",
     options: [
-      "Argue back immediately to defend yourself",
-      "Listen calmly, ask clarifying questions if needed, and work to improve",
-      "Ignore the feedback and continue as before",
-      "Complain to other colleagues about the supervisor"
+      "Draft a public relations statement denying the company's involvement until lawyers review it.",
+      "Initiate immediate emergency rollback procedures while simultaneously opening a direct crisis channel with the hospital.",
+      "Resign immediately to avoid being personally sued for the incident.",
+      "Blame the junior developer who deployed the code to deflect attention from the company."
     ],
     correctIndex: 1
   },
   {
-    question: "What best defines professional integrity in the workplace?",
+    question: "You are the project lead. The CEO demands you launch an AI product next week that you know has a severe algorithmic bias that discriminates against minorities. If you refuse, you will be fired. What do you do?",
     options: [
-      "Always agreeing with your manager regardless of the situation",
-      "Being honest and ethical even when it is difficult or inconvenient",
-      "Prioritizing personal gain over company values",
-      "Following only the rules you personally agree with"
-    ],
-    correctIndex: 1
-  },
-  {
-    question: "If you are unsure how to complete an important task, what should you do?",
-    options: [
-      "Guess and submit the work anyway",
-      "Do nothing and wait for someone to notice",
-      "Ask your supervisor or a knowledgeable colleague for guidance",
-      "Search for a different job instead"
+      "Launch the product; the CEO takes ultimate responsibility, not you.",
+      "Leak the algorithmic bias data to the press anonymously to force the CEO's hand.",
+      "Refuse to launch on ethical grounds, presenting undeniable data on the legal and reputational risks to the CEO.",
+      "Quietly delete the biased code, breaking the product temporarily to delay the launch."
     ],
     correctIndex: 2
   },
   {
-    question: "Which of the following best describes a strong work ethic?",
+    question: "You accidentally email a highly confidential spreadsheet containing the unencrypted salaries, social security numbers, and banking details of all 10,000 employees to a third-party vendor. What is your next move?",
     options: [
-      "Coming to work only when you feel motivated",
-      "Completing tasks quickly without attention to quality",
-      "Being punctual, responsible, and consistently dedicated to your work",
-      "Doing the minimum required and nothing more"
+      "Ask the vendor to delete the email and hope no one ever finds out.",
+      "Immediately notify the Information Security Officer and Legal team to initiate a critical data breach protocol.",
+      "Delete the email from your outbox and pretend you were hacked.",
+      "Send a follow-up email saying 'Please ignore the previous email' and leave it at that."
+    ],
+    correctIndex: 1
+  },
+  {
+    question: "A massive geopolitical event just caused your supply chain to collapse. Your company will go bankrupt in 30 days if you don't secure raw materials, but the only available supplier uses forced child labor. What is the decision?",
+    options: [
+      "Use the supplier temporarily just to survive, then switch back when the crisis is over.",
+      "Declare bankruptcy and shut the company down immediately without trying any alternatives.",
+      "Reject the unethical supplier and urgently pivot the company's operations, even if it means massive layoffs to survive.",
+      "Hide the supplier's identity through shell companies to protect the brand's image."
     ],
     correctIndex: 2
   },
   {
-    question: "How should you handle a situation where you disagree with a company policy?",
+    question: "You have been promoted over a peer who is twice your age and has been at the company 10 years longer. They are now actively organizing a team mutiny against your leadership. How do you handle this?",
     options: [
-      "Ignore it and do what you personally think is right",
-      "Discuss your concerns respectfully through proper channels",
-      "Publicly criticize the company on social media",
-      "Refuse to follow the policy outright"
+      "Use your new authority to terminate their employment immediately for insubordination.",
+      "Confront them in a private, direct meeting to address the friction, validate their expertise, and establish clear operational boundaries.",
+      "Complain to the CEO that your team is unmanageable.",
+      "Ignore the mutiny and do all the work yourself to prove you are the better employee."
+    ],
+    correctIndex: 1
+  },
+  {
+    question: "Your primary client is demanding a feature that violates the GDPR (General Data Protection Regulation), and they threaten to pull their $50M contract if you don't build it. What is your response?",
+    options: [
+      "Build the feature, but hide the non-compliant code deeply in the backend.",
+      "Refuse to build it and immediately terminate the $50M contract without discussion.",
+      "Provide a legal and technical consultation showing how they can achieve their business goal while remaining strictly GDPR compliant.",
+      "Build it, but make the client sign a waiver saying they take all legal responsibility."
+    ],
+    correctIndex: 2
+  },
+  {
+    question: "A senior executive has been routinely harassing junior staff, but they bring in 80% of the company's revenue. The board is looking the other way. You are the HR Director. What do you do?",
+    options: [
+      "Look the other way too; the company needs the revenue to survive.",
+      "Document all testimonies meticulously and present an ultimatum to the board with external legal counsel involved.",
+      "Confront the executive physically to intimidate them into stopping.",
+      "Tell the junior staff to just avoid the executive as much as possible."
     ],
     correctIndex: 1
   }
